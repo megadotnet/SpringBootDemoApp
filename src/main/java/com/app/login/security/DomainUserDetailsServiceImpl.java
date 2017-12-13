@@ -17,15 +17,17 @@ import java.util.stream.Collectors;
 
 /**
  * Authenticate a user from the database.
+ * @author admin
+ * @date 2017-12-13
  */
 @Component("userDetailsService")
-public class DomainUserDetailsService implements UserDetailsService {
+public class DomainUserDetailsServiceImpl implements UserDetailsService {
 
-    private final Logger log = LoggerFactory.getLogger(DomainUserDetailsService.class);
+    private final Logger log = LoggerFactory.getLogger(DomainUserDetailsServiceImpl.class);
 
     private final UserRepository userRepository;
 
-    public DomainUserDetailsService(UserRepository userRepository) {
+    public DomainUserDetailsServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
