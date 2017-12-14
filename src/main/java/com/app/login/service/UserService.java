@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
  * Service class for managing users.
  */
 @Service
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class UserService {
 
     private final Logger log = LoggerFactory.getLogger(UserService.class);

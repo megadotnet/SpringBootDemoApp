@@ -1,15 +1,13 @@
 package com.app.login.service.dto;
 
 import com.app.login.config.Constants;
-
 import com.app.login.domain.Authority;
 import com.app.login.domain.User;
-
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
-import javax.validation.constraints.*;
-import java.time.Instant;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -38,7 +36,7 @@ public class UserDTO {
     @Size(max = 256)
     private String imageUrl;
 
-    private boolean activated = false;
+    private boolean activated=false;
 
     @Size(min = 2, max = 5)
     private String langKey;
