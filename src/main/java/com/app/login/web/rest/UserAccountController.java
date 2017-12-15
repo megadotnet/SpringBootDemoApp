@@ -1,28 +1,6 @@
 package com.app.login.web.rest;
 
 import com.app.login.config.Constants;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
-import java.util.Optional;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.app.login.domain.User;
 import com.app.login.repository.UserRepository;
 import com.app.login.security.SecurityUtils;
@@ -32,12 +10,30 @@ import com.app.login.service.dto.UserDTO;
 import com.app.login.web.rest.util.HeaderUtil;
 import com.app.login.web.rest.vm.KeyAndPasswordVM;
 import com.app.login.web.rest.vm.ManagedUserVM;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * REST controller for managing the current user's account.
  */
 @RestController
 @RequestMapping("/api")
+@Api(value = "UserAccount",description = "UserAccount")
 public class UserAccountController {
 
     private final Logger log = LoggerFactory.getLogger(UserAccountController.class);
@@ -106,6 +102,7 @@ public class UserAccountController {
      *         body, or status 500 (Internal Server Error) if the user couldn't
      *         be activated
      */
+    @ApiOperation(value = "active",notes = "activate")
     @GetMapping("/activate")
     public ResponseEntity<String> activateAccount(@RequestParam(value = "key") String key) {
         return userService.activateRegistration(key)
