@@ -12,6 +12,7 @@ import com.app.login.web.rest.vm.KeyAndPasswordVM;
 import com.app.login.web.rest.vm.ManagedUserVM;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +34,7 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/api")
-@Api(value = "UserAccount",description = "UserAccount")
+@Api(value = "UserAccount",description = "User Account API")
 public class UserAccountController {
 
     private final Logger log = LoggerFactory.getLogger(UserAccountController.class);
@@ -61,6 +62,7 @@ public class UserAccountController {
      *         registered or 400 (Bad Request) if the login or email is already
      *         in use
      */
+    @ApiOperation(value = "registerAccount",notes = "register Account")
     @PostMapping(path = "/register", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
     public ResponseEntity registerAccount(@Valid @RequestBody ManagedUserVM managedUserVM, HttpServletRequest request) {
 
@@ -102,8 +104,9 @@ public class UserAccountController {
      *         body, or status 500 (Internal Server Error) if the user couldn't
      *         be activated
      */
-    @ApiOperation(value = "active",notes = "activate")
+    @ApiOperation(value = "activateAccount",notes = "activate Account")
     @GetMapping("/activate")
+    @ApiParam(value ="key" )
     public ResponseEntity<String> activateAccount(@RequestParam(value = "key") String key) {
         return userService.activateRegistration(key)
             .map(user -> new ResponseEntity<String>(HttpStatus.OK))
@@ -118,6 +121,7 @@ public class UserAccountController {
      *            the HTTP request
      * @return the login if the user is authenticated
      */
+    @ApiOperation(value = "isAuthenticated",notes = "is Authenticated")
     @GetMapping("/authenticate")
     public String isAuthenticated(HttpServletRequest request) {
         log.debug("REST request to check if the current user is authenticated");
@@ -131,6 +135,7 @@ public class UserAccountController {
      *         body, or status 500 (Internal Server Error) if the user couldn't
      *         be returned
      */
+    @ApiOperation(value = "getAccount",notes = "get Account")
     @GetMapping("/account")
     public ResponseEntity<UserDTO> getAccount() {
         return Optional.ofNullable(userService.getUserWithAuthorities())
@@ -147,6 +152,7 @@ public class UserAccountController {
      *         Request) or 500 (Internal Server Error) if the user couldn't be
      *         updated
      */
+    @ApiOperation(value = "saveAccount",notes = "save Account")
     @PostMapping("/account")
     public ResponseEntity saveAccount(@Valid @RequestBody UserDTO userDTO) {
         final String userLogin = SecurityUtils.getCurrentUserLogin();
@@ -174,6 +180,7 @@ public class UserAccountController {
      * @return the ResponseEntity with status 200 (OK), or status 400 (Bad
      *         Request) if the new password is not strong enough
      */
+    @ApiOperation(value = "changePassword",notes = "change Password")
     @PostMapping(path = "/account/change_password", produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity changePassword(@RequestBody String password) {
         if (!checkPasswordLength(password)) {
@@ -192,6 +199,7 @@ public class UserAccountController {
      * @return the ResponseEntity with status 200 (OK) if the email was sent, or
      *         status 400 (Bad Request) if the email address is not registered
      */
+    @ApiOperation(value = "requestPasswordReset",notes = "request PasswordReset")
     @PostMapping(path = "/account/reset_password/init", produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity requestPasswordReset(@RequestBody String mail) {
         return userService.requestPasswordReset(mail)
@@ -212,6 +220,7 @@ public class UserAccountController {
      *         reset, or status 400 (Bad Request) or 500 (Internal Server Error)
      *         if the password could not be reset
      */
+    @ApiOperation(value = "finishPasswordReset",notes = "finish PasswordReset")
     @PostMapping(path = "/account/reset_password/finish", produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<String> finishPasswordReset(@RequestBody KeyAndPasswordVM keyAndPassword) {
         if (!checkPasswordLength(keyAndPassword.getNewPassword())) {

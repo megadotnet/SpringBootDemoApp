@@ -15,7 +15,7 @@ import java.net.UnknownHostException;
  * @author megadotnet
  * @date 2017-12-15
  */
-@SpringBootApplication
+@SpringBootApplication // 必须标明
 public class Application {
 
     private static final Logger log = LoggerFactory.getLogger(Application.class);

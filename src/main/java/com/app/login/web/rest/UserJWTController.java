@@ -7,6 +7,8 @@ import com.app.login.web.rest.vm.LoginVM;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -27,6 +29,7 @@ import java.util.Collections;
  */
 @RestController
 @RequestMapping("/api")
+@Api(value = "UserJWTController",description = "UserJWTController API")
 public class UserJWTController {
 
     private final Logger log = LoggerFactory.getLogger(UserJWTController.class);
@@ -40,6 +43,7 @@ public class UserJWTController {
         this.authenticationManager = authenticationManager;
     }
 
+    @ApiOperation(value = "authorize",notes = "authorize")
     @PostMapping("/authenticate")
     public ResponseEntity authorize(@Valid @RequestBody LoginVM loginVM, HttpServletResponse response) {
 
