@@ -10,8 +10,13 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
-public interface UserRepository extends JpaRepository<User, Long> {
 
+ /**
+ * UserRepository
+ * @author megadotnet
+ * @date 2018-2-27
+ */
+public interface UserRepository extends JpaRepository<User, Long> {
     /**
      * findOneByActivationKey
      *
@@ -21,6 +26,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
      */
     Optional<User> findOneByActivationKey(String activationKey);
 
+    /**
+     * findOneByResetKey
+     *
+     * @param resetKey resetKey
+     * @return Result<User>
+     *
+     */
     Optional<User> findOneByResetKey(String resetKey);
 
     Optional<User> findOneByEmail(String email);
