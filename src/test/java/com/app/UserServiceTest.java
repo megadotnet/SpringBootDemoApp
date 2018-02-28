@@ -1,8 +1,10 @@
 package com.app;
 
 import com.app.login.Application;
+import com.app.login.domain.Authority;
 import com.app.login.domain.User;
 import com.app.login.service.UserService;
+import com.app.login.service.dto.UserDTO;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,6 +13,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -24,6 +30,10 @@ public class UserServiceTest {
 
 	@Test
 	public void createUserTest() {
+		createUser();
+	}
+
+	private User createUser() {
 		User user = new User();
 		user.setFirstName("Bruce");
 		user.setLastName("Wayne");
@@ -35,5 +45,18 @@ public class UserServiceTest {
 		User newUser = userService.createUser(user.getFirstName(), user.getPassword(), user.getFirstName(), user.getLastName(),
 				user.getEmail(), "", "en", user.getCreatedDate(), user.getIpAddress());
 		assertNotNull(newUser);
+		return newUser;
+	}
+
+
+	@Test
+	public void updateUserTest()
+	{   //assume
+		User user = createUser();
+		UserDTO userDto=new UserDTO(user);
+		//act
+		Optional<UserDTO> updateUser = userService.updateUser(userDto);
+		//assert
+		assertNotNull(updateUser);
 	}
 }

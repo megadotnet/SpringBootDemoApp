@@ -24,6 +24,8 @@ import java.util.stream.Collectors;
 
 /**
  * Service class for managing users.
+ * @author Megadotnet
+ * @date  2018-01-01
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
