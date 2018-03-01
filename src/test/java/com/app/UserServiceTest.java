@@ -13,9 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.assertNotNull;
@@ -33,6 +30,17 @@ public class UserServiceTest {
 		createUser();
 	}
 
+	@Test
+	public void updateUserTest()
+	{   //assume
+		User user = createUser();
+		UserDTO userDto=new UserDTO(user);
+		//act
+		Optional<UserDTO> updateUser = userService.updateUser(userDto);
+		//assert
+		assertNotNull(updateUser);
+	}
+
 	private User createUser() {
 		User user = new User();
 		user.setFirstName("Bruce");
@@ -46,17 +54,5 @@ public class UserServiceTest {
 				user.getEmail(), "", "en", user.getCreatedDate(), user.getIpAddress());
 		assertNotNull(newUser);
 		return newUser;
-	}
-
-
-	@Test
-	public void updateUserTest()
-	{   //assume
-		User user = createUser();
-		UserDTO userDto=new UserDTO(user);
-		//act
-		Optional<UserDTO> updateUser = userService.updateUser(userDto);
-		//assert
-		assertNotNull(updateUser);
 	}
 }

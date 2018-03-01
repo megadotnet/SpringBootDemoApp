@@ -27,6 +27,7 @@ import com.app.login.domain.User;
  * <p>
  * We use the @Async annotation to send emails asynchronously.
  * </p>
+ * @author Megdotnet
  */
 @Service
 @PropertySource("classpath:application.properties")
