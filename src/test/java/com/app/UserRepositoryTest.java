@@ -1,31 +1,42 @@
 package com.app;
 
-import com.app.login.Application;
 import com.app.login.domain.User;
 import com.app.login.repository.UserRepository;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.when;
 
 
 /**
  * Created by Administrator on 2018/3/1 0001.
  */
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = Application.class)
 public class UserRepositoryTest {
 
-    @Autowired
+    @Mock
     private UserRepository userRepository;
+
+    @Before
+    public void setup(){
+        MockitoAnnotations.initMocks(this);
+        ArrayList<User> users=  new ArrayList<User>();
+        User mockuser= new User();
+        users.add(mockuser);
+        Optional<User> optuser=Optional.of(mockuser);
+
+        when(userRepository.findAll()).thenReturn(users);
+        when(userRepository.findOneByEmail(any(String.class))).thenReturn(optuser);
+    }
 
     @Test
     public void findAllUsers()  {

@@ -14,7 +14,7 @@ import java.net.UnknownHostException;
  * Application
  * @author megadotnet
  * @date 2017-12-15
- */
+ **/
 @SpringBootApplication // 必须标明
 public class Application {
 
