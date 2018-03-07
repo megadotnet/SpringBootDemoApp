@@ -23,6 +23,8 @@ import java.util.EnumSet;
 
 /**
  * Configuration of web application with Servlet 3.0 APIs.
+ * @author Megadotnet
+ * @date 2018-03-07
  */
 @Configuration
 public class WebConfigurer implements ServletContextInitializer, EmbeddedServletContainerCustomizer {

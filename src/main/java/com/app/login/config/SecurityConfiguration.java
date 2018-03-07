@@ -25,6 +25,11 @@ import com.app.login.security.AuthoritiesConstants;
 import com.app.login.security.jwt.JWTConfigurer;
 import com.app.login.security.jwt.TokenProvider;
 
+/**
+ * SecurityConfiguration
+ * @author Megadotnet
+ * @date 2018-03-07
+ */
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)

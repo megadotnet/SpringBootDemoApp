@@ -120,7 +120,8 @@ public class UserService {
         user.setEmail(userDTO.getEmail());
         user.setImageUrl(userDTO.getImageUrl());
         if (userDTO.getLangKey() == null) {
-            user.setLangKey(Constants.DEFAULT_LANGUAGE_KEY); // default language
+            // default language
+            user.setLangKey(Constants.DEFAULT_LANGUAGE_KEY);
         } else {
             user.setLangKey(userDTO.getLangKey());
         }

@@ -6,6 +6,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.*;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
+/**
+ * ThymeleafConfiguration
+ * @author Megadotnet
+ * @date 2018-03-07
+ */
 @Configuration
 public class ThymeleafConfiguration {
 

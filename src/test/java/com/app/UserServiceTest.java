@@ -15,7 +15,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.time.Instant;
 import java.util.Optional;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 @Ignore
 @RunWith(SpringRunner.class)
@@ -23,7 +25,7 @@ import static org.junit.Assert.assertNotNull;
 public class UserServiceTest {
 
 	@Autowired
-	UserService userService;
+	private UserService userService;
 
 	@Test
 	public void createUserTest() {
@@ -32,7 +34,8 @@ public class UserServiceTest {
 
 	@Test
 	public void updateUserTest()
-	{   //assume
+	{
+		//assume
 		User user = createUser();
 		UserDTO userDto=new UserDTO(user);
 		//act
@@ -40,6 +43,18 @@ public class UserServiceTest {
 		//assert
 		assertNotNull(updateUser);
 	}
+
+	@Test
+	public void deleteUser() throws Exception {
+		//assume
+		User user = createUser();
+		//act
+		userService.deleteUser(user.getLogin());
+		Optional<User> existUser =userService.getUserWithAuthoritiesByLogin(user.getLogin());
+		//assert
+		assertFalse(existUser.isPresent());
+	}
+
 
 	private User createUser() {
 		User user = new User();
