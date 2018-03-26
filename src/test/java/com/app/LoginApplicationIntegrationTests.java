@@ -42,7 +42,7 @@ public class LoginApplicationIntegrationTests {
 	@Before
 	public void setUp() {
 
-		User user = userService.createUser("roger", "perfect", "roger", "federer", "roger@wimbledon.com", "", "en",
+		User user = userService.createUser("roger", "perfect", "roger", "federer", "roger@hotmail.com", "", "en",
 				Instant.now(), "127.0.0.1");
 
 		LoginVM loginVM = new LoginVM();

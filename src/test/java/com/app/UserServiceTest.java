@@ -17,11 +17,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
 
-@Ignore
+//@Ignore
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
 public class UserServiceTest {
@@ -76,14 +77,17 @@ public class UserServiceTest {
 	{
 		//assume
 		User user = createUser();
-		Pageable pageable = new PageRequest(1, 20);
+		Sort sort = new Sort(Sort.Direction.ASC, "login");
+		Pageable pageable = new PageRequest(0, 20);
 		//act
 		Page<UserDTO> userPage= userService.getAllManagedUsers(pageable);
 
 		//assert
 		assertNotNull(userPage);
 		assertEquals(userPage.getTotalElements(),1L);
-
+		List<UserDTO> userDTOList=userPage.getContent();
+		assertNotNull(userDTOList);
+		assertFalse(userDTOList.isEmpty());
 	}
 
 

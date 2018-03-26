@@ -11,6 +11,15 @@ Application is secured with JWT and Spring security.
    5) Multi-language support
    6) RESTful API
 
+## Srping Actuator
+   Spring Boot includes an Actuator module,which introduces production-ready non-functional requirements 
+to your application. The Spring Boot Actuator module provides monitoring, metrics, and auditing right out 
+of box. 
+
+    /metrics 
+This endpoint shows the metrics  information   of the current application, where you can determine the how 
+much memory it’s using, how much memory is free, the uptime of your application, the size of the heap is 
+being used, the number of threads used, and so on. 
 
 ## Swagger
 
@@ -18,4 +27,4 @@ Application is secured with JWT and Spring security.
 
    Link
 
-   http://192.168.4.107:7080/swagger-ui.html
+     http://127.0.0.1:7080/swagger-ui.html
