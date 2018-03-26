@@ -45,6 +45,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @EntityGraph(attributePaths = "authorities")
     Optional<User> findOneWithAuthoritiesByLogin(String login);
 
+    /**
+     * findAllByLoginNot
+     * @param Pageable pageable
+     * @param String login
+     * @return Page<User>
+     */
     Page<User> findAllByLoginNot(Pageable pageable, String login);
 
     List<User> findAllByIpAddressAndCreatedDateBetween(String ipAddress, Instant startDate, Instant currentDate);

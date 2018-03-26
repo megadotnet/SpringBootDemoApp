@@ -15,9 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.time.Instant;
 import java.util.Optional;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 @Ignore
 @RunWith(SpringRunner.class)
@@ -55,14 +53,28 @@ public class UserServiceTest {
 		assertFalse(existUser.isPresent());
 	}
 
+	@Test
+	public void activateRegistrationTest()
+	{
+		//assume
+		User user = createUser();
+		//act
+		Optional<User> activeUser= userService.activateRegistration(user.getActivationKey());
+
+		//assert
+		assertTrue(activeUser.isPresent());
+		User existUser=activeUser.get();
+		assertEquals(existUser.getActivationKey(),null);
+	}
+
 
 	private User createUser() {
 		User user = new User();
-		user.setFirstName("Bruce");
-		user.setLastName("Wayne");
+		user.setFirstName("Peter");
+		user.setLastName("Liu");
 		user.setPassword("batman");
 		user.setCreatedDate(Instant.now());
-		user.setEmail("bruce@dccomics.com");
+		user.setEmail("kmdxdk1@hotmail.com");
 		user.setIpAddress("127.0.0.1");
 
 		User newUser = userService.createUser(user.getFirstName(), user.getPassword(), user.getFirstName(), user.getLastName(),

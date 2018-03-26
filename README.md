@@ -1,5 +1,5 @@
 # Springboot Demo  [![Build Status](https://travis-ci.org/megadotnet/SpringBootDemoApp.png?branch=master)](https://travis-ci.org/megadotnet/SpringBootDemoApp/)
-A Sample application developed with Spring Boot, Spring Security, Hibernate, Actuator and Angular JS
+A Sample application developed with Spring Boot, Spring Security, Spring Data JPA, Actuator and Angular JS
 Application is secured with JWT and Spring security.
 
 
