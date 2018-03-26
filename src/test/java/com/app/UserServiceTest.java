@@ -10,6 +10,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.Instant;
@@ -65,6 +69,21 @@ public class UserServiceTest {
 		assertTrue(activeUser.isPresent());
 		User existUser=activeUser.get();
 		assertEquals(existUser.getActivationKey(),null);
+	}
+
+	@Test
+	public void getAllManagedUsersTest()
+	{
+		//assume
+		User user = createUser();
+		Pageable pageable = new PageRequest(1, 20);
+		//act
+		Page<UserDTO> userPage= userService.getAllManagedUsers(pageable);
+
+		//assert
+		assertNotNull(userPage);
+		assertEquals(userPage.getTotalElements(),1L);
+
 	}
 
 

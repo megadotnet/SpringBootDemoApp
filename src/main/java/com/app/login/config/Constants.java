@@ -16,7 +16,7 @@ public final class Constants {
     private static final String NEWLINE = "\n----------------------------------------------------------\n\t";
     private static final String APP_MSG = "Application '{}' is running! Access URLs:\n\t";
     private static final String EXT = "External: \t{}://{}:{}\n\t";
-    public static  final String ANONYMOUS_USER="anoy";
+    public static  final String ANONYMOUS_USER="admin";
     public static final String STARTUP_LOG_MSG = NEWLINE + APP_MSG + EXT;
 
     private Constants() {
