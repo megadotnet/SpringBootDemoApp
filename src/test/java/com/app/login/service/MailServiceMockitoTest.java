@@ -1,5 +1,6 @@
 package com.app.login.service;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +20,7 @@ public class MailServiceMockitoTest {
     private MailService mailService;
 
 
+    @Ignore
     @Test
     public void sendEmail() throws Exception {
         mailService.sendEmail("d","xd","asf",false,false);
