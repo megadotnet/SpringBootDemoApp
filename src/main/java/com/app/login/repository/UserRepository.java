@@ -35,23 +35,58 @@ public interface UserRepository extends JpaRepository<User, Long> {
      */
     Optional<User> findOneByResetKey(String resetKey);
 
+     /**
+      * findOneByEmail
+      *
+      * @param email resetKey
+      * @return Optional<User>
+      *
+      */
     Optional<User> findOneByEmail(String email);
 
+     /**
+      * findOneByLogin
+      *
+      * @param  login
+      * @return Optional<User>
+      *
+      */
     Optional<User> findOneByLogin(String login);
 
+     /**
+      * findOneWithAuthoritiesById
+      *
+      * @param  id
+      * @return User
+      *
+      */
     @EntityGraph(attributePaths = "authorities")
     User findOneWithAuthoritiesById(Long id);
 
+     /**
+      * findOneWithAuthoritiesByLogin
+      *
+      * @param  login
+      * @return  Optional<User>
+      *
+      */
     @EntityGraph(attributePaths = "authorities")
     Optional<User> findOneWithAuthoritiesByLogin(String login);
 
     /**
      * findAllByLoginNot
-     * @param Pageable pageable
-     * @param String login
+     * @param  pageable
+     * @param  login
      * @return Page<User>
      */
     Page<User> findAllByLoginNot(Pageable pageable, String login);
 
+     /**
+      * findAllByIpAddressAndCreatedDateBetween
+      * @param  ipAddress
+      * @param  startDate
+      * @param currentDate
+      * @return List<User>
+      */
     List<User> findAllByIpAddressAndCreatedDateBetween(String ipAddress, Instant startDate, Instant currentDate);
 }
