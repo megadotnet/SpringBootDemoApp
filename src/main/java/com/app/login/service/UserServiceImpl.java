@@ -31,9 +31,9 @@ import java.util.stream.Collectors;
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class UserService {
+public class UserServiceImpl implements IUserService {
 
-    private final Logger log = LoggerFactory.getLogger(UserService.class);
+    private final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
     private final UserRepository userRepository;
 
@@ -41,12 +41,13 @@ public class UserService {
 
     private final AuthorityRepository authorityRepository;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
     }
 
+    @Override
     public Optional<User> activateRegistration(String key) {
         log.debug("Activating user for activation key {}", key);
         return userRepository.findOneByActivationKey(key)
@@ -59,6 +60,7 @@ public class UserService {
             });
     }
 
+    @Override
     public Optional<User> completePasswordReset(String newPassword, String key) {
         log.debug("Reset user password for reset key {}", key);
 
@@ -74,6 +76,7 @@ public class UserService {
             });
     }
 
+    @Override
     public Optional<User> requestPasswordReset(String mail) {
         return userRepository.findOneByEmail(mail)
             .filter(User::getActivated)
@@ -84,6 +87,7 @@ public class UserService {
             });
     }
 
+    @Override
     public User createUser(String login, String password, String firstName, String lastName, String email, String imageUrl, String langKey, Instant createdDate, String ipAddress) {
 
         User newUser = new User();
@@ -114,6 +118,7 @@ public class UserService {
         return newUser;
     }
 
+    @Override
     public User createUser(UserDTO userDTO) {
         User user = new User();
         user.setLogin(userDTO.getLogin());
@@ -152,6 +157,7 @@ public class UserService {
      * @param langKey language key
      * @param imageUrl image URL of user
      */
+    @Override
     public void updateUser(String firstName, String lastName, String email, String langKey, String imageUrl) {
         userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin())
             .ifPresent(user -> {
@@ -170,6 +176,7 @@ public class UserService {
      * @param userDTO user to update
      * @return updated user
      */
+    @Override
     public Optional<UserDTO> updateUser(UserDTO userDTO) {
         return Optional.of(userRepository.findOne(userDTO.getId()))
             .map(user -> {
@@ -192,6 +199,7 @@ public class UserService {
             .map(UserDTO::new);
     }
 
+    @Override
     public void deleteUser(String login) {
         userRepository.findOneByLogin(login)
             .ifPresent(user -> {
@@ -200,6 +208,7 @@ public class UserService {
             });
     }
 
+    @Override
     public void changePassword(String password) {
         userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin())
             .ifPresent(user -> {
@@ -209,22 +218,26 @@ public class UserService {
             });
     }
 
+    @Override
     @Transactional(readOnly = true)
     public Page<UserDTO> getAllManagedUsers(Pageable pageable) {
         return userRepository.findAllByLoginNot(pageable, Constants.ANONYMOUS_USER)
                 .map(UserDTO::new);
     }
 
+    @Override
     @Transactional(readOnly = true)
     public Optional<User> getUserWithAuthoritiesByLogin(String login) {
         return userRepository.findOneWithAuthoritiesByLogin(login);
     }
 
+    @Override
     @Transactional(readOnly = true)
     public User getUserWithAuthorities(Long id) {
         return userRepository.findOneWithAuthoritiesById(id);
     }
 
+    @Override
     @Transactional(readOnly = true)
     public User getUserWithAuthorities() {
         return userRepository.findOneWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin())
@@ -249,6 +262,7 @@ public class UserService {
     /**
      * @return a list of all the authorities
      */
+    @Override
     public List<String> getAuthorities() {
         return authorityRepository.findAll()
             .stream()

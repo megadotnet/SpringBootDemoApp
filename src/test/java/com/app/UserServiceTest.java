@@ -1,16 +1,14 @@
 package com.app;
 
 import com.app.login.Application;
-import com.app.login.domain.Authority;
 import com.app.login.domain.User;
-import com.app.login.service.UserService;
+import com.app.login.service.UserServiceImpl;
 import com.app.login.service.dto.UserDTO;
 import com.app.login.service.mapper.UserMapper;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
@@ -32,12 +30,12 @@ import static org.mockito.BDDMockito.given;
 public class UserServiceTest {
 
 	@MockBean
-	private UserService userService;
+	private UserServiceImpl userServiceImpl;
 
 	@Before
 	public void mockUserService(){
 		UserDTO userdto = new UserMapper().userToUserDTO(createUser());
-		given(userService.createUser(userdto)).willReturn(createUser());
+		given(userServiceImpl.createUser(userdto)).willReturn(createUser());
 
 
 	}
@@ -57,7 +55,7 @@ public class UserServiceTest {
 		User user = createUser();
 		UserDTO userDto=new UserDTO(user);
 		//act
-		Optional<UserDTO> updateUser = userService.updateUser(userDto);
+		Optional<UserDTO> updateUser = userServiceImpl.updateUser(userDto);
 		//assert
 		assertNotNull(updateUser);
 	}
@@ -68,8 +66,8 @@ public class UserServiceTest {
 		//assume
 		User user = createUser();
 		//act
-		userService.deleteUser(user.getLogin());
-		Optional<User> existUser =userService.getUserWithAuthoritiesByLogin(user.getLogin());
+		userServiceImpl.deleteUser(user.getLogin());
+		Optional<User> existUser = userServiceImpl.getUserWithAuthoritiesByLogin(user.getLogin());
 		//assert
 		assertFalse(existUser.isPresent());
 	}
@@ -81,7 +79,7 @@ public class UserServiceTest {
 		//assume
 		User user = createUser();
 		//act
-		Optional<User> activeUser= userService.activateRegistration(user.getActivationKey());
+		Optional<User> activeUser= userServiceImpl.activateRegistration(user.getActivationKey());
 
 		//assert
 		assertTrue(activeUser.isPresent());
@@ -98,7 +96,7 @@ public class UserServiceTest {
 		Sort sort = new Sort(Sort.Direction.ASC, "login");
 		Pageable pageable = new PageRequest(0, 20);
 		//act
-		Page<UserDTO> userPage= userService.getAllManagedUsers(pageable);
+		Page<UserDTO> userPage= userServiceImpl.getAllManagedUsers(pageable);
 
 		//assert
 		assertNotNull(userPage);

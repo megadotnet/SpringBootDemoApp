@@ -5,7 +5,7 @@ import com.app.login.domain.User;
 import com.app.login.repository.UserRepository;
 import com.app.login.security.SecurityUtils;
 import com.app.login.service.MailService;
-import com.app.login.service.UserService;
+import com.app.login.service.UserServiceImpl;
 import com.app.login.service.dto.UserDTO;
 import com.app.login.web.rest.util.HeaderUtil;
 import com.app.login.web.rest.vm.KeyAndPasswordVM;
@@ -42,14 +42,14 @@ public class UserAccountController {
 
     private final UserRepository userRepository;
 
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
 
     private final MailService mailService;
 
-    public UserAccountController(UserRepository userRepository, UserService userService, MailService mailService) {
+    public UserAccountController(UserRepository userRepository, UserServiceImpl userServiceImpl, MailService mailService) {
 
         this.userRepository = userRepository;
-        this.userService = userService;
+        this.userServiceImpl = userServiceImpl;
         this.mailService = mailService;
     }
 
@@ -88,7 +88,7 @@ public class UserAccountController {
             .orElseGet(() -> userRepository.findOneByEmail(managedUserVM.getEmail())
                 .map(user -> new ResponseEntity<>("email address already in use", textPlainHeaders, HttpStatus.BAD_REQUEST))
                 .orElseGet(() -> {
-                    User user = userService.createUser(managedUserVM.getLogin(), managedUserVM.getPassword(), managedUserVM.getFirstName(), managedUserVM.getLastName(), managedUserVM.getEmail()
+                    User user = userServiceImpl.createUser(managedUserVM.getLogin(), managedUserVM.getPassword(), managedUserVM.getFirstName(), managedUserVM.getLastName(), managedUserVM.getEmail()
                         .toLowerCase(), managedUserVM.getImageUrl(), managedUserVM.getLangKey(), Instant.now(), ipAddress);
 
                     mailService.sendActivationEmail(user);
@@ -109,7 +109,7 @@ public class UserAccountController {
     @GetMapping("/activate")
     @ApiParam(value ="key" )
     public ResponseEntity<String> activateAccount(@RequestParam(value = "key") String key) {
-        return userService.activateRegistration(key)
+        return userServiceImpl.activateRegistration(key)
             .map(user -> new ResponseEntity<String>(HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
@@ -139,7 +139,7 @@ public class UserAccountController {
     @ApiOperation(value = "getAccount",notes = "get Account")
     @GetMapping("/account")
     public ResponseEntity<UserDTO> getAccount() {
-        return Optional.ofNullable(userService.getUserWithAuthorities())
+        return Optional.ofNullable(userServiceImpl.getUserWithAuthorities())
             .map(user -> new ResponseEntity<>(new UserDTO(user), HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
@@ -167,7 +167,7 @@ public class UserAccountController {
         }
         return userRepository.findOneByLogin(userLogin)
             .map(u -> {
-                userService.updateUser(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(), userDTO.getLangKey(), userDTO.getImageUrl());
+                userServiceImpl.updateUser(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(), userDTO.getLangKey(), userDTO.getImageUrl());
                 return new ResponseEntity(HttpStatus.OK);
             })
             .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
@@ -187,7 +187,7 @@ public class UserAccountController {
         if (!checkPasswordLength(password)) {
             return new ResponseEntity<>("Incorrect password", HttpStatus.BAD_REQUEST);
         }
-        userService.changePassword(password);
+        userServiceImpl.changePassword(password);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -203,7 +203,7 @@ public class UserAccountController {
     @ApiOperation(value = "requestPasswordReset",notes = "request PasswordReset")
     @PostMapping(path = "/account/reset_password/init", produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity requestPasswordReset(@RequestBody String mail) {
-        return userService.requestPasswordReset(mail)
+        return userServiceImpl.requestPasswordReset(mail)
             .map(user -> {
                 mailService.sendPasswordResetMail(user);
                 return new ResponseEntity<>("email was sent", HttpStatus.OK);
@@ -227,7 +227,7 @@ public class UserAccountController {
         if (!checkPasswordLength(keyAndPassword.getNewPassword())) {
             return new ResponseEntity<>("Incorrect password", HttpStatus.BAD_REQUEST);
         }
-        return userService.completePasswordReset(keyAndPassword.getNewPassword(), keyAndPassword.getKey())
+        return userServiceImpl.completePasswordReset(keyAndPassword.getNewPassword(), keyAndPassword.getKey())
             .map(user -> new ResponseEntity<String>(HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }

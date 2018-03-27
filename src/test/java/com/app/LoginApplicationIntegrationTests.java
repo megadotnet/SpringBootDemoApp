@@ -3,7 +3,6 @@ package com.app;
 import static org.junit.Assert.assertEquals;
 
 import java.time.Instant;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,13 +16,12 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.app.login.Application;
 import com.app.login.domain.User;
-import com.app.login.service.UserService;
+import com.app.login.service.UserServiceImpl;
 import com.app.login.service.dto.UserDTO;
 import com.app.login.web.rest.vm.LoginVM;
 
@@ -35,14 +33,14 @@ public class LoginApplicationIntegrationTests {
 	private TestRestTemplate restTemplate;
 
 	@Autowired
-	private UserService userService;
+	private UserServiceImpl userServiceImpl;
 
 	private String jwtTokenForTest;
 
 	@Before
 	public void setUp() {
 
-		User user = userService.createUser("roger", "perfect", "roger", "federer", "roger@hotmail.com", "", "en",
+		User user = userServiceImpl.createUser("roger", "perfect", "roger", "federer", "roger@hotmail.com", "", "en",
 				Instant.now(), "127.0.0.1");
 
 		LoginVM loginVM = new LoginVM();

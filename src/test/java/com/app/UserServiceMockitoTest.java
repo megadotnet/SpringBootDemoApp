@@ -3,7 +3,7 @@ package com.app;
 import com.app.login.domain.User;
 import com.app.login.repository.AuthorityRepository;
 import com.app.login.repository.UserRepository;
-import com.app.login.service.UserService;
+import com.app.login.service.UserServiceImpl;
 import com.app.login.service.dto.UserDTO;
 import com.app.login.service.mapper.UserMapper;
 import org.junit.Before;
@@ -13,7 +13,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.Instant;
@@ -40,7 +39,7 @@ public class UserServiceMockitoTest {
     private  AuthorityRepository authorityRepository;
 
     @InjectMocks
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
 
     @Before
     public void setup(){
@@ -55,7 +54,7 @@ public class UserServiceMockitoTest {
         when(userRepository.findAll()).thenReturn(users);
         when(userRepository.findOneByEmail(any(String.class))).thenReturn(optuser);
 
-        userService=new UserService(userRepository,passwordEncoder, authorityRepository);
+        userServiceImpl =new UserServiceImpl(userRepository,passwordEncoder, authorityRepository);
     }
 
     @Test
@@ -65,7 +64,7 @@ public class UserServiceMockitoTest {
         UserDTO userDTO=new UserMapper().userToUserDTO(createUser());
 
         //act
-        Optional<UserDTO> updateUser = userService.updateUser(userDTO);
+        Optional<UserDTO> updateUser = userServiceImpl.updateUser(userDTO);
 
         //assert
         assertNotNull(updateUser);
