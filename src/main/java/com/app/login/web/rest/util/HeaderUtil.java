@@ -6,6 +6,7 @@ import org.springframework.http.HttpHeaders;
 
 /**
  * Utility class for HTTP headers creation.
+ * @author Megadotnet
  */
 public final class HeaderUtil {
 

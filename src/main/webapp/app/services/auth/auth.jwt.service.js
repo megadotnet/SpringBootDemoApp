@@ -32,6 +32,7 @@
             return $http.post('api/authenticate', data).success(authenticateSuccess);
 
             function authenticateSuccess (data, status, headers) {
+                console.log('authenticateSuccess');
                 var bearerToken = headers('Authorization');
                 if (angular.isDefined(bearerToken) && bearerToken.slice(0, 7) === 'Bearer ') {
                     var jwt = bearerToken.slice(7, bearerToken.length);
@@ -42,6 +43,7 @@
         }
 
         function loginWithToken(jwt, rememberMe) {
+            console.log('loginWithToken');
             var deferred = $q.defer();
 
             if (angular.isDefined(jwt)) {

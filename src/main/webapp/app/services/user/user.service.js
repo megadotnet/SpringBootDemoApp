@@ -13,6 +13,7 @@
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {
+                    console.log(data);
                     data = angular.fromJson(data);
                     return data;
                 }
