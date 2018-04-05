@@ -1,5 +1,12 @@
 # Springboot Demo  [![Build Status](https://travis-ci.org/megadotnet/SpringBootDemoApp.png?branch=master)](https://travis-ci.org/megadotnet/SpringBootDemoApp/)
-A Sample application developed with Spring Boot, Spring Security, Spring Data JPA, Actuator and Angular JS
+A Sample application developed with :
+  1. Spring Boot REST
+  2. Spring Security
+  3. Spring Data JPA
+  4. Spring Boot Actuator 
+  5. Angular JS
+  6. Alibaba Druid
+  
 Application is secured with JWT and Spring security.
 
 
@@ -28,3 +35,8 @@ being used, the number of threads used, and so on.
    Link
 
      http://127.0.0.1:7080/swagger-ui.html
+     
+## Druid     
+Druid is one of the best database connection pools written in JAVA. The Web console url goes to:
+    
+     http://127.0.0.1:7080/druid/index.html
