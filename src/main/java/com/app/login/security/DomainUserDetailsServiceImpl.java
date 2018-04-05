@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 /**
  * Authenticate a user from the database.
- * @author admin
+ * @author megadotnet
  * @date 2017-12-13
  */
 @Component("userDetailsService")

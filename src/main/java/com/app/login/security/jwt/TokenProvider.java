@@ -26,6 +26,11 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
 
+/**
+ * TokenProvider
+ * @author megadotnet
+ * @date 2017-12-13
+ */
 @Component
 public class TokenProvider {
 

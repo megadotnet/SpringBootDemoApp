@@ -8,6 +8,7 @@ import com.app.login.service.MailService;
 import com.app.login.service.UserServiceImpl;
 import com.app.login.service.dto.UserDTO;
 import com.app.login.web.rest.util.HeaderUtil;
+import com.app.login.web.rest.util.ResourceNotFoundException;
 import com.app.login.web.rest.vm.KeyAndPasswordVM;
 import com.app.login.web.rest.vm.ManagedUserVM;
 import io.swagger.annotations.Api;
@@ -133,7 +134,7 @@ public class UserAccountController {
      * GET /account : get the current user.
      *
      * @return the ResponseEntity with status 200 (OK) and the current user in
-     *         body, or status 500 (Internal Server Error) if the user couldn't
+     *         body, or ResourceNotFoundException if the user couldn't
      *         be returned
      */
     @ApiOperation(value = "getAccount",notes = "get Account")
@@ -141,7 +142,7 @@ public class UserAccountController {
     public ResponseEntity<UserDTO> getAccount() {
         return Optional.ofNullable(userServiceImpl.getUserWithAuthorities())
             .map(user -> new ResponseEntity<>(new UserDTO(user), HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
+                .orElseThrow(() -> new ResourceNotFoundException("No user found with current login name"));
     }
 
     /**

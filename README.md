@@ -40,3 +40,16 @@ being used, the number of threads used, and so on.
 Druid is one of the best database connection pools written in JAVA. The Web console url goes to:
     
      http://127.0.0.1:7080/druid/index.html
+     
+## Testing
+  JWT http request 
+``` POST http://127.0.0.1:7080/api/authenticate HTTP/1.1
+  User-Agent: Fiddler
+  Host: 127.0.0.1:7080
+  Content-Length: 65
+  content-type: application/json
+  
+  {"username": "admin", "password": "admin", "rememberMe": "false"}
+```
+  http response
+   

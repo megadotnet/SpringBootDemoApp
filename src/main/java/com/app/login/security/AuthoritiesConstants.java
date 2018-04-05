@@ -2,6 +2,8 @@ package com.app.login.security;
 
 /**
  * Constants for Spring Security authorities.
+ * @author megadotnet
+ * @date 2017-12-13
  */
 public final class AuthoritiesConstants {
 
