@@ -52,4 +52,12 @@ Druid is one of the best database connection pools written in JAVA. The Web cons
   {"username": "admin", "password": "admin", "rememberMe": "false"}
 ```
   http response
-   
+
+## Docker
+``` 
+  mvn clean package docker:build
+```
+  if you want to skip unit test:
+``` 
+  mvn clean package docker:build -DskipTests
+```
