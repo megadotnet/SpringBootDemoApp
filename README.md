@@ -68,9 +68,9 @@ environment variable to connect elsewhere.
 Other docker-standard environment variables are honored too such as TLS and certificates.
 ###Build docker image
 ``` 
-  mvn clean package docker:build
+  mvn clean package dockerfile:build
 ```
   if you want to skip unit test:
 ``` 
-  mvn clean package docker:build -DskipTests
+  mvn clean package dockerfile:build -DskipTests
 ```
