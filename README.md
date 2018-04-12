@@ -54,6 +54,19 @@ Druid is one of the best database connection pools written in JAVA. The Web cons
   http response
 
 ## Docker
+### Setup
+You can specify the base image, entry point, cmd, maintainer and files you want to add to your
+image directly in the pom, without needing a separate `Dockerfile`.
+If you need `VOLUME` command(or any other not supported dockerfile command), then you will need
+to create a `Dockerfile` and use the `dockerDirectory` element.
+
+By default the plugin will try to connect to docker on localhost:2375. Set the DOCKER_HOST 
+environment variable to connect elsewhere.
+
+    DOCKER_HOST=tcp://<host>:2375
+
+Other docker-standard environment variables are honored too such as TLS and certificates.
+###Build docker image
 ``` 
   mvn clean package docker:build
 ```
