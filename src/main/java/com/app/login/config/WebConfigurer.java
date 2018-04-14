@@ -2,9 +2,6 @@ package com.app.login.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
-import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
-import org.springframework.boot.context.embedded.MimeMappings;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,9 +22,10 @@ import java.util.EnumSet;
  * Configuration of web application with Servlet 3.0 APIs.
  * @author Megadotnet
  * @date 2018-03-07
+ * it also can be reference https://github.com/spring-projects/spring-boot/tree/master/spring-boot-samples
  */
 @Configuration
-public class WebConfigurer implements ServletContextInitializer, EmbeddedServletContainerCustomizer {
+public class WebConfigurer implements ServletContextInitializer {
 
     private final Logger log = LoggerFactory.getLogger(WebConfigurer.class);
 
@@ -47,27 +45,27 @@ public class WebConfigurer implements ServletContextInitializer, EmbeddedServlet
         log.info("Web application fully configured");
     }
 
-    /**
-     * Customize the Servlet engine: Mime types, the document root, the cache.
-     */
-    @Override
-    public void customize(ConfigurableEmbeddedServletContainer container) {
-        MimeMappings mappings = new MimeMappings(MimeMappings.DEFAULT);
-        mappings.add("html", "text/html;charset=utf-8");
-        mappings.add("json", "text/html;charset=utf-8");
-        container.setMimeMappings(mappings);
-        // When running in an IDE or with ./mvnw spring-boot:run, set location of the static web assets.
-        setLocationForStaticAssets(container);
-    }
+///    /**
+///     * Customize the Servlet engine: Mime types, the document root, the cache.
+///     */
+ ///  @Override
+ ///  public void customize(ConfigurableEmbeddedServletContainer container) {
+ ///      MimeMappings mappings = new MimeMappings(MimeMappings.DEFAULT);
+ ///      mappings.add("html", "text/html;charset=utf-8");
+ ///      mappings.add("json", "text/html;charset=utf-8");
+ ///      container.setMimeMappings(mappings);
+ ///      // When running in an IDE or with ./mvnw spring-boot:run, set location of the static web assets.
+ ///      setLocationForStaticAssets(container);
+ ///  }
 
-    private void setLocationForStaticAssets(ConfigurableEmbeddedServletContainer container) {
-        File root;
-        String prefixPath = resolvePathPrefix();
-        root = new File(prefixPath + env.getProperty("static.assets.location"));
-        if (root.exists() && root.isDirectory()) {
-            container.setDocumentRoot(root);
-        }
-    }
+ ///  private void setLocationForStaticAssets(ConfigurableEmbeddedServletContainer container) {
+ ///      File root;
+ ///      String prefixPath = resolvePathPrefix();
+ ///      root = new File(prefixPath + env.getProperty("static.assets.location"));
+ ///      if (root.exists() && root.isDirectory()) {
+ ///          container.setDocumentRoot(root);
+ ///      }
+ ///  }
 
     /**
      *  Resolve path prefix to static resources.

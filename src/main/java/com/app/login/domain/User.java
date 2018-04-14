@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.BatchSize;
 //import org.hibernate.annotations.Cache;
 //import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.validator.constraints.Email;
+//import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -48,7 +48,6 @@ public class User implements Serializable {
     @Column(name = "last_name", length = 50)
     private String lastName;
 
-    @Email
     @Size(min = 5, max = 100)
     @Column(length = 100, unique = true)
     private String email;

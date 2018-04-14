@@ -13,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.data.domain.Example;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.Instant;
@@ -50,7 +51,6 @@ public class UserServiceMockitoTest {
         users.add(mockuser);
         Optional<User> optuser=Optional.of(mockuser);
         Optional<UserDTO> userDTOOptional=Optional.of(mockuserDto);
-        when(userRepository.findOne(any(Long.class))).thenReturn(mockuser);
         when(userRepository.findAll()).thenReturn(users);
         when(userRepository.findOneByEmail(any(String.class))).thenReturn(optuser);
 

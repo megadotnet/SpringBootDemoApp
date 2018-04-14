@@ -11,6 +11,7 @@ import com.app.login.service.dto.UserDTO;
 import com.app.login.service.util.RandomUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -91,7 +92,10 @@ public class UserServiceImpl implements IUserService {
     public User createUser(String login, String password, String firstName, String lastName, String email, String imageUrl, String langKey, Instant createdDate, String ipAddress) {
 
         User newUser = new User();
-        Authority authority = authorityRepository.findOne(AuthoritiesConstants.USER);
+        Authority authorityquery = new Authority();
+        authorityquery.setName(AuthoritiesConstants.USER);
+        Example<Authority> example = Example.of(authorityquery);
+        Optional<Authority> authority = authorityRepository.findOne(example);
         Set<Authority> authorities = new HashSet<>();
         String encryptedPassword = passwordEncoder.encode(password);
         newUser.setLogin(login);
@@ -107,7 +111,7 @@ public class UserServiceImpl implements IUserService {
         newUser.setActivated(true);
         // new user gets registration key
         newUser.setActivationKey(RandomUtil.generateActivationKey());
-        authorities.add(authority);
+        authorities.add(authority.get());
         newUser.setAuthorities(authorities);
 
         newUser.setCreatedDate(createdDate);
@@ -135,7 +139,16 @@ public class UserServiceImpl implements IUserService {
         if (userDTO.getAuthorities() != null) {
             Set<Authority> authorities = new HashSet<>();
             userDTO.getAuthorities()
-                .forEach(authority -> authorities.add(authorityRepository.findOne(authority)));
+                .forEach(authority -> {
+
+                    Authority authorityquery = new Authority();
+                    authorityquery.setName(authority);
+                    Example<Authority> exampleAuthority = Example.of(authorityquery);
+
+                    authorities.add(
+                        authorityRepository.findOne(exampleAuthority).get()
+
+                ); });
             user.setAuthorities(authorities);
         }
         String encryptedPassword = passwordEncoder.encode(RandomUtil.generatePassword());
@@ -178,25 +191,37 @@ public class UserServiceImpl implements IUserService {
      */
     @Override
     public Optional<UserDTO> updateUser(UserDTO userDTO) {
-        return Optional.of(userRepository.findOne(userDTO.getId()))
-            .map(user -> {
-                user.setLogin(userDTO.getLogin());
-                user.setFirstName(userDTO.getFirstName());
-                user.setLastName(userDTO.getLastName());
-                user.setEmail(userDTO.getEmail());
-                user.setImageUrl(userDTO.getImageUrl());
-                user.setActivated(userDTO.isActivated());
-                user.setLangKey(userDTO.getLangKey());
-                Set<Authority> managedAuthorities = user.getAuthorities();
-                managedAuthorities.clear();
-                userDTO.getAuthorities()
-                    .stream()
-                    .map(authorityRepository::findOne)
-                    .forEach(managedAuthorities::add);
-                log.debug("Changed Information for User: {}", user);
-                return user;
-            })
-            .map(UserDTO::new);
+        //https://www.jianshu.com/p/9936ba98da5a
+        //https://github.com/spring-projects/spring-data-examples/tree/master/jpa/query-by-example/src/test/java/example/springdata/jpa/querybyexample
+        User userquery=new User();
+        userquery.setId(userDTO.getId());
+        Example<User> exampleUserDTO = Example.of(userquery);
+        return userRepository.findOne(exampleUserDTO)
+          .map(user -> {
+              user.setLogin(userDTO.getLogin());
+              user.setFirstName(userDTO.getFirstName());
+              user.setLastName(userDTO.getLastName());
+              user.setEmail(userDTO.getEmail());
+              user.setImageUrl(userDTO.getImageUrl());
+              user.setActivated(userDTO.isActivated());
+              user.setLangKey(userDTO.getLangKey());
+              Set<Authority> managedAuthorities = user.getAuthorities();
+              managedAuthorities.clear();
+
+              userDTO.getAuthorities()
+                  .stream()
+                      .map(e -> {
+                          Authority authorityquery = new Authority();
+                          authorityquery.setName(e);
+                          Example<Authority> exampleAuthority = Example.of(authorityquery);
+                          return authorityRepository.findOne(exampleAuthority).get();
+                          })
+                  .forEach(managedAuthorities::add);
+              log.debug("Changed Information for User: {}", user);
+              return user;
+          })
+          .map(UserDTO::new);
+
     }
 
     @Override

@@ -3,8 +3,7 @@ package com.app.login.service.dto;
 import com.app.login.config.Constants;
 import com.app.login.domain.Authority;
 import com.app.login.domain.User;
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotBlank;
+;
 
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -18,7 +17,7 @@ public class UserDTO {
 
     private Long id;
 
-    @NotBlank
+    //@NotBlank
     @Pattern(regexp = Constants.LOGIN_REGEX)
     @Size(min = 1, max = 50)
     private String login;
@@ -29,7 +28,7 @@ public class UserDTO {
     @Size(max = 50)
     private String lastName;
 
-    @Email
+    //@Email
     @Size(min = 5, max = 100)
     private String email;
 
