@@ -47,13 +47,7 @@ public class UserServiceMockitoTest {
         MockitoAnnotations.initMocks(this);
         ArrayList<User> users=  new ArrayList<User>();
         User mockuser= createUser();
-        UserDTO mockuserDto=new UserDTO();
         users.add(mockuser);
-        Optional<User> optuser=Optional.of(mockuser);
-        Optional<UserDTO> userDTOOptional=Optional.of(mockuserDto);
-        when(userRepository.findAll()).thenReturn(users);
-        when(userRepository.findOneByEmail(any(String.class))).thenReturn(optuser);
-
         userServiceImpl =new UserServiceImpl(userRepository,passwordEncoder, authorityRepository);
     }
 
