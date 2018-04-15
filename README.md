@@ -23,7 +23,7 @@ Application is secured with JWT and Spring security.
 to your application. The Spring Boot Actuator module provides monitoring, metrics, and auditing right out 
 of box. 
 
-    /metrics 
+    /actuator/metrics
 This endpoint shows the metrics  information   of the current application, where you can determine the how 
 much memory it’s using, how much memory is free, the uptime of your application, the size of the heap is 
 being used, the number of threads used, and so on. 
