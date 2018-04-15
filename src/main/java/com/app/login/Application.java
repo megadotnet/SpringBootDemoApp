@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.core.env.Environment;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -16,6 +17,7 @@ import java.net.UnknownHostException;
  * @date 2017-12-15
  **/
 @SpringBootApplication // 必须标明
+@EnableSwagger2
 public class Application {
 
     private static final Logger log = LoggerFactory.getLogger(Application.class);
