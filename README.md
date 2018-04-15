@@ -1,8 +1,8 @@
 # Springboot Demo  [![Build Status](https://travis-ci.org/megadotnet/SpringBootDemoApp.png?branch=master)](https://travis-ci.org/megadotnet/SpringBootDemoApp/)
 A Sample application developed with :
-  1. Spring Boot REST
+  1. Spring Boot 2 REST API
   2. Spring Security
-  3. Spring Data JPA
+  3. Spring Data JPA 
   4. Spring Boot Actuator 
   5. Angular JS
   6. Alibaba Druid
