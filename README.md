@@ -66,11 +66,20 @@ environment variable to connect elsewhere.
     DOCKER_HOST=tcp://<host>:2375
 
 Other docker-standard environment variables are honored too such as TLS and certificates.
-###Build docker image
+###Build docker image and run
 ``` 
   mvn clean package dockerfile:build
 ```
   if you want to skip unit test:
 ``` 
   mvn clean package dockerfile:build -DskipTests
+  
+```
+run
+``` 
+docker run -p 7090:7080 -d megadotnet/sprintboot-login-application
+```
+remote debug
+``` 
+docker run -e "JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=y" -p 8000:8000 -p 7090:7080 -d megadotnet/sprintboot-login-application
 ```
