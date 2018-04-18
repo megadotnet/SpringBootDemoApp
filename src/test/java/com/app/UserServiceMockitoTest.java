@@ -1,5 +1,6 @@
 package com.app;
 
+import com.app.login.domain.Authority;
 import com.app.login.domain.User;
 import com.app.login.repository.AuthorityRepository;
 import com.app.login.repository.UserRepository;
@@ -7,26 +8,26 @@ import com.app.login.service.UserServiceImpl;
 import com.app.login.service.dto.UserDTO;
 import com.app.login.service.mapper.UserMapper;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.data.domain.Example;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
 /**
- * Created by Administrator on 2018/3/26 0026.
+ * UserServiceMockitoTest
+ * @author  Administrator
+ * @date  2018/3/26 0026.
  */
 public class UserServiceMockitoTest {
 
@@ -45,11 +46,17 @@ public class UserServiceMockitoTest {
     @Before
     public void setup(){
         MockitoAnnotations.initMocks(this);
-        ArrayList<User> users=  new ArrayList<User>();
+
+        ArrayList<User> users=  new ArrayList<>();
         User mockuser= createUser();
+
         Optional<User> userOptional=Optional.of(mockuser);
         users.add(mockuser);
+
+        Optional<Authority> defaultautthoriy=mockuser.getAuthorities().stream().findFirst();
+
         when(userRepository.findOne(Mockito.any())).thenReturn(userOptional);
+        when(authorityRepository.findOne(Mockito.any())).thenReturn(defaultautthoriy);
         userServiceImpl =new UserServiceImpl(userRepository,passwordEncoder, authorityRepository);
     }
 
@@ -64,6 +71,11 @@ public class UserServiceMockitoTest {
 
         //assert
         assertNotNull(updateUser);
+        assertTrue(updateUser.isPresent());
+        UserDTO userDTO1=updateUser.get();
+        assertNotNull(userDTO1);
+        assertEquals(createAuthorities().size(), userDTO1.getAuthorities().size());
+        assertFalse(userDTO1.getAuthorities().isEmpty());
     }
 
     private final User createUser() {
@@ -76,7 +88,22 @@ public class UserServiceMockitoTest {
         user.setEmail("xxxx@hotmail.com");
         user.setIpAddress("127.0.0.1");
         user.setLogin("Peter");
-
+        user.setActivated(true);
+        user.setImageUrl("asfa.png");
+        user.setAuthorities(createAuthorities());
         return user;
+    }
+
+    /**
+     *    createAuthorities
+     *
+     **/
+    private final Set<Authority> createAuthorities() {
+        Set<Authority> mockauthorityset= new HashSet<>();
+        Authority authority=new Authority();
+        authority.setName("ROLE_USER");
+        boolean isSucess=mockauthorityset.add(authority);
+
+        return  mockauthorityset;
     }
 }
