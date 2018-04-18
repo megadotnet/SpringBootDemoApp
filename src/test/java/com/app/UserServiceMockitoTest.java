@@ -7,10 +7,12 @@ import com.app.login.service.UserServiceImpl;
 import com.app.login.service.dto.UserDTO;
 import com.app.login.service.mapper.UserMapper;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.data.domain.Example;
@@ -21,13 +23,11 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
 /**
  * Created by Administrator on 2018/3/26 0026.
  */
-@RunWith(MockitoJUnitRunner.class)
 public class UserServiceMockitoTest {
 
     @Mock
@@ -47,7 +47,9 @@ public class UserServiceMockitoTest {
         MockitoAnnotations.initMocks(this);
         ArrayList<User> users=  new ArrayList<User>();
         User mockuser= createUser();
+        Optional<User> userOptional=Optional.of(mockuser);
         users.add(mockuser);
+        when(userRepository.findOne(Mockito.any())).thenReturn(userOptional);
         userServiceImpl =new UserServiceImpl(userRepository,passwordEncoder, authorityRepository);
     }
 
@@ -64,7 +66,7 @@ public class UserServiceMockitoTest {
         assertNotNull(updateUser);
     }
 
-    private User createUser() {
+    private final User createUser() {
         User user = new User();
         user.setId(1L);
         user.setFirstName("Peter");
