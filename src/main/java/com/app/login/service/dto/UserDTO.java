@@ -5,6 +5,8 @@ import com.app.login.domain.Authority;
 import com.app.login.domain.User;
 ;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.Set;
@@ -17,7 +19,7 @@ public class UserDTO {
 
     private Long id;
 
-    //@NotBlank
+    @NotBlank
     @Pattern(regexp = Constants.LOGIN_REGEX)
     @Size(min = 1, max = 50)
     private String login;
@@ -28,7 +30,7 @@ public class UserDTO {
     @Size(max = 50)
     private String lastName;
 
-    //@Email
+    @Email
     @Size(min = 5, max = 100)
     private String email;
 

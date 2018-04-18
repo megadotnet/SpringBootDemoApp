@@ -15,6 +15,10 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -22,6 +26,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.when;
 
 /**
@@ -43,6 +48,8 @@ public class UserServiceMockitoTest {
     @InjectMocks
     private UserServiceImpl userServiceImpl;
 
+    private static Validator validator;
+
     @Before
     public void setup(){
         MockitoAnnotations.initMocks(this);
@@ -58,6 +65,10 @@ public class UserServiceMockitoTest {
         when(userRepository.findOne(Mockito.any())).thenReturn(userOptional);
         when(authorityRepository.findOne(Mockito.any())).thenReturn(defaultautthoriy);
         userServiceImpl =new UserServiceImpl(userRepository,passwordEncoder, authorityRepository);
+
+        //ValidatorFactory
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        validator = factory.getValidator();
     }
 
     @Test
@@ -76,6 +87,22 @@ public class UserServiceMockitoTest {
         assertNotNull(userDTO1);
         assertEquals(createAuthorities().size(), userDTO1.getAuthorities().size());
         assertFalse(userDTO1.getAuthorities().isEmpty());
+    }
+
+    @Test
+    public void emailRegexValidatorTest()  {
+        //assume
+        User user=createUser();
+        user.setEmail("NNNAS");
+        user.setLogin("  ");
+        UserDTO userDTO=new UserMapper().userToUserDTO(user);
+
+        //act
+        Set<ConstraintViolation<UserDTO>> violations = validator.validate(userDTO);
+
+        //assert
+        assertFalse(violations.isEmpty());
+        assertTrue(violations.size()==3);
     }
 
     private final User createUser() {
@@ -106,4 +133,6 @@ public class UserServiceMockitoTest {
 
         return  mockauthorityset;
     }
+
+
 }
