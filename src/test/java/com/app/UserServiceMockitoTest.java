@@ -117,6 +117,7 @@ public class UserServiceMockitoTest {
         user.setLogin("Peter");
         user.setActivated(true);
         user.setImageUrl("asfa.png");
+        user.setCreatedDate(Instant.now());
         user.setAuthorities(createAuthorities());
         return user;
     }
@@ -124,7 +125,7 @@ public class UserServiceMockitoTest {
     /**
      *    createAuthorities
      *
-     **/
+     */
     private final Set<Authority> createAuthorities() {
         Set<Authority> mockauthorityset= new HashSet<>();
         Authority authority=new Authority();

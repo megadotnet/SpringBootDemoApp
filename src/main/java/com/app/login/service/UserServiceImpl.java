@@ -48,6 +48,11 @@ public class UserServiceImpl implements IUserService {
         this.authorityRepository = authorityRepository;
     }
 
+    /**
+     *  activateRegistration
+     * @param key activation key
+     * @return Optional<User>
+     */
     @Override
     public Optional<User> activateRegistration(String key) {
         log.debug("Activating user for activation key {}", key);
@@ -61,6 +66,12 @@ public class UserServiceImpl implements IUserService {
             });
     }
 
+    /**
+     * completePasswordReset
+     * @param newPassword new password
+     * @param key activation key
+     * @return Optional<User>
+     */
     @Override
     public Optional<User> completePasswordReset(String newPassword, String key) {
         log.debug("Reset user password for reset key {}", key);
@@ -77,6 +88,11 @@ public class UserServiceImpl implements IUserService {
             });
     }
 
+    /**
+     * requestPasswordReset
+     * @param mail email string
+     * @return Optional<User>
+     */
     @Override
     public Optional<User> requestPasswordReset(String mail) {
         return userRepository.findOneByEmail(mail)
@@ -88,6 +104,19 @@ public class UserServiceImpl implements IUserService {
             });
     }
 
+    /**
+     * createUser
+     * @param login login name
+     * @param password password
+     * @param firstName firstname
+     * @param lastName lastname
+     * @param email email
+     * @param imageUrl imageUrl
+     * @param langKey lang key
+     * @param createdDate create date
+     * @param ipAddress ip address
+     * @return User
+     */
     @Override
     public User createUser(String login, String password, String firstName, String lastName, String email, String imageUrl, String langKey, Instant createdDate, String ipAddress) {
 
