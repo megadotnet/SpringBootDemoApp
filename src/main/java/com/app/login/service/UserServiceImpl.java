@@ -253,6 +253,10 @@ public class UserServiceImpl implements IUserService {
 
     }
 
+    /**
+     * deleteUser
+     * @param login login string
+     */
     @Override
     public void deleteUser(String login) {
         userRepository.findOneByLogin(login)
@@ -262,6 +266,10 @@ public class UserServiceImpl implements IUserService {
             });
     }
 
+    /**
+     * changePassword
+     * @param password password
+     */
     @Override
     public void changePassword(String password) {
         userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin())
@@ -272,6 +280,11 @@ public class UserServiceImpl implements IUserService {
             });
     }
 
+    /**
+     * getAllManagedUsers
+     * @param pageable pageable
+     * @return
+     */
     @Override
     @Transactional(readOnly = true)
     public Page<UserDTO> getAllManagedUsers(Pageable pageable) {
@@ -279,18 +292,32 @@ public class UserServiceImpl implements IUserService {
                 .map(UserDTO::new);
     }
 
+    /**
+     * getUserWithAuthoritiesByLogin
+     * @param login login
+     * @return Optional<User>
+     */
     @Override
     @Transactional(readOnly = true)
     public Optional<User> getUserWithAuthoritiesByLogin(String login) {
         return userRepository.findOneWithAuthoritiesByLogin(login);
     }
 
+    /**
+     *  getUserWithAuthorities
+     * @param id userid
+     * @return User
+     */
     @Override
     @Transactional(readOnly = true)
     public User getUserWithAuthorities(Long id) {
         return userRepository.findOneWithAuthoritiesById(id);
     }
 
+    /**
+     * getUserWithAuthorities
+     * @return User
+     */
     @Override
     @Transactional(readOnly = true)
     public User getUserWithAuthorities() {
@@ -314,6 +341,7 @@ public class UserServiceImpl implements IUserService {
     // }
 
     /**
+     * getAuthorities
      * @return a list of all the authorities
      */
     @Override

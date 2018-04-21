@@ -47,7 +47,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
      /**
       * findOneByLogin
       *
-      * @param  login
+      * @param  login login
       * @return Optional<User>
       *
       */
@@ -56,7 +56,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
      /**
       * findOneWithAuthoritiesById
       *
-      * @param  id
+      * @param  id id
       * @return User
       *
       */
@@ -66,7 +66,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
      /**
       * findOneWithAuthoritiesByLogin
       *
-      * @param  login
+      * @param  login login
       * @return  Optional<User>
       *
       */
@@ -75,17 +75,17 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     /**
      * findAllByLoginNot
-     * @param  pageable
-     * @param  login
+     * @param  pageable pageable
+     * @param  login login
      * @return Page<User>
      */
     Page<User> findAllByLoginNot(Pageable pageable, String login);
 
      /**
       * findAllByIpAddressAndCreatedDateBetween
-      * @param  ipAddress
-      * @param  startDate
-      * @param currentDate
+      * @param  ipAddress ipAddress
+      * @param  startDate startDate
+      * @param currentDate currentDate
       * @return List<User>
       */
     List<User> findAllByIpAddressAndCreatedDateBetween(String ipAddress, Instant startDate, Instant currentDate);

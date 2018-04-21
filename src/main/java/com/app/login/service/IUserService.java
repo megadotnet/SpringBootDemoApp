@@ -16,6 +16,11 @@ import java.util.Optional;
  * @date 2018-03-27
  */
 public interface IUserService {
+    /**
+     *  activateRegistration
+     * @param key activation key
+     * @return Optional<User>
+     */
     Optional<User> activateRegistration(String key);
 
     Optional<User> completePasswordReset(String newPassword, String key);

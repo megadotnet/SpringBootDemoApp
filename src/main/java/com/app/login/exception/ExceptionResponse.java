@@ -5,7 +5,7 @@ import java.util.Date;
 /**
  * ExceptionResponse
  * @author megadotnet
- * @date   018/4/16 0016.
+ * @date   2018/4/16 0016.
  */
 public class ExceptionResponse {
     private Date timestamp;
