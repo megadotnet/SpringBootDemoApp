@@ -1,4 +1,4 @@
-package com.app.login.service;
+package com.app.login.service.Impl;
 
 import com.app.login.config.Constants;
 import com.app.login.domain.Authority;
@@ -7,6 +7,7 @@ import com.app.login.repository.AuthorityRepository;
 import com.app.login.repository.UserRepository;
 import com.app.login.security.AuthoritiesConstants;
 import com.app.login.security.SecurityUtils;
+import com.app.login.service.IUserService;
 import com.app.login.service.dto.UserDTO;
 import com.app.login.service.util.RandomUtil;
 import org.slf4j.Logger;

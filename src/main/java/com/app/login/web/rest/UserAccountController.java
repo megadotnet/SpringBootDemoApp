@@ -4,8 +4,8 @@ import com.app.login.config.Constants;
 import com.app.login.domain.User;
 import com.app.login.repository.UserRepository;
 import com.app.login.security.SecurityUtils;
-import com.app.login.service.MailService;
-import com.app.login.service.UserServiceImpl;
+import com.app.login.service.Impl.MailServiceImpl;
+import com.app.login.service.Impl.UserServiceImpl;
 import com.app.login.service.dto.UserDTO;
 import com.app.login.web.rest.util.HeaderUtil;
 import com.app.login.web.rest.util.ResourceNotFoundException;
@@ -45,9 +45,9 @@ public class UserAccountController {
 
     private final UserServiceImpl userServiceImpl;
 
-    private final MailService mailService;
+    private final MailServiceImpl mailService;
 
-    public UserAccountController(UserRepository userRepository, UserServiceImpl userServiceImpl, MailService mailService) {
+    public UserAccountController(UserRepository userRepository, UserServiceImpl userServiceImpl, MailServiceImpl mailService) {
 
         this.userRepository = userRepository;
         this.userServiceImpl = userServiceImpl;

@@ -4,7 +4,7 @@ import com.app.login.domain.Authority;
 import com.app.login.domain.User;
 import com.app.login.repository.AuthorityRepository;
 import com.app.login.repository.UserRepository;
-import com.app.login.service.UserServiceImpl;
+import com.app.login.service.Impl.UserServiceImpl;
 import com.app.login.service.dto.UserDTO;
 import com.app.login.service.mapper.UserMapper;
 import org.junit.Before;

@@ -1,4 +1,4 @@
-package com.app.login.service;
+package com.app.login.service.Impl;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -7,6 +7,7 @@ import java.util.Locale;
 import javax.annotation.PostConstruct;
 import javax.mail.internet.MimeMessage;
 
+import com.app.login.service.IMailService;
 import org.apache.commons.lang3.CharEncoding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,9 +32,9 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
  */
 @Service
 @PropertySource("classpath:application.properties")
-public class MailService {
+public class MailServiceImpl implements IMailService {
 
-    private final Logger log = LoggerFactory.getLogger(MailService.class);
+    private final Logger log = LoggerFactory.getLogger(MailServiceImpl.class);
 
     private static final String USER = "user";
 
@@ -55,19 +56,21 @@ public class MailService {
 
     private String baseUrlValue;
 
-    public MailService(JavaMailSender javaMailSender, MessageSource messageSource, SpringTemplateEngine templateEngine) {
+    public MailServiceImpl(JavaMailSender javaMailSender, MessageSource messageSource, SpringTemplateEngine templateEngine) {
 
         this.javaMailSender = javaMailSender;
         this.messageSource = messageSource;
         this.templateEngine = templateEngine;
     }
 
+    @Override
     @PostConstruct
     public void baseUrlInit() throws UnknownHostException {
-        this.baseUrlValue = serverProtocol + "://" + InetAddress.getLocalHost()
-            .getHostAddress() + ":" + serverPort;
+        this.baseUrlValue = serverProtocol.concat("://").concat(InetAddress.getLocalHost()
+            .getHostAddress()).concat(":").concat(serverPort);
     }
 
+    @Override
     @Async
     public void sendEmail(String to, String subject, String content, boolean isMultipart, boolean isHtml) {
         log.debug("Send email[multipart '{}' and html '{}'] to '{}' with subject '{}' and content={}", isMultipart, isHtml, to, subject, content);
@@ -91,6 +94,7 @@ public class MailService {
         }
     }
 
+    @Override
     @Async
     public void sendEmailFromTemplate(User user, String templateName, String titleKey) {
         Locale locale = Locale.forLanguageTag(user.getLangKey());
@@ -102,18 +106,21 @@ public class MailService {
 
     }
 
+    @Override
     @Async
     public void sendActivationEmail(User user) {
         log.debug("Sending activation email to '{}'", user.getEmail());
         sendEmailFromTemplate(user, "activationEmail", "email.activation.title");
     }
 
+    @Override
     @Async
     public void sendCreationEmail(User user) {
         log.debug("Sending creation email to '{}'", user.getEmail());
         sendEmailFromTemplate(user, "creationEmail", "email.activation.title");
     }
 
+    @Override
     @Async
     public void sendPasswordResetMail(User user) {
         log.debug("Sending password reset email to '{}'", user.getEmail());

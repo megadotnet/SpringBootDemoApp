@@ -2,7 +2,7 @@ package com.app;
 
 import com.app.login.Application;
 import com.app.login.domain.User;
-import com.app.login.service.UserServiceImpl;
+import com.app.login.service.Impl.UserServiceImpl;
 import com.app.login.service.dto.UserDTO;
 import com.app.login.service.mapper.UserMapper;
 import org.junit.Before;
