@@ -67,7 +67,7 @@ public class MailServiceImpl implements IMailService {
     @PostConstruct
     public void baseUrlInit() throws UnknownHostException {
         this.baseUrlValue = serverProtocol.concat("://").concat(InetAddress.getLocalHost()
-            .getHostAddress()).concat(":").concat(serverPort);
+           .getHostAddress()).concat(":").concat(serverPort);
     }
 
     @Override

@@ -34,7 +34,7 @@ import static org.mockito.Mockito.when;
  * @author  Administrator
  * @date  2018/3/26 0026.
  */
-public class UserServiceMockitoTest {
+public class UserServiceMockitoTest extends TestBase {
 
     @Mock
     private UserRepository  userRepository;
@@ -105,35 +105,7 @@ public class UserServiceMockitoTest {
         assertTrue(violations.size()==3);
     }
 
-    private final User createUser() {
-        User user = new User();
-        user.setId(1L);
-        user.setFirstName("Peter");
-        user.setLastName("Liu");
-        user.setPassword("batman");
-        user.setCreatedDate(Instant.now());
-        user.setEmail("xxxx@hotmail.com");
-        user.setIpAddress("127.0.0.1");
-        user.setLogin("Peter");
-        user.setActivated(true);
-        user.setImageUrl("asfa.png");
-        user.setCreatedDate(Instant.now());
-        user.setAuthorities(createAuthorities());
-        return user;
-    }
 
-    /**
-     *    createAuthorities
-     *
-     */
-    private final Set<Authority> createAuthorities() {
-        Set<Authority> mockauthorityset= new HashSet<>();
-        Authority authority=new Authority();
-        authority.setName("ROLE_USER");
-        boolean isSucess=mockauthorityset.add(authority);
-
-        return  mockauthorityset;
-    }
 
 
 }
