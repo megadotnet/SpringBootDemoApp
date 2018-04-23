@@ -1,5 +1,6 @@
 package com.app.login.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
@@ -25,9 +26,8 @@ import java.util.EnumSet;
  * it also can be reference https://github.com/spring-projects/spring-boot/tree/master/spring-boot-samples
  */
 @Configuration
+@Slf4j
 public class WebConfigurer implements ServletContextInitializer {
-
-    private final Logger log = LoggerFactory.getLogger(WebConfigurer.class);
 
     private final Environment env;
 

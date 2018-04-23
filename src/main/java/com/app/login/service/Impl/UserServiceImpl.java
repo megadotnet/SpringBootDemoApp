@@ -10,6 +10,7 @@ import com.app.login.security.SecurityUtils;
 import com.app.login.service.IUserService;
 import com.app.login.service.dto.UserDTO;
 import com.app.login.service.util.RandomUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Example;
@@ -32,10 +33,9 @@ import java.util.stream.Collectors;
  * @date  2018-01-01
  */
 @Service
+@Slf4j
 @Transactional(rollbackFor = Exception.class)
 public class UserServiceImpl implements IUserService {
-
-    private final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
     private final UserRepository userRepository;
 

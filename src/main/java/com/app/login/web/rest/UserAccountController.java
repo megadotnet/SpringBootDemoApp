@@ -14,6 +14,7 @@ import com.app.login.web.rest.vm.ManagedUserVM;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,10 +37,9 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/api")
+@Slf4j
 @Api(value = "UserAccount",description = "User Account API")
 public class UserAccountController {
-
-    private final Logger log = LoggerFactory.getLogger(UserAccountController.class);
 
     private final UserRepository userRepository;
 

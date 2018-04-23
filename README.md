@@ -6,6 +6,7 @@ A Sample application developed with :
   4. Spring Boot Actuator 
   5. Angular JS
   6. Alibaba Druid
+  7. Lombok
   
 Application is secured with JWT and Spring security.
 

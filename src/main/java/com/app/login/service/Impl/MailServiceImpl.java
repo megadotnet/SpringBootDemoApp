@@ -8,6 +8,7 @@ import javax.annotation.PostConstruct;
 import javax.mail.internet.MimeMessage;
 
 import com.app.login.service.IMailService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.CharEncoding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,10 +32,9 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
  * @author Megdotnet
  */
 @Service
+@Slf4j
 @PropertySource("classpath:application.properties")
 public class MailServiceImpl implements IMailService {
-
-    private final Logger log = LoggerFactory.getLogger(MailServiceImpl.class);
 
     private static final String USER = "user";
 

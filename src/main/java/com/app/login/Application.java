@@ -1,6 +1,7 @@
 package com.app.login;
 
 import com.app.login.config.Constants;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -17,10 +18,9 @@ import java.net.UnknownHostException;
  * @date 2017-12-15
  **/
 @SpringBootApplication // 必须标明
+@Slf4j
 @EnableSwagger2
 public class Application {
-
-    private static final Logger log = LoggerFactory.getLogger(Application.class);
 
     public static void main(String[] args) {
 

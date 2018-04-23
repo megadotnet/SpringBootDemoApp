@@ -1,5 +1,6 @@
 package com.app.login.aop.logging;
 
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
@@ -12,15 +13,16 @@ import org.springframework.core.env.Environment;
 
 import java.util.Arrays;
 
+
+
 /**
  * Aspect for logging execution of service and repository Spring components.
  *
  * By default, it only runs with the "dev" profile.
  */
 @Aspect
+@Slf4j
 public class LoggingAspect {
-
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     private final Environment env;
 

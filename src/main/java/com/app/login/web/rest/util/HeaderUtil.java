@@ -1,5 +1,6 @@
 package com.app.login.web.rest.util;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -7,10 +8,10 @@ import org.springframework.http.HttpHeaders;
 /**
  * Utility class for HTTP headers creation.
  * @author Megadotnet
+ * @date  2018/4/23
  */
+@Slf4j
 public final class HeaderUtil {
-
-    private static final Logger log = LoggerFactory.getLogger(HeaderUtil.class);
 
     private static final String APPLICATION_NAME = "loginappApp";
 

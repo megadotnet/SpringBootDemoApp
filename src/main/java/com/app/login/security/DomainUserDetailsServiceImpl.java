@@ -2,6 +2,7 @@ package com.app.login.security;
 
 import com.app.login.domain.User;
 import com.app.login.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
@@ -21,9 +22,8 @@ import java.util.stream.Collectors;
  * @date 2017-12-13
  */
 @Component("userDetailsService")
+@Slf4j
 public class DomainUserDetailsServiceImpl implements UserDetailsService {
-
-    private final Logger log = LoggerFactory.getLogger(DomainUserDetailsServiceImpl.class);
 
     private final UserRepository userRepository;
 
