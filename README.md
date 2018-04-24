@@ -1,4 +1,4 @@
-# Springboot Demo  [![Build Status](https://travis-ci.org/megadotnet/SpringBootDemoApp.png?branch=master)](https://travis-ci.org/megadotnet/SpringBootDemoApp/)
+# Spring-Boot Demo  [![Build Status](https://travis-ci.org/megadotnet/SpringBootDemoApp.png?branch=master)](https://travis-ci.org/megadotnet/SpringBootDemoApp/)
 A Sample application developed with :
   1. Spring Boot 2 REST API
   2. Spring Security
@@ -53,6 +53,15 @@ Druid is one of the best database connection pools written in JAVA. The Web cons
   {"username": "admin", "password": "admin", "rememberMe": "false"}
 ```
   http response
+## Run
+For local debugging:
+``` 
+mvn spring-boot:run -Dspring.profiles.active=local
+``` 
+For production, it is need config connection string with mysql database first.
+``` 
+mvn spring-boot:run -Dspring.profiles.active=prod
+``` 
 
 ## Docker
 ### Setup

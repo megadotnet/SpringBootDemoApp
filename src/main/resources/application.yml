@@ -40,7 +40,7 @@ spring:
       enabled: false
 server:
   protocol: http
-  port: 7080
+  port: 7081
 mailservice:
   mailfromdisplay: ljylun@163.com
 static:
