@@ -45,28 +45,6 @@ public class WebConfigurer implements ServletContextInitializer {
         log.info("Web application fully configured");
     }
 
-///    /**
-///     * Customize the Servlet engine: Mime types, the document root, the cache.
-///     */
- ///  @Override
- ///  public void customize(ConfigurableEmbeddedServletContainer container) {
- ///      MimeMappings mappings = new MimeMappings(MimeMappings.DEFAULT);
- ///      mappings.add("html", "text/html;charset=utf-8");
- ///      mappings.add("json", "text/html;charset=utf-8");
- ///      container.setMimeMappings(mappings);
- ///      // When running in an IDE or with ./mvnw spring-boot:run, set location of the static web assets.
- ///      setLocationForStaticAssets(container);
- ///  }
-
- ///  private void setLocationForStaticAssets(ConfigurableEmbeddedServletContainer container) {
- ///      File root;
- ///      String prefixPath = resolvePathPrefix();
- ///      root = new File(prefixPath + env.getProperty("static.assets.location"));
- ///      if (root.exists() && root.isDirectory()) {
- ///          container.setDocumentRoot(root);
- ///      }
- ///  }
-
     /**
      *  Resolve path prefix to static resources.
      */

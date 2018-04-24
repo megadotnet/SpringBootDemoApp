@@ -3,7 +3,7 @@ package com.app.login.service.dto;
 import com.app.login.config.Constants;
 import com.app.login.domain.Authority;
 import com.app.login.domain.User;
-;
+
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;

@@ -13,6 +13,7 @@ import org.apache.commons.lang3.CharEncoding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -33,7 +34,7 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
  */
 @Service
 @Slf4j
-@PropertySource("classpath:application.properties")
+@ConfigurationProperties(prefix = "mailservice")
 public class MailServiceImpl implements IMailService {
 
     private static final String USER = "user";
@@ -45,13 +46,14 @@ public class MailServiceImpl implements IMailService {
     private final MessageSource messageSource;
 
     private final SpringTemplateEngine templateEngine;
-    @Value("${mail.from.display}")
+
+    @Value("${mailservice.mailfromdisplay}}")
     private String mailFromDisplay;
 
-    @Value("${server.port}")
+    @Value("${server.port}}")
     private String serverPort;
 
-    @Value("${server.protocol}")
+    @Value("${server.protocol}}")
     private String serverProtocol;
 
     private String baseUrlValue;

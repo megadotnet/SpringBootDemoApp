@@ -13,26 +13,17 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 /**
- * Application
+ * Spring-boot demo Application
  * @author megadotnet
  * @date 2017-12-15
- **/
-@SpringBootApplication // 必须标明
+ */
+@SpringBootApplication
 @Slf4j
 @EnableSwagger2
 public class Application {
 
     public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
 
-        SpringApplication app = new SpringApplication(Application.class);
-        Environment env = app.run(args)
-            .getEnvironment();
-        String protocol = env.getProperty("server.protocol");
-        try {
-            log.info(Constants.STARTUP_LOG_MSG, env.getProperty("spring.application.name"), protocol, InetAddress.getLocalHost()
-                .getHostAddress(), env.getProperty("server.port"));
-        } catch (UnknownHostException e) {
-            log.error(e.getMessage());
-        }
     }
 }

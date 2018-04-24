@@ -1,0 +1,62 @@
+spring:
+  security:
+    user:
+      password: admin
+      name: admin
+  mail:
+    password: XXXXX
+    host: smtp.163.com
+    properties:
+      mail:
+        smtp:
+          auth: true
+          socketFactory:
+            port: 465
+            fallback: false
+            class: javax.net.ssl.SSLSocketFactory
+          ssl:
+            enable: true
+    username: XXXX@163.com
+  application:
+    name: AuthApp
+  datasource:
+    password:
+    driverClassName: org.h2.Driver
+    url: jdbc:h2:mem:app_db;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+  messages:
+    basename: i18n/messages
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+        type: trace
+        show_sql: true
+  mvc:
+    favicon:
+      enabled: false
+server:
+  protocol: http
+  port: 7080
+mailservice:
+  mailfromdisplay: ljylun@163.com
+static:
+  assets:
+    location: src/main/resources/static
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    shutdown:
+      enabled: true
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
+swagger:
+  package: com.app.login.web.rest
