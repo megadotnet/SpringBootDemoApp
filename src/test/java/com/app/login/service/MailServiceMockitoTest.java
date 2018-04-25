@@ -13,8 +13,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 /**
  * Created by Administrator on 2018/3/26 0026.
  */
+
 @RunWith(SpringRunner.class)
-@SpringBootTest
 public class MailServiceMockitoTest extends TestBase {
 
     @MockBean
@@ -25,7 +25,7 @@ public class MailServiceMockitoTest extends TestBase {
         mailService.baseUrlInit();
     }
 
-    @Ignore
+
     @Test
     public void sendEmail() throws Exception {
         mailService.sendEmail("d","xd","asf",false,false);

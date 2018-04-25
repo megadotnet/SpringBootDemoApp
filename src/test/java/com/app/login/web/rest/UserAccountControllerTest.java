@@ -16,11 +16,16 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.RequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -46,7 +51,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
  * @author Administrator
  * @date 2018/4/25 0025.
  */
-@Ignore
+//@Ignore
 @RunWith(MockitoJUnitRunner.class)
 public class UserAccountControllerTest extends TestBase {
 
@@ -62,13 +67,16 @@ public class UserAccountControllerTest extends TestBase {
     @Mock
     private  HttpServletRequest httpServletRequest;
 
+    private MockMvc mockMvc;
 
+    @InjectMocks
     private UserAccountController  userAccountController;
 
     @Before
     public void setUp()  {
         MockitoAnnotations.initMocks(this);
-        userAccountController= new UserAccountController(userRepository,userServiceImpl,mailService);
+        this.mockMvc = MockMvcBuilders.standaloneSetup(userAccountController).build();
+        //userAccountController= new UserAccountController(userRepository,userServiceImpl,mailService);
     }
 
     @After
@@ -87,6 +95,18 @@ public class UserAccountControllerTest extends TestBase {
                         ,"asd","asd","asd",true,"asd","sdd",authory);
 
         userAccountController.registerAccount(managedUserVM,httpServletRequest);
+    }
+
+    @Test
+    public void getAccount() throws Exception {
+        //mock 行为
+        when(userServiceImpl.createUser(Mockito.any())).thenReturn(createUser());
+
+        //构建请求
+        RequestBuilder request = MockMvcRequestBuilders.get("/api/account");
+
+        //断言结果
+        mockMvc.perform(request).andExpect(MockMvcResultMatchers.status().is(404));
     }
 
 
