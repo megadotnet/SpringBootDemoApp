@@ -13,8 +13,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 /**
  * Created by Administrator on 2018/3/26 0026.
  */
-
+@Ignore
 @RunWith(SpringRunner.class)
+@SpringBootTest
 public class MailServiceMockitoTest extends TestBase {
 
     @MockBean
