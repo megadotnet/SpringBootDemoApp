@@ -51,7 +51,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
  * @author Administrator
  * @date 2018/4/25 0025.
  */
-//@Ignore
+@Ignore
 @RunWith(MockitoJUnitRunner.class)
 public class UserAccountControllerTest extends TestBase {
 
