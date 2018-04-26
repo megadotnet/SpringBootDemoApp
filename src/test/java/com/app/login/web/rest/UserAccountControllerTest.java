@@ -88,13 +88,7 @@ public class UserAccountControllerTest extends TestBase {
         when(httpServletRequest.getParameter("param1")).thenReturn("true");
         when(httpServletRequest.getParameter("param2")).thenReturn("false");
 
-        Set<String> authory=new HashSet<>();
-        authory.add("ROLE");
-        ManagedUserVM managedUserVM =
-                new ManagedUserVM(1L,"asd","asd"
-                        ,"asd","asd","asd",true,"asd","sdd",authory);
-
-        userAccountController.registerAccount(managedUserVM,httpServletRequest);
+        userAccountController.registerAccount(creatManagedUserVM(),httpServletRequest);
     }
 
     @Test

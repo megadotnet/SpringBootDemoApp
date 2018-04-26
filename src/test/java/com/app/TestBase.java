@@ -2,6 +2,7 @@ package com.app;
 
 import com.app.login.domain.Authority;
 import com.app.login.domain.User;
+import com.app.login.web.rest.vm.ManagedUserVM;
 
 import java.time.Instant;
 import java.util.HashSet;
@@ -47,5 +48,12 @@ public class TestBase {
         boolean isSucess=mockauthorityset.add(authority);
 
         return  mockauthorityset;
+    }
+
+    protected final ManagedUserVM creatManagedUserVM() {
+        Set<String> authory=new HashSet<>();
+        authory.add("ROLE");
+        return new ManagedUserVM(1L,"asd","asd"
+                        ,"asd","asd","asd",true,"asd","sdd",authory);
     }
 }
