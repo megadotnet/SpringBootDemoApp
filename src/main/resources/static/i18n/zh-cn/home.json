@@ -1,0 +1,11 @@
+{
+    "home": {
+        "title": "欢迎!",
+        "subtitle": "这是你的页面",
+        "logged": {
+            "message": "You are logged in as user \"{{username}}\"."
+        },
+        "findme" : "find me on <a href=\"https://#">github</a>",
+        "github": "GitHub"
+    }
+}

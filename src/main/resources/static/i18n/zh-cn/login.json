@@ -1,0 +1,22 @@
+{
+    "login": {
+        "title": "登录",
+        "form": {
+            "password": "密码",
+            "password.placeholder": "密码",
+            "rememberme": "记住我",
+            "button": "登录"
+        },
+        "messages": {
+            "error": {
+                "authentication": "<strong>登录失败!</strong> 请检查您的输入"
+            }
+        },
+        "password" : {
+            "forgot": "您忘记自己密码了?"
+        },
+        "signinfail": "<strong>登录失败!</strong>请检查您的输入.",
+        "regnow" : "现在注册",
+        "noacnt" : "你还没有账户?"
+    }
+}

@@ -5,7 +5,8 @@
         .module('loginappApp')
         .constant('LANGUAGES', [
             'en',
-            'fr'
+            'fr',
+            'zh-cn'
         ]
     );
 })();

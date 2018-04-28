@@ -1,0 +1,24 @@
+{
+    "register": {
+        "title": "Registration",
+        "form": {
+            "button": "注册"
+        },
+        "messages": {
+            "validate": {
+                "login": {
+                    "required": "你的 用户名必填",
+                    "minlength": "用户名至少1个字符",
+                    "maxlength": "你的用户名不能超过50个字符",
+                    "pattern": "Your username can only contain lower-case letters and digits."
+                }
+            },
+            "success": "<strong>Registration successful!</strong> Please check your email for confirmation.",
+            "error": {
+                "fail": "<strong>Registration failed!</strong> Please try again later.",
+                "userexists": "<strong>Login name already registered!</strong> Please choose another one.",
+                "emailexists": "<strong>Email is already in use!</strong> Please choose another one."
+            }
+        }
+    }
+}
