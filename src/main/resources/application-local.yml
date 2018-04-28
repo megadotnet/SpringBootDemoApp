@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    password:
+    driverClassName: org.h2.Driver
+    url: jdbc:h2:mem:app_db;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+server:
+  protocol: http
+  port: 7080
