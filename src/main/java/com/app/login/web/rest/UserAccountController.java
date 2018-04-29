@@ -4,6 +4,8 @@ import com.app.login.config.Constants;
 import com.app.login.domain.User;
 import com.app.login.repository.UserRepository;
 import com.app.login.security.SecurityUtils;
+import com.app.login.service.IMailService;
+import com.app.login.service.IUserService;
 import com.app.login.service.Impl.MailServiceImpl;
 import com.app.login.service.Impl.UserServiceImpl;
 import com.app.login.service.dto.UserDTO;
@@ -34,6 +36,7 @@ import java.util.Optional;
 /**
  * REST controller for managing the current user's account.
  * @author Administrator
+ * @date 2018-4-29
  */
 @RestController
 @RequestMapping("/api")
@@ -41,15 +44,23 @@ import java.util.Optional;
 @Api(value = "UserAccount",description = "User Account API")
 public class UserAccountController {
 
-    private final UserRepository userRepository;
+    /**
+     * userServiceImpl
+     */
+    private final IUserService userServiceImpl;
 
-    private final UserServiceImpl userServiceImpl;
+    /**
+     * mailService
+     */
+    private final IMailService mailService;
 
-    private final MailServiceImpl mailService;
+    /**
+     *
+     * @param userServiceImpl
+     * @param mailService
+     */
+    public UserAccountController(IUserService userServiceImpl, IMailService mailService) {
 
-    public UserAccountController(UserRepository userRepository, UserServiceImpl userServiceImpl, MailServiceImpl mailService) {
-
-        this.userRepository = userRepository;
         this.userServiceImpl = userServiceImpl;
         this.mailService = mailService;
     }
@@ -74,28 +85,9 @@ public class UserAccountController {
         log.info("getting remote ip = " + request.getRemoteAddr());
         String ipAddress = request.getRemoteAddr();
 
-        Instant instant = Instant.now();
-
-        List<User> usersByIpAndRegistrationDate = userRepository.findAllByIpAddressAndCreatedDateBetween(ipAddress, instant.minus(1, ChronoUnit.DAYS), instant);
-        if (!usersByIpAndRegistrationDate.isEmpty()) {
-            if (usersByIpAndRegistrationDate.size() == Constants.DOS_MAX_REGISTRATION_ALLOWED) {
-                return new ResponseEntity<>("You cannot register", textPlainHeaders, HttpStatus.BAD_REQUEST);
-            }
-        }
-
-        return userRepository.findOneByLogin(managedUserVM.getLogin()
-            .toLowerCase())
-            .map(user -> new ResponseEntity<>("login already in use", textPlainHeaders, HttpStatus.BAD_REQUEST))
-            .orElseGet(() -> userRepository.findOneByEmail(managedUserVM.getEmail())
-                .map(user -> new ResponseEntity<>("email address already in use", textPlainHeaders, HttpStatus.BAD_REQUEST))
-                .orElseGet(() -> {
-                    User user = userServiceImpl.createUser(managedUserVM.getLogin(), managedUserVM.getPassword(), managedUserVM.getFirstName(), managedUserVM.getLastName(), managedUserVM.getEmail()
-                        .toLowerCase(), managedUserVM.getImageUrl(), managedUserVM.getLangKey(), Instant.now(), ipAddress);
-
-                    mailService.sendActivationEmail(user);
-                    return new ResponseEntity<>(HttpStatus.CREATED);
-                }));
+        return userServiceImpl.registerUserAccount(managedUserVM, textPlainHeaders, ipAddress,mailService);
     }
+
 
     /**
      * GET /activate : activate the registered user.
@@ -157,22 +149,9 @@ public class UserAccountController {
     @ApiOperation(value = "saveAccount",notes = "save Account")
     @PostMapping("/account")
     public ResponseEntity saveAccount(@Valid @RequestBody UserDTO userDTO) {
-        final String userLogin = SecurityUtils.getCurrentUserLogin();
-        Optional<User> existingUser = userRepository.findOneByEmail(userDTO.getEmail());
-        if (existingUser.isPresent() && (!existingUser.get()
-            .getLogin()
-            .equalsIgnoreCase(userLogin))) {
-            return ResponseEntity.badRequest()
-                .headers(HeaderUtil.createFailureAlert("user-management", "emailexists", "Email already in use"))
-                .body(null);
-        }
-        return userRepository.findOneByLogin(userLogin)
-            .map(u -> {
-                userServiceImpl.updateUser(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(), userDTO.getLangKey(), userDTO.getImageUrl());
-                return new ResponseEntity(HttpStatus.OK);
-            })
-            .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
+        return  userServiceImpl.saveUserAccount(userDTO);
     }
+
 
     /**
      * POST /account/change_password : changes the current user's password

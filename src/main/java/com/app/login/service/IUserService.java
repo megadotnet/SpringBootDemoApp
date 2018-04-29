@@ -2,8 +2,11 @@ package com.app.login.service;
 
 import com.app.login.domain.User;
 import com.app.login.service.dto.UserDTO;
+import com.app.login.web.rest.vm.ManagedUserVM;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
@@ -16,6 +19,25 @@ import java.util.Optional;
  * @date 2018-03-27
  */
 public interface IUserService {
+
+    /**
+     *
+     * @param managedUserVM managedUserVM
+     * @param textPlainHeaders textPlainHeaders
+     * @param ipAddress ipAddress
+     * @param mailService mailService
+     * @return
+     */
+    ResponseEntity registerUserAccount(ManagedUserVM managedUserVM
+            , HttpHeaders textPlainHeaders, String ipAddress, IMailService mailService);
+
+    /**
+     *
+     * @param userDTO userDTO
+     * @return
+     */
+    ResponseEntity saveUserAccount(UserDTO userDTO);
+
     /**
      *  activateRegistration
      * @param key activation key

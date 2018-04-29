@@ -7,20 +7,27 @@ import com.app.login.repository.AuthorityRepository;
 import com.app.login.repository.UserRepository;
 import com.app.login.security.AuthoritiesConstants;
 import com.app.login.security.SecurityUtils;
+import com.app.login.service.IMailService;
 import com.app.login.service.IUserService;
 import com.app.login.service.dto.UserDTO;
 import com.app.login.service.util.RandomUtil;
+import com.app.login.web.rest.util.HeaderUtil;
+import com.app.login.web.rest.vm.ManagedUserVM;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -43,10 +50,69 @@ public class UserServiceImpl implements IUserService {
 
     private final AuthorityRepository authorityRepository;
 
+
     public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
+    }
+
+    /**
+     *
+     * @param managedUserVM managedUserVM
+     * @param textPlainHeaders textPlainHeaders
+     * @param ipAddress ipAddress
+     * @param mailService mailService
+     * @return
+     */
+    @Override
+    public ResponseEntity registerUserAccount(ManagedUserVM managedUserVM
+            , HttpHeaders textPlainHeaders, String ipAddress, IMailService mailService) {
+        Instant instant = Instant.now();
+
+        List<User> usersByIpAndRegistrationDate = userRepository.findAllByIpAddressAndCreatedDateBetween(ipAddress, instant.minus(1, ChronoUnit.DAYS), instant);
+        if (!usersByIpAndRegistrationDate.isEmpty()) {
+            if (usersByIpAndRegistrationDate.size() == Constants.DOS_MAX_REGISTRATION_ALLOWED) {
+                return new ResponseEntity<>("You cannot register", textPlainHeaders, HttpStatus.BAD_REQUEST);
+            }
+        }
+
+        return userRepository.findOneByLogin(managedUserVM.getLogin()
+                .toLowerCase())
+                .map(user -> new ResponseEntity<>("login already in use", textPlainHeaders, HttpStatus.BAD_REQUEST))
+                .orElseGet(() -> userRepository.findOneByEmail(managedUserVM.getEmail())
+                        .map(user -> new ResponseEntity<>("email address already in use", textPlainHeaders, HttpStatus.BAD_REQUEST))
+                        .orElseGet(() -> {
+                            User user = createUser(managedUserVM.getLogin(), managedUserVM.getPassword(), managedUserVM.getFirstName(), managedUserVM.getLastName(), managedUserVM.getEmail()
+                                    .toLowerCase(), managedUserVM.getImageUrl(), managedUserVM.getLangKey(), Instant.now(), ipAddress);
+
+                            mailService.sendActivationEmail(user);
+                            return new ResponseEntity<>(HttpStatus.CREATED);
+                        }));
+    }
+
+    /**
+     *
+     * @param userDTO userDTO
+     * @return
+     */
+    @Override
+    public ResponseEntity saveUserAccount(UserDTO userDTO) {
+        final String userLogin = SecurityUtils.getCurrentUserLogin();
+        Optional<User> existingUser = userRepository.findOneByEmail(userDTO.getEmail());
+        if (existingUser.isPresent() && (!existingUser.get()
+                .getLogin()
+                .equalsIgnoreCase(userLogin))) {
+            return ResponseEntity.badRequest()
+                    .headers(HeaderUtil.createFailureAlert("user-management", "emailexists", "Email already in use"))
+                    .body(null);
+        }
+        return userRepository.findOneByLogin(userLogin)
+                .map(u -> {
+                    updateUser(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(), userDTO.getLangKey(), userDTO.getImageUrl());
+                    return new ResponseEntity(HttpStatus.OK);
+                })
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
     /**
