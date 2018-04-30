@@ -4,6 +4,7 @@ import com.app.login.domain.Authority;
 import com.app.login.domain.User;
 import com.app.login.repository.AuthorityRepository;
 import com.app.login.repository.UserRepository;
+import com.app.login.service.IMailService;
 import com.app.login.service.Impl.UserServiceImpl;
 import com.app.login.service.dto.UserDTO;
 import com.app.login.service.mapper.UserMapper;
@@ -45,6 +46,9 @@ public class UserServiceMockitoTest extends TestBase {
     @Mock
     private  AuthorityRepository authorityRepository;
 
+    @Mock
+    private IMailService mailService;
+
     @InjectMocks
     private UserServiceImpl userServiceImpl;
 
@@ -64,7 +68,9 @@ public class UserServiceMockitoTest extends TestBase {
 
         when(userRepository.findOne(Mockito.any())).thenReturn(userOptional);
         when(authorityRepository.findOne(Mockito.any())).thenReturn(defaultautthoriy);
-        userServiceImpl =new UserServiceImpl(userRepository,passwordEncoder, authorityRepository);
+
+
+        userServiceImpl =new UserServiceImpl(userRepository,passwordEncoder, authorityRepository,mailService);
 
         //ValidatorFactory
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();

@@ -1,15 +1,7 @@
 package com.app.login.web.rest;
 
-import com.app.login.config.Constants;
-import com.app.login.domain.User;
-import com.app.login.repository.UserRepository;
-import com.app.login.security.SecurityUtils;
-import com.app.login.service.IMailService;
 import com.app.login.service.IUserService;
-import com.app.login.service.Impl.MailServiceImpl;
-import com.app.login.service.Impl.UserServiceImpl;
 import com.app.login.service.dto.UserDTO;
-import com.app.login.web.rest.util.HeaderUtil;
 import com.app.login.web.rest.util.ResourceNotFoundException;
 import com.app.login.web.rest.vm.KeyAndPasswordVM;
 import com.app.login.web.rest.vm.ManagedUserVM;
@@ -18,8 +10,6 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -28,9 +18,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -50,19 +37,12 @@ public class UserAccountController {
     private final IUserService userServiceImpl;
 
     /**
-     * mailService
-     */
-    private final IMailService mailService;
-
-    /**
      *
      * @param userServiceImpl
-     * @param mailService
      */
-    public UserAccountController(IUserService userServiceImpl, IMailService mailService) {
+    public UserAccountController(IUserService userServiceImpl) {
 
         this.userServiceImpl = userServiceImpl;
-        this.mailService = mailService;
     }
 
     /**
@@ -85,7 +65,7 @@ public class UserAccountController {
         log.info("getting remote ip = " + request.getRemoteAddr());
         String ipAddress = request.getRemoteAddr();
 
-        return userServiceImpl.registerUserAccount(managedUserVM, textPlainHeaders, ipAddress,mailService);
+        return userServiceImpl.registerUserAccount(managedUserVM, textPlainHeaders, ipAddress);
     }
 
 
@@ -183,12 +163,8 @@ public class UserAccountController {
     @ApiOperation(value = "requestPasswordReset",notes = "request PasswordReset")
     @PostMapping(path = "/account/reset_password/init", produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity requestPasswordReset(@RequestBody String mail) {
-        return userServiceImpl.requestPasswordReset(mail)
-            .map(user -> {
-                mailService.sendPasswordResetMail(user);
-                return new ResponseEntity<>("email was sent", HttpStatus.OK);
-            })
-            .orElse(new ResponseEntity<>("email address not registered", HttpStatus.BAD_REQUEST));
+        return userServiceImpl.requestPasswordReset(mail);
+
     }
 
     /**

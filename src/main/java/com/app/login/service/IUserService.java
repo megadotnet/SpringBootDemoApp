@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.Instant;
 import java.util.List;
@@ -29,7 +30,7 @@ public interface IUserService {
      * @return
      */
     ResponseEntity registerUserAccount(ManagedUserVM managedUserVM
-            , HttpHeaders textPlainHeaders, String ipAddress, IMailService mailService);
+            , HttpHeaders textPlainHeaders, String ipAddress);
 
     /**
      *
@@ -45,9 +46,15 @@ public interface IUserService {
      */
     Optional<User> activateRegistration(String key);
 
+
     Optional<User> completePasswordReset(String newPassword, String key);
 
-    Optional<User> requestPasswordReset(String mail);
+    /**
+     * requestPasswordReset
+     * @param mail mail address
+     * @return
+     */
+    ResponseEntity requestPasswordReset(String mail);
 
     User createUser(String login, String password, String firstName, String lastName, String email, String imageUrl, String langKey, Instant createdDate, String ipAddress);
 

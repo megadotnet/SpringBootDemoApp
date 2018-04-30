@@ -50,11 +50,18 @@ public class UserServiceImpl implements IUserService {
 
     private final AuthorityRepository authorityRepository;
 
+    /**
+     * mailService
+     */
+    private final IMailService mailService;
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository) {
+
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository,
+                           IMailService mailServiceImpl) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
+        this.mailService=mailServiceImpl;
     }
 
     /**
@@ -67,7 +74,7 @@ public class UserServiceImpl implements IUserService {
      */
     @Override
     public ResponseEntity registerUserAccount(ManagedUserVM managedUserVM
-            , HttpHeaders textPlainHeaders, String ipAddress, IMailService mailService) {
+            , HttpHeaders textPlainHeaders, String ipAddress) {
         Instant instant = Instant.now();
 
         List<User> usersByIpAndRegistrationDate = userRepository.findAllByIpAddressAndCreatedDateBetween(ipAddress, instant.minus(1, ChronoUnit.DAYS), instant);
@@ -161,14 +168,18 @@ public class UserServiceImpl implements IUserService {
      * @return Optional<User>
      */
     @Override
-    public Optional<User> requestPasswordReset(String mail) {
+    public ResponseEntity requestPasswordReset(String mail) {
         return userRepository.findOneByEmail(mail)
             .filter(User::getActivated)
             .map(user -> {
                 user.setResetKey(RandomUtil.generateResetKey());
                 user.setResetDate(Instant.now());
                 return user;
-            });
+            }).map(user -> {
+                    mailService.sendPasswordResetMail(user);
+                    return new ResponseEntity<>("email was sent", HttpStatus.OK);
+                })
+                .orElse(new ResponseEntity<>("email address not registered", HttpStatus.BAD_REQUEST));
     }
 
     /**
