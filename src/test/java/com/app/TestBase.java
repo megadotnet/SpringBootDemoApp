@@ -2,6 +2,7 @@ package com.app;
 
 import com.app.login.domain.Authority;
 import com.app.login.domain.User;
+import com.app.login.security.AuthoritiesConstants;
 import com.app.login.web.rest.vm.ManagedUserVM;
 
 import java.time.Instant;
@@ -44,7 +45,7 @@ public class TestBase {
     protected final Set<Authority> createAuthorities() {
         Set<Authority> mockauthorityset= new HashSet<>();
         Authority authority=new Authority();
-        authority.setName("ROLE_USER");
+        authority.setName(AuthoritiesConstants.USER);
         boolean isSucess=mockauthorityset.add(authority);
 
         return  mockauthorityset;

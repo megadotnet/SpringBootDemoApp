@@ -27,6 +27,8 @@ import java.util.Collections;
 
 /**
  * Controller to authenticate users.
+ * @author megadotnet
+ * @date 2018/5/1
  */
 @RestController
 @RequestMapping("/api")
@@ -43,6 +45,12 @@ public class UserJWTController {
         this.authenticationManager = authenticationManager;
     }
 
+    /**
+     *
+     * @param loginVM login view model
+     * @param response response
+     * @return
+     */
     @ApiOperation(value = "authorize",notes = "authorize")
     @PostMapping("/authenticate")
     public ResponseEntity authorize(@Valid @RequestBody LoginVM loginVM, HttpServletResponse response) {
