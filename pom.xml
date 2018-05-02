@@ -5,16 +5,17 @@
 	<artifactId>springboot-login-application</artifactId>
 	<version>1.0</version>
 	<packaging>jar</packaging>
+	<description>megadotnet</description>
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-
 		<commons.io.version>2.4</commons.io.version>
 		<commons-lang.version>3.5</commons-lang.version>
 		<jjwt.version>0.6.0</jjwt.version>
 		<junit.version>4.12</junit.version>
 		<spring.boot.version>2.0.1.RELEASE</spring.boot.version>
 		<docker.image.prefix>megadotnet</docker.image.prefix>
+		<joda.time.version>2.9.9</joda.time.version>
 	</properties>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -143,5 +144,36 @@
 			<version>6.0.6</version>
 		</dependency>
 
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>${joda.time.version}</version>
+		</dependency>
+
 	</dependencies>
+
+		<!-- 阿里云maven仓库 -->
+       <repositories>
+       <repository>
+       	<id>public</id>
+       	<name>aliyun nexus</name>
+       	<url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+       	<releases>
+       		<enabled>true</enabled>
+       	</releases>
+       </repository>
+       </repositories>
+       <pluginRepositories>
+       <pluginRepository>
+       	<id>public</id>
+       	<name>aliyun nexus</name>
+       	<url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+       	<releases>
+       		<enabled>true</enabled>
+       	</releases>
+       	<snapshots>
+       		<enabled>false</enabled>
+       	</snapshots>
+       </pluginRepository>
+       </pluginRepositories>
 </project>
