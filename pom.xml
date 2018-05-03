@@ -16,6 +16,7 @@
 		<spring.boot.version>2.0.1.RELEASE</spring.boot.version>
 		<docker.image.prefix>megadotnet</docker.image.prefix>
 		<joda.time.version>2.9.9</joda.time.version>
+		<qiniu.version>[7.2.0, 7.2.99]</qiniu.version>
 	</properties>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -150,6 +151,11 @@
 			<version>${joda.time.version}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.qiniu</groupId>
+			<artifactId>qiniu-java-sdk</artifactId>
+			<version>${qiniu.version}</version>
+		</dependency>
 	</dependencies>
 
 		<!-- 阿里云maven仓库 -->

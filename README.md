@@ -7,6 +7,7 @@ A Sample application developed with :
   5. Angular JS
   6. Alibaba Druid
   7. Lombok
+  8. joda-time
   
 Application is secured with JWT and Spring security.
 

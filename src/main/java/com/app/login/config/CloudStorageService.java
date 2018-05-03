@@ -15,7 +15,7 @@ import java.util.UUID;
  */
 public abstract class CloudStorageService {
     /** 云存储配置信息 */
-    CloudStorageConfig config;
+    protected CloudStorageConfig config;
 
     /**
      * 文件路径
