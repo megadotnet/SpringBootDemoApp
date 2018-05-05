@@ -25,6 +25,10 @@ import com.app.login.service.Impl.UserServiceImpl;
 import com.app.login.service.dto.UserDTO;
 import com.app.login.web.rest.vm.LoginVM;
 
+/**
+ *LoginApplicationIntegrationTests
+ * ref:http://www.springframework.net/rest/refdoc/resttemplate.html
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class LoginApplicationIntegrationTests {
@@ -63,7 +67,7 @@ public class LoginApplicationIntegrationTests {
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.set("Authorization", jwtTokenForTest);
-		HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
+		HttpEntity<String> entity = new HttpEntity<String>(null, headers);
 		responseEntity = restTemplate.exchange("/api/account", HttpMethod.GET, entity, UserDTO.class);
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 		assertEquals("roger", responseEntity.getBody().getFirstName());
