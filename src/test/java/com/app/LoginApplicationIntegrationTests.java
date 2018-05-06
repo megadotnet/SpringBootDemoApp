@@ -1,6 +1,8 @@
 package com.app;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.time.Instant;
 import java.util.HashMap;
@@ -26,7 +28,7 @@ import com.app.login.service.dto.UserDTO;
 import com.app.login.web.rest.vm.LoginVM;
 
 /**
- *LoginApplicationIntegrationTests
+ * LoginApplicationIntegrationTests
  * ref:http://www.springframework.net/rest/refdoc/resttemplate.html
  */
 @RunWith(SpringRunner.class)
@@ -44,9 +46,32 @@ public class LoginApplicationIntegrationTests {
 	@Before
 	public void setUp() {
 
+		//register user from service
 		User user = userServiceImpl.createUser("roger", "perfect", "roger", "federer", "roger@hotmail.com", "", "en",
 				Instant.now(), "127.0.0.1");
 
+		login();
+	}
+
+
+	@Test
+	public void getUserAccount() {
+
+		Map<String, String> params = new HashMap();
+		ResponseEntity<UserDTO> responseEntity = restTemplate.getForEntity("/api/account", UserDTO.class, params);
+		UserDTO user = responseEntity.getBody();
+		assertEquals(HttpStatus.UNAUTHORIZED, responseEntity.getStatusCode());
+		assertNull(user);
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("Authorization", jwtTokenForTest);
+		HttpEntity<String> entity = new HttpEntity<String>(null, headers);
+		responseEntity = restTemplate.exchange("/api/account", HttpMethod.GET, entity, UserDTO.class);
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		assertEquals("roger", responseEntity.getBody().getFirstName());
+	}
+
+	private void login() {
 		LoginVM loginVM = new LoginVM();
 		loginVM.setUsername("roger");
 		loginVM.setPassword("perfect");
@@ -56,21 +81,6 @@ public class LoginApplicationIntegrationTests {
 		ResponseEntity<String> response = restTemplate.postForEntity("/api/authenticate", loginVM, String.class,
 				params);
 		jwtTokenForTest = response.getHeaders().get("Authorization").get(0);
-	}
-
-	@Test
-	public void getUserAccount() {
-		Map<String, String> params = new HashMap();
-		ResponseEntity<UserDTO> responseEntity = restTemplate.getForEntity("/api/account", UserDTO.class, params);
-		UserDTO user = responseEntity.getBody();
-		assertEquals(HttpStatus.UNAUTHORIZED, responseEntity.getStatusCode());
-
-		HttpHeaders headers = new HttpHeaders();
-		headers.set("Authorization", jwtTokenForTest);
-		HttpEntity<String> entity = new HttpEntity<String>(null, headers);
-		responseEntity = restTemplate.exchange("/api/account", HttpMethod.GET, entity, UserDTO.class);
-		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-		assertEquals("roger", responseEntity.getBody().getFirstName());
 	}
 	
 }
