@@ -1,0 +1,19 @@
+{
+  "aliyunAccessKeyId": "",
+  "aliyunAccessKeySecret": "",
+  "aliyunBucketName": "",
+  "aliyunDomain": "",
+  "aliyunEndPoint": "",
+  "aliyunPrefix": "",
+  "qcloudBucketName": "",
+  "qcloudDomain": "",
+  "qcloudPrefix": "",
+  "qcloudSecretId": "",
+  "qcloudSecretKey": "",
+  "qiniuAccessKey": "NrgMfABZxWLo5B-YYSjoE8-AZ1EISdi1Z3ubLOeZ",
+  "qiniuBucketName": "ios-app",
+  "qiniuDomain": "http://7xqbwh.dl1.z0.glb.clouddn.com",
+  "qiniuPrefix": "upload",
+  "qiniuSecretKey": "uIwJHevMRWU0VLxFvgy0tAcOdGqasdtVlJkdy6vV",
+  "type": 1
+}
