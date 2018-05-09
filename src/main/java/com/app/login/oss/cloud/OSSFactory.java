@@ -2,6 +2,7 @@ package com.app.login.oss.cloud;
 
 import com.app.login.config.CloudStorageConfig;
 import com.app.login.config.CloudStorageService;
+import com.app.login.config.Constants;
 import com.app.login.exception.RRException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
@@ -28,9 +29,9 @@ public class OSSFactory {
 
     public CloudStorageService build() throws FileNotFoundException {
         //获取云存储配置信息
-        CloudStorageConfig config = getConfigObject(ConfigConstant.CLOUD_STORAGE_CONFIG_KEY, CloudStorageConfig.class);
+        CloudStorageConfig config = getConfigObject(Constants.CLOUD_STORAGE_CONFIG_KEY, CloudStorageConfig.class);
 
-        if(config.getType() == Constant.CloudService.QINIU.getValue()){
+        if(config.getType() == Constants.CloudService.QINIU.getValue()){
             return new QiniuCloudStorageService(config);
         }
 
