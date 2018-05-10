@@ -39,6 +39,7 @@ repositories {
 }
 dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version:'2.0.1.RELEASE'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-undertow', version:'2.0.1.RELEASE'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version:'2.0.1.RELEASE'
     compile group: 'commons-io', name: 'commons-io', version:'2.4'
     compile group: 'org.apache.commons', name: 'commons-lang3', version:'3.5'
@@ -59,4 +60,7 @@ dependencies {
     compile group: 'com.qiniu', name: 'qiniu-java-sdk', version: '7.2.0'
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version:'2.0.1.RELEASE'
     testCompile group: 'org.mockito', name: 'mockito-all', version:'1.10.19'
+}
+configurations {
+    runtime.exclude module: 'spring-boot-starter-tomcat'
 }

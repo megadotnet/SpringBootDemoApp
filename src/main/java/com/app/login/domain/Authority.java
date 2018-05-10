@@ -8,6 +8,11 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 
+/**
+ * Authority
+ * @author Megadotnet
+ * @date 2018-05-10
+ */
 @Entity
 @Table(name = "app_authority")
 public class Authority implements Serializable {
