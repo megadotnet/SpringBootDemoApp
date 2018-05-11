@@ -3,6 +3,8 @@ package com.app.login.service.dto;
 import com.app.login.config.Constants;
 import com.app.login.domain.Authority;
 import com.app.login.domain.User;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 
 import javax.validation.constraints.Email;
@@ -15,6 +17,7 @@ import java.util.stream.Collectors;
 /**
  * A DTO representing a user, with his authorities.
  */
+@ApiModel
 public class UserDTO {
 
     private Long id;
@@ -24,6 +27,7 @@ public class UserDTO {
     @Size(min = 1, max = 50)
     private String login;
 
+    @ApiModelProperty(value = "First Name")
     @Size(max = 50)
     private String firstName;
 
