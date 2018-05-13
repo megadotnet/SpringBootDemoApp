@@ -5,19 +5,19 @@ import com.app.login.domain.User;
 import com.app.login.service.Impl.UserServiceImpl;
 import com.app.login.service.dto.UserDTO;
 import com.app.login.service.mapper.UserMapper;
+import javafx.scene.control.Pagination;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.data.domain.*;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,8 +26,8 @@ import static org.mockito.BDDMockito.given;
 
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = Application.class)
-public class UserServiceTest {
+//@SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+public class UserServiceTest extends TestBase {
 
 	@MockBean
 	private UserServiceImpl userServiceImpl;
@@ -35,19 +35,31 @@ public class UserServiceTest {
 	@Before
 	public void mockUserService(){
 		UserDTO userdto = new UserMapper().userToUserDTO(createUser());
-		given(userServiceImpl.createUser(userdto)).willReturn(createUser());
-
+		List<UserDTO> userDTOList=new ArrayList<>();
+		userDTOList.add(userdto);
+		User user=createUser();
+		given(userServiceImpl.createUser(userdto)).willReturn(user);
+		user.setActivationKey(null);
+		given(userServiceImpl.activateRegistration("Peter")).willReturn(Optional.of(user));
+		Pageable pageable = PageRequest.of(1, 20);
+		Page<UserDTO> userPage= new PageImpl<>(userDTOList);
+		given(userServiceImpl.getAllManagedUsers(pageable)).willReturn(userPage);
 
 	}
 
-	@Ignore("TODO Refactor")
+	private UserDTO createUserDto()
+	{
+		return  new UserMapper().userToUserDTO(createUser());
+	}
+
+
 	@Test
 	public void createUserTest() {
 		User user=createUser();
 		assertNotNull(user);
 	}
 
-	@Ignore("TODO Refactor")
+
 	@Test
 	public void updateUserTest()
 	{
@@ -60,7 +72,6 @@ public class UserServiceTest {
 		assertNotNull(updateUser);
 	}
 
-	@Ignore("TODO Refactor")
 	@Test
 	public void deleteUser() throws Exception {
 		//assume
@@ -72,7 +83,6 @@ public class UserServiceTest {
 		assertFalse(existUser.isPresent());
 	}
 
-	@Ignore("TODO Refactor")
 	@Test
 	public void activateRegistrationTest()
 	{
@@ -87,14 +97,13 @@ public class UserServiceTest {
 		assertEquals(existUser.getActivationKey(),null);
 	}
 
-	@Ignore("TODO Refactor")
 	@Test
 	public void getAllManagedUsersTest()
 	{
 		//assume
 		User user = createUser();
 		Sort sort = new Sort(Sort.Direction.ASC, "login");
-		Pageable pageable = new PageRequest(0, 20);
+		Pageable pageable = PageRequest.of(1, 20);
 		//act
 		Page<UserDTO> userPage= userServiceImpl.getAllManagedUsers(pageable);
 
@@ -104,21 +113,5 @@ public class UserServiceTest {
 		List<UserDTO> userDTOList=userPage.getContent();
 		assertNotNull(userDTOList);
 		assertFalse(userDTOList.isEmpty());
-	}
-
-
-	private User createUser() {
-		User user = new User();
-		user.setFirstName("Peter");
-		user.setLastName("Liu");
-		user.setPassword("batman");
-		user.setCreatedDate(Instant.now());
-		user.setEmail("kmdxdk1@hotmail.com");
-		user.setIpAddress("127.0.0.1");
-
-		//User newUser = userService.createUser(user.getFirstName(), user.getPassword(), user.getFirstName(), user.getLastName(),
-		//		user.getEmail(), "", "en", user.getCreatedDate(), user.getIpAddress());
-		//assertNotNull(newUser);
-		return user;
 	}
 }

@@ -35,6 +35,7 @@ public class TestBase {
         user.setLangKey("en-us");
         user.setCreatedDate(Instant.now());
         user.setAuthorities(createAuthorities());
+        user.setActivationKey("Peter");
         return user;
     }
 
