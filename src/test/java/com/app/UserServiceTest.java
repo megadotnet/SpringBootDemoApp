@@ -114,4 +114,18 @@ public class UserServiceTest extends TestBase {
 		assertNotNull(userDTOList);
 		assertFalse(userDTOList.isEmpty());
 	}
+
+	@Test
+	public void getAuthorities()
+	{
+		List<String> stringList= userServiceImpl.getAuthorities();
+		assertNotNull(stringList);
+	}
+
+
+	public void getUserWithAuthorities()
+	{
+		User user= userServiceImpl.getUserWithAuthorities();
+		assertNotNull(user);
+	}
 }
