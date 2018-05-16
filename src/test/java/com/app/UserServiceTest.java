@@ -2,6 +2,7 @@ package com.app;
 
 import com.app.login.Application;
 import com.app.login.domain.User;
+import com.app.login.repository.UserRepository;
 import com.app.login.service.Impl.UserServiceImpl;
 import com.app.login.service.dto.UserDTO;
 import com.app.login.service.mapper.UserMapper;
@@ -10,6 +11,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.convert.converter.Converter;
@@ -122,10 +124,4 @@ public class UserServiceTest extends TestBase {
 		assertNotNull(stringList);
 	}
 
-
-	public void getUserWithAuthorities()
-	{
-		User user= userServiceImpl.getUserWithAuthorities();
-		assertNotNull(user);
-	}
 }
