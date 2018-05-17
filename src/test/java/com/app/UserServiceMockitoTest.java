@@ -111,6 +111,18 @@ public class UserServiceMockitoTest extends TestBase {
         assertTrue(violations.size()==3);
     }
 
+    @Test
+    public void createUserTest() {
+        User user=userServiceImpl.createUser(createUserDto());
+        assertNotNull(user);
+    }
+
+
+    private UserDTO createUserDto()
+    {
+        return  new UserMapper().userToUserDTO(createUser());
+    }
+
 
 
 
