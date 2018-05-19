@@ -117,6 +117,16 @@ public class UserServiceMockitoTest extends TestBase {
         assertNotNull(user);
     }
 
+    @Test
+    public void changePassword()
+    {
+        //User user=userServiceImpl.createUser(createUserDto());
+        //assertNotNull(user);
+        userServiceImpl.changePassword("batman");
+       // User userdb=userServiceImpl.getUserWithAuthorities(user.getId());
+       // assertEquals(userdb.getPassword(),"newpassoword");
+    }
+
 
     private UserDTO createUserDto()
     {
