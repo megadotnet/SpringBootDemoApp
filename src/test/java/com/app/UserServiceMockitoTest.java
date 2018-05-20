@@ -21,10 +21,7 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertFalse;
@@ -65,10 +62,11 @@ public class UserServiceMockitoTest extends TestBase {
         users.add(mockuser);
 
         Optional<Authority> defaultautthoriy=mockuser.getAuthorities().stream().findFirst();
-
+        List<Authority> authorityList=new ArrayList<>();
+        authorityList.addAll(mockuser.getAuthorities());
         when(userRepository.findOne(Mockito.any())).thenReturn(userOptional);
         when(authorityRepository.findOne(Mockito.any())).thenReturn(defaultautthoriy);
-
+        when(authorityRepository.findAll()).thenReturn(authorityList);
 
         userServiceImpl =new UserServiceImpl(userRepository,passwordEncoder, authorityRepository,mailService);
 
@@ -125,6 +123,14 @@ public class UserServiceMockitoTest extends TestBase {
         userServiceImpl.changePassword("batman");
        // User userdb=userServiceImpl.getUserWithAuthorities(user.getId());
        // assertEquals(userdb.getPassword(),"newpassoword");
+    }
+
+    @Test
+    public void getAuthorities()
+    {
+        List<String> stringList= userServiceImpl.getAuthorities();
+        assertNotNull(stringList);
+        assertTrue(stringList.size()>0);
     }
 
 
