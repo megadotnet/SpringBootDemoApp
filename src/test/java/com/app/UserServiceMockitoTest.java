@@ -14,6 +14,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.ConstraintViolation;
@@ -25,6 +28,7 @@ import java.util.*;
 
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertFalse;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
@@ -67,12 +71,20 @@ public class UserServiceMockitoTest extends TestBase {
         when(userRepository.findOne(Mockito.any())).thenReturn(userOptional);
         when(authorityRepository.findOne(Mockito.any())).thenReturn(defaultautthoriy);
         when(authorityRepository.findAll()).thenReturn(authorityList);
+        when(userRepository.findOneWithAuthoritiesByLogin(Mockito.anyString())).thenReturn(userOptional);
 
         userServiceImpl =new UserServiceImpl(userRepository,passwordEncoder, authorityRepository,mailService);
 
         //ValidatorFactory
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator();
+
+
+        Authentication authentication = mock(Authentication.class);
+        SecurityContext securityContext = mock(SecurityContext.class);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+        when(SecurityContextHolder.getContext().getAuthentication().getPrincipal()).thenReturn(mockuser.getLogin());
     }
 
     @Test
@@ -128,9 +140,33 @@ public class UserServiceMockitoTest extends TestBase {
     @Test
     public void getAuthorities()
     {
+
         List<String> stringList= userServiceImpl.getAuthorities();
         assertNotNull(stringList);
         assertTrue(stringList.size()>0);
+    }
+
+    public void registerUserAccount()
+    {
+        //userServiceImpl.geta
+    }
+
+    @Test
+    public void prepareMockApplicationUser() {
+        User applicationUser = mock(User.class);
+        Authentication authentication = mock(Authentication.class);
+        SecurityContext securityContext = mock(SecurityContext.class);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+        when(SecurityContextHolder.getContext().getAuthentication().getPrincipal()).thenReturn(applicationUser);
+    }
+
+    @Test
+    public void getUserWithAuthorities()
+    {
+        User userfromDb= userServiceImpl.getUserWithAuthorities();
+        assertNotNull(userfromDb);
+        assertEquals(userfromDb.getLogin(),createUser().getLogin());
     }
 
 
