@@ -4,6 +4,18 @@
     <include resource="org/springframework/boot/logging/logback/defaults.xml" />
     <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
 
+    <springProfile name="local,dev">
+        <appender name="LOGFILE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            </encoder>
+        </appender>
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
+
+   <springProfile name="prod">
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <File>${LOG_PATH}${LOG_FILE}</File>
         <encoder>
@@ -14,9 +26,10 @@
             <maxHistory>180</maxHistory> <!-- 保留180天 -->
         </rollingPolicy>
     </appender>
+       <root level="INFO">
+           <appender-ref ref="FILE"/>
+       </root>
+  </springProfile>
 
-    <root level="INFO">
-        <appender-ref ref="CONSOLE"/>
-        <appender-ref ref="FILE"/>
-    </root>
+
 </configuration>
