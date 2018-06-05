@@ -63,5 +63,7 @@ logging:
     org:
       springframework:
         web: DEBUG
+  path: logs/
+  file: api.log
 swagger:
   package: com.app.login.web.rest

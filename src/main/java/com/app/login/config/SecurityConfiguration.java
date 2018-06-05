@@ -3,6 +3,7 @@ package com.app.login.config;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.BeanInitializationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -107,10 +108,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .permitAll()
             .antMatchers("/api/**")
             .authenticated()
+               //.antMatchers("/v2/api-docs").authenticated()
+                //.and()
+                //.httpBasic();
             .and()
             .apply(securityConfigurerAdapter());
 
     }
+
 
     private JWTConfigurer securityConfigurerAdapter() {
         return new JWTConfigurer(tokenProvider);
