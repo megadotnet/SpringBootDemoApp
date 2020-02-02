@@ -2,7 +2,8 @@ server:
  undertow:
    io-threads: 2
    worker-threads: 200
-
+ protocol: http
+ port: 7081
 spring:
   security:
     user:
@@ -43,9 +44,6 @@ spring:
   mvc:
     favicon:
       enabled: false
-server:
-  protocol: http
-  port: 7081
 mailservice:
   mailfromdisplay: ljylun@163.com
 static:
