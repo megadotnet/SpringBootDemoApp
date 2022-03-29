@@ -18,6 +18,7 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.domain.*;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Arrays;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,11 @@ import java.util.Optional;
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.given;
 
-
+/**
+ * UserServiceTest
+ * @author megadotnet
+ * @date 2018/4/22
+ */
 @RunWith(SpringRunner.class)
 //@SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class UserServiceTest extends TestBase {
@@ -104,7 +109,6 @@ public class UserServiceTest extends TestBase {
 	{
 		//assume
 		User user = createUser();
-		Sort sort = new Sort(Sort.Direction.ASC, "login");
 		Pageable pageable = PageRequest.of(1, 20);
 		//act
 		Page<UserDTO> userPage= userServiceImpl.getAllManagedUsers(pageable);

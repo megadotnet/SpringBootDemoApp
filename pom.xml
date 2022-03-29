@@ -13,7 +13,7 @@
         <commons-lang.version>3.5</commons-lang.version>
         <jjwt.version>0.6.0</jjwt.version>
         <junit.version>4.13.1</junit.version>
-        <spring.boot.version>2.0.1.RELEASE</spring.boot.version>
+        <spring.boot.version>2.3.12.RELEASE</spring.boot.version>
         <docker.image.prefix>megadotnet</docker.image.prefix>
         <joda.time.version>2.9.9</joda.time.version>
         <qiniu.version>[7.2.0, 7.2.99]</qiniu.version>
@@ -21,7 +21,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.1.RELEASE</version>
+        <version>${spring.boot.version}</version>
     </parent>
     <build>
         <plugins>
@@ -120,6 +120,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <!--https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-2.3-Release-Notes#validation-starter-no-longer-included-in-web-starters -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
         <dependency>
             <groupId>io.springfox</groupId>

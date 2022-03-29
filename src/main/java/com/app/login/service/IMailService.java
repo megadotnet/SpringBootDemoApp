@@ -7,7 +7,7 @@ import javax.annotation.PostConstruct;
 import java.net.UnknownHostException;
 
 /**
- * Created by
+ * IMailService
  * @authr Administrator
  * @date 2018/4/22 0022.
  */
