@@ -42,6 +42,9 @@ being used, the number of threads used, and so on.
 Druid is one of the best database connection pools written in JAVA. The Web console url goes to:
     
      http://127.0.0.1:7080/druid/index.html
+
+## H2 Web Console
+By default the console can be accessed at URI ```http://127.0.0.1:7080/h2-console``` which can be changed by spring.h2.console.path property.
      
 ## Testing
   JWT http request 
