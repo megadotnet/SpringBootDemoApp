@@ -8,6 +8,7 @@ import com.app.login.service.IMailService;
 import com.app.login.service.Impl.UserServiceImpl;
 import com.app.login.service.dto.UserDTO;
 import com.app.login.service.mapper.UserMapper;
+import com.google.common.collect.Lists;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -66,7 +67,7 @@ public class UserServiceMockitoTest extends TestBase {
         users.add(mockuser);
 
         Optional<Authority> defaultautthoriy=mockuser.getAuthorities().stream().findFirst();
-        List<Authority> authorityList=new ArrayList<>();
+        List<Authority> authorityList= Lists.newArrayList();
         authorityList.addAll(mockuser.getAuthorities());
         when(userRepository.findOne(Mockito.any())).thenReturn(userOptional);
         when(authorityRepository.findOne(Mockito.any())).thenReturn(defaultautthoriy);

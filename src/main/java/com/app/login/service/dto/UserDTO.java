@@ -5,6 +5,7 @@ import com.app.login.domain.Authority;
 import com.app.login.domain.User;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 
 
 import javax.validation.constraints.Email;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
  * A DTO representing a user, with his authorities.
  */
 @ApiModel
+@Builder
 public class UserDTO {
 
     private Long id;
