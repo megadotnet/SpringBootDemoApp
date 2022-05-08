@@ -53,7 +53,8 @@ public class UserDTO {
     }
 
     public UserDTO(User user) {
-        this(user.getId(), user.getLogin(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getActivated(), user.getImageUrl(), user.getLangKey(), user.getAuthorities()
+        this(user.getId(), user.getLogin(), user.getFirstName(), user.getLastName(), user.getEmail()
+                , user.getActivated(), user.getImageUrl(), user.getLangKey(), user.getAuthorities()
             .stream()
             .map(Authority::getName)
             .collect(Collectors.toSet()));

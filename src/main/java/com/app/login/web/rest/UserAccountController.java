@@ -37,8 +37,8 @@ public class UserAccountController {
     private final IUserService userServiceImpl;
 
     /**
-     *
-     * @param userServiceImpl
+     * UserAccountController
+     * @param userServiceImpl userService
      */
     public UserAccountController(IUserService userServiceImpl) {
 
@@ -72,8 +72,8 @@ public class UserAccountController {
     /**
      * GET /activate : activate the registered user.
      *
-     * @param key
-     *            the activation key
+     * @param key the activation key
+     *
      * @return the ResponseEntity with status 200 (OK) and the activated user in
      *         body, or status 500 (Internal Server Error) if the user couldn't
      *         be activated
@@ -144,11 +144,7 @@ public class UserAccountController {
     @ApiOperation(value = "changePassword",notes = "change Password")
     @PostMapping(path = "/account/change_password", produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity changePassword(@RequestBody String password) {
-        if (!checkPasswordLength(password)) {
-            return new ResponseEntity<>("Incorrect password", HttpStatus.BAD_REQUEST);
-        }
-        userServiceImpl.changePassword(password);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return userServiceImpl.changePassword(password);
     }
 
     /**
@@ -171,24 +167,18 @@ public class UserAccountController {
      * POST /account/reset_password/finish : Finish to reset the password of the
      * user
      *
-     * @param keyAndPassword
-     *            the generated key and the new password
+     * @param keyAndPassword the generated key and the new password
      * @return the ResponseEntity with status 200 (OK) if the password has been
      *         reset, or status 400 (Bad Request) or 500 (Internal Server Error)
      *         if the password could not be reset
      */
     @ApiOperation(value = "finishPasswordReset",notes = "finish PasswordReset")
     @PostMapping(path = "/account/reset_password/finish", produces = MediaType.TEXT_PLAIN_VALUE)
-    public ResponseEntity<String> finishPasswordReset(@RequestBody KeyAndPasswordVM keyAndPassword) {
-        if (!checkPasswordLength(keyAndPassword.getNewPassword())) {
-            return new ResponseEntity<>("Incorrect password", HttpStatus.BAD_REQUEST);
-        }
-        return userServiceImpl.completePasswordReset(keyAndPassword.getNewPassword(), keyAndPassword.getKey())
+    public ResponseEntity<String> finishPasswordReset(@RequestBody @Valid KeyAndPasswordVM keyAndPassword) {
+        return userServiceImpl.completePasswordReset(keyAndPassword)
             .map(user -> new ResponseEntity<String>(HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
-    private boolean checkPasswordLength(String password) {
-        return !StringUtils.isEmpty(password) && password.length() >= ManagedUserVM.PASSWORD_MIN_LENGTH && password.length() <= ManagedUserVM.PASSWORD_MAX_LENGTH;
-    }
+
 }

@@ -12,8 +12,10 @@ import com.app.login.service.IUserService;
 import com.app.login.service.dto.UserDTO;
 import com.app.login.service.util.RandomUtil;
 import com.app.login.web.rest.util.HeaderUtil;
+import com.app.login.web.rest.vm.KeyAndPasswordVM;
 import com.app.login.web.rest.vm.ManagedUserVM;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Example;
@@ -147,7 +149,11 @@ public class UserServiceImpl implements IUserService {
      * @return Optional<User>
      */
     @Override
-    public Optional<User> completePasswordReset(String newPassword, String key) {
+    public Optional<User> completePasswordReset(KeyAndPasswordVM keyAndPasswordVM) {
+
+        String newPassword= keyAndPasswordVM.getNewPassword();
+        String key= keyAndPasswordVM.getKey();
+
         log.debug("Reset user password for reset key {}", key);
 
         return userRepository.findOneByResetKey(key)
@@ -349,13 +355,17 @@ public class UserServiceImpl implements IUserService {
      * @param password password
      */
     @Override
-    public void changePassword(String password) {
+    public ResponseEntity changePassword(String password) {
+        if (!checkPasswordLength(password)) {
+            return new ResponseEntity<>("Incorrect password", HttpStatus.BAD_REQUEST);
+        }
         userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin())
             .ifPresent(user -> {
                 String encryptedPassword = passwordEncoder.encode(password);
                 user.setPassword(encryptedPassword);
                 log.debug("Changed password for User: {}", user);
             });
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     /**
@@ -418,6 +428,7 @@ public class UserServiceImpl implements IUserService {
     // }
     // }
 
+
     /**
      * getAuthorities
      * @return a list of all the authorities
@@ -429,4 +440,17 @@ public class UserServiceImpl implements IUserService {
             .map(Authority::getName)
             .collect(Collectors.toList());
     }
+
+    /**
+     * checkPasswordLength
+     * @param password password
+     * @return boolean
+     */
+    private boolean checkPasswordLength(String password) {
+        return !StringUtils.isEmpty(password) &&
+                password.length() >= ManagedUserVM.PASSWORD_MIN_LENGTH &&
+                password.length() <= ManagedUserVM.PASSWORD_MAX_LENGTH;
+    }
+
+
 }

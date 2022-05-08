@@ -2,6 +2,7 @@ package com.app.login.service;
 
 import com.app.login.domain.User;
 import com.app.login.service.dto.UserDTO;
+import com.app.login.web.rest.vm.KeyAndPasswordVM;
 import com.app.login.web.rest.vm.ManagedUserVM;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -47,7 +48,7 @@ public interface IUserService {
     Optional<User> activateRegistration(String key);
 
 
-    Optional<User> completePasswordReset(String newPassword, String key);
+    Optional<User> completePasswordReset(KeyAndPasswordVM keyAndPasswordVM);
 
     /**
      * requestPasswordReset
@@ -66,7 +67,7 @@ public interface IUserService {
 
     void deleteUser(String login);
 
-    void changePassword(String password);
+    ResponseEntity changePassword(String password);
 
     @Transactional(readOnly = true)
     Page<UserDTO> getAllManagedUsers(Pageable pageable);
