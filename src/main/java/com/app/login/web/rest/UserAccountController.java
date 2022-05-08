@@ -173,11 +173,11 @@ public class UserAccountController {
      *         if the password could not be reset
      */
     @ApiOperation(value = "finishPasswordReset",notes = "finish PasswordReset")
-    @PostMapping(path = "/account/reset_password/finish", produces = MediaType.TEXT_PLAIN_VALUE)
-    public ResponseEntity<String> finishPasswordReset(@RequestBody @Valid KeyAndPasswordVM keyAndPassword) {
+    @PostMapping(path = "/account/reset_password/finish", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> finishPasswordReset(@Valid @RequestBody KeyAndPasswordVM keyAndPassword) {
         return userServiceImpl.completePasswordReset(keyAndPassword)
             .map(user -> new ResponseEntity<String>(HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
+            .orElse(new ResponseEntity<>("Incorrect key or not found.",HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
 
