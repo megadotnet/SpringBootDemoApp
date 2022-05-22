@@ -93,6 +93,10 @@ Other docker-standard environment variables are honored too such as TLS and cert
   mvn clean package dockerfile:build -DskipTests
   
 ```
+or you can build with cli:
+``` 
+  docker build --build-arg JAR_FILE=*.jar -t megadotnet/springboot-login-application .   
+```
 Run with H2 database
 ``` 
 docker run -p 7080:7080 -e "SPRING_PROFILES_ACTIVE=local" -m='2g' --name springboot-login-application -d megadotnet/springboot-login-application
