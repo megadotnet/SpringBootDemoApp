@@ -91,7 +91,7 @@ Other docker-standard environment variables are honored too such as TLS and cert
 ```
 run
 ``` 
-docker run -p 7080:7080 -d megadotnet/springboot-login-application
+docker run -p 7080:7080 -m='1g' --name springboot-login-application -d megadotnet/springboot-login-application
 ```
 remote debug
 ``` 
