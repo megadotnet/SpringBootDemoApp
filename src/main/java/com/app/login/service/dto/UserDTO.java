@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
  * A DTO representing a user, with his authorities.
  */
 @ApiModel
-@Builder
 public class UserDTO {
 
     private Long id;

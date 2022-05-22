@@ -91,9 +91,9 @@ Other docker-standard environment variables are honored too such as TLS and cert
 ```
 run
 ``` 
-docker run -p 7090:7080 -d megadotnet/sprintboot-login-application
+docker run -p 7080:7080 -d megadotnet/springboot-login-application
 ```
 remote debug
 ``` 
-docker run -e "JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=y" -p 8000:8000 -p 7090:7080 -d megadotnet/sprintboot-login-application
+docker run -e "JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=y" -p 8000:8000 -p 7090:7080 -d megadotnet/springboot-login-application
 ```
