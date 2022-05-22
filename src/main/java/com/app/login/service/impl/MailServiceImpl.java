@@ -1,4 +1,4 @@
-package com.app.login.service.Impl;
+package com.app.login.service.impl;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -10,12 +10,9 @@ import javax.mail.internet.MimeMessage;
 import com.app.login.service.IMailService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.CharEncoding;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.MessageSource;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;

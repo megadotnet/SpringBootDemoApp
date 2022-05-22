@@ -1,25 +1,16 @@
 package com.app;
 
-import com.app.login.Application;
 import com.app.login.domain.User;
-import com.app.login.repository.UserRepository;
-import com.app.login.service.Impl.UserServiceImpl;
+import com.app.login.service.impl.UserServiceImpl;
 import com.app.login.service.dto.UserDTO;
 import com.app.login.service.mapper.UserMapper;
-import javafx.scene.control.Pagination;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.domain.*;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Arrays;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

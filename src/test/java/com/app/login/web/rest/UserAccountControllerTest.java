@@ -2,13 +2,8 @@ package com.app.login.web.rest;
 
 import com.app.TestBase;
 import com.app.login.repository.UserRepository;
-import com.app.login.service.Impl.MailServiceImpl;
-import com.app.login.service.Impl.UserServiceImpl;
-import com.app.login.service.dto.UserDTO;
-import com.app.login.service.mapper.UserMapper;
-import com.app.login.web.rest.vm.ManagedUserVM;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectReader;
+import com.app.login.service.impl.MailServiceImpl;
+import com.app.login.service.impl.UserServiceImpl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -19,31 +14,17 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 
 import javax.servlet.http.HttpServletRequest;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
-
-
 
 
 /**

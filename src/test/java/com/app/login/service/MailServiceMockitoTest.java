@@ -1,11 +1,10 @@
 package com.app.login.service;
 
 import com.app.TestBase;
-import com.app.login.service.Impl.MailServiceImpl;
+import com.app.login.service.impl.MailServiceImpl;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;

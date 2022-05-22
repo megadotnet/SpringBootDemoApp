@@ -1,4 +1,4 @@
-package com.app.login.service.Impl;
+package com.app.login.service.impl;
 
 import com.app.login.config.Constants;
 import com.app.login.domain.Authority;
@@ -16,8 +16,6 @@ import com.app.login.web.rest.vm.KeyAndPasswordVM;
 import com.app.login.web.rest.vm.ManagedUserVM;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

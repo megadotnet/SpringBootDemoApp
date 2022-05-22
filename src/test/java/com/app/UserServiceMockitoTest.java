@@ -5,7 +5,7 @@ import com.app.login.domain.User;
 import com.app.login.repository.AuthorityRepository;
 import com.app.login.repository.UserRepository;
 import com.app.login.service.IMailService;
-import com.app.login.service.Impl.UserServiceImpl;
+import com.app.login.service.impl.UserServiceImpl;
 import com.app.login.service.dto.UserDTO;
 import com.app.login.service.mapper.UserMapper;
 import com.google.common.collect.Lists;
@@ -24,7 +24,6 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import java.time.Instant;
 import java.util.*;
 
 import static org.junit.Assert.*;
