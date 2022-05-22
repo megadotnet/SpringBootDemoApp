@@ -32,4 +32,4 @@ spring:
     #useGlobalDataSourceStat: true
 server:
   protocol: http
-  port: 8080
+  port: 7080
