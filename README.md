@@ -30,6 +30,10 @@ This endpoint shows the metrics  information   of the current application, where
 much memory it’s using, how much memory is free, the uptime of your application, the size of the heap is 
 being used, the number of threads used, and so on. 
 
+    /actuator/health
+   
+Displays your application’s health status.
+
 ## Swagger
 
    Swagger is the world’s largest framework of API developer tools for the OpenAPI Specification(OAS), enabling development across the entire API lifecycle, from design and documentation, to test and deployment.
