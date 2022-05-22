@@ -56,6 +56,9 @@ management:
         include: "*"
     shutdown:
       enabled: true
+  health:
+    mail:
+      enabled: false
 logging:
   level:
     org:
