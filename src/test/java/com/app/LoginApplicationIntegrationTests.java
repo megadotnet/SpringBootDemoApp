@@ -6,8 +6,12 @@ import static org.junit.Assert.assertNull;
 
 import java.time.Instant;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
+import com.app.login.service.IUserService;
+import com.app.login.service.mapper.UserMapper;
+import com.app.login.web.rest.vm.ManagedUserVM;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,22 +37,38 @@ import com.app.login.web.rest.vm.LoginVM;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class LoginApplicationIntegrationTests {
+public class LoginApplicationIntegrationTests extends TestBase {
 
 	@Autowired
 	private TestRestTemplate restTemplate;
 
 	@Autowired
-	private UserServiceImpl userServiceImpl;
+	private IUserService userService;
 
 	private String jwtTokenForTest;
+
+	private User testuser;
 
 	@Before
 	public void setUp() {
 
 		//register user from service
-		User user = userServiceImpl.createUser("roger", "perfect", "roger", "federer", "roger@hotmail.com", "", "en",
-				Instant.now(), "127.0.0.1");
+		//assume
+		testuser=createUser();
+
+		//Long id, String login, String password, String firstName, String lastName, String email, boolean activated, String imageUrl, String langKey,Set<String> authorities
+		ManagedUserVM managedUserVM=new ManagedUserVM(1L
+				, testuser.getLogin()
+				, testuser.getPassword()
+				, testuser.getFirstName()
+				, testuser.getLastName()
+				, testuser.getEmail().toLowerCase()
+				, true
+				, testuser.getImageUrl()
+				, testuser.getLangKey()
+				, new HashSet<>());
+		//ManagedUserVM managedUserVM=(ManagedUserVM)new UserMapper().userToUserDTO(user);
+		userService.createUser(managedUserVM,Instant.now(), "127.0.0.1");
 
 		login();
 	}
@@ -68,19 +88,23 @@ public class LoginApplicationIntegrationTests {
 		HttpEntity<String> entity = new HttpEntity<String>(null, headers);
 		responseEntity = restTemplate.exchange("/api/account", HttpMethod.GET, entity, UserDTO.class);
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-		assertEquals("roger", responseEntity.getBody().getFirstName());
+		assertEquals(testuser.getFirstName(), responseEntity.getBody().getFirstName());
 	}
 
 	private void login() {
+		User user=createUser();
 		LoginVM loginVM = new LoginVM();
-		loginVM.setUsername("roger");
-		loginVM.setPassword("perfect");
+		loginVM.setUsername(user.getLogin());
+		loginVM.setPassword(user.getPassword());
 		loginVM.setRememberMe(true);
 
 		Map<String, String> params = new HashMap();
 		ResponseEntity<String> response = restTemplate.postForEntity("/api/authenticate", loginVM, String.class,
 				params);
-		jwtTokenForTest = response.getHeaders().get("Authorization").get(0);
+		assertNotNull(response);
+		HttpHeaders httpHeader= response.getHeaders();
+		assertNotNull(httpHeader);
+		jwtTokenForTest = httpHeader.get("Authorization").get(0);
 	}
 	
 }

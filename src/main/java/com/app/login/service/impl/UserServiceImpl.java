@@ -11,12 +11,14 @@ import com.app.login.security.SecurityUtils;
 import com.app.login.service.IMailService;
 import com.app.login.service.IUserService;
 import com.app.login.service.dto.UserDTO;
+import com.app.login.service.mapper.UserMapper;
 import com.app.login.service.util.RandomUtil;
 import com.app.login.web.rest.util.HeaderUtil;
 import com.app.login.web.rest.vm.KeyAndPasswordVM;
 import com.app.login.web.rest.vm.ManagedUserVM;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -43,7 +45,6 @@ import java.util.stream.Collectors;
  * @date  2018-01-01
  */
 @Service
-@Validated
 @Slf4j
 @Transactional(rollbackFor = Exception.class)
 public class UserServiceImpl implements IUserService {
@@ -60,6 +61,9 @@ public class UserServiceImpl implements IUserService {
      * mailService
      */
     private final IMailService mailService;
+
+    @Autowired
+    private UserMapper userMapper;
 
 
     public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository,
@@ -97,8 +101,7 @@ public class UserServiceImpl implements IUserService {
                 .orElseGet(() -> userRepository.findOneByEmail(managedUserVM.getEmail())
                         .map(user -> new ResponseEntity<>("email address already in use", textPlainHeaders, HttpStatus.BAD_REQUEST))
                         .orElseGet(() -> {
-                            User user = createUser(managedUserVM.getLogin(), managedUserVM.getPassword(), managedUserVM.getFirstName(), managedUserVM.getLastName(), managedUserVM.getEmail()
-                                    .toLowerCase(), managedUserVM.getImageUrl(), managedUserVM.getLangKey(), Instant.now(), ipAddress);
+                            User user = createUser(managedUserVM, Instant.now(), ipAddress);
 
                             mailService.sendActivationEmail(user);
                             return new ResponseEntity<>(HttpStatus.CREATED);
@@ -195,43 +198,25 @@ public class UserServiceImpl implements IUserService {
 
     /**
      * createUser
-     * @param login login name
-     * @param password password
-     * @param firstName firstname
-     * @param lastName lastname
-     * @param email email
-     * @param imageUrl imageUrl
-     * @param langKey lang key
+     * @param managedUserVM managedUserVM
      * @param createdDate create date
      * @param ipAddress ip address
      * @return User
      */
     @Override
-    public User createUser(String login, String password, String firstName, String lastName, String email, String imageUrl, String langKey, Instant createdDate, String ipAddress) {
+    public User createUser(ManagedUserVM managedUserVM,Instant createdDate, String ipAddress) {
 
-        User newUser = new User();
+        User newUser =  userMapper.userDTOToUser(managedUserVM);
         Authority authorityquery = new Authority();
         authorityquery.setName(AuthoritiesConstants.USER);
         Example<Authority> example = Example.of(authorityquery);
         Optional<Authority> authority = authorityRepository.findOne(example);
         Set<Authority> authorities = new HashSet<>();
-        String encryptedPassword = passwordEncoder.encode(password);
-        newUser.setLogin(login);
-        // new user gets initially a generated password
+        String encryptedPassword = passwordEncoder.encode(managedUserVM.getPassword());
+
         newUser.setPassword(encryptedPassword);
-        newUser.setFirstName(firstName);
-        newUser.setLastName(lastName);
-        newUser.setEmail(email);
-        newUser.setCreatedDate(Instant.now());
-        newUser.setImageUrl(imageUrl);
-        newUser.setLangKey(langKey);
-        // new user is not active
-        newUser.setActivated(true);
-        // new user gets registration key
-        newUser.setActivationKey(RandomUtil.generateActivationKey());
         authorities.add(authority.get());
         newUser.setAuthorities(authorities);
-
         newUser.setCreatedDate(createdDate);
         newUser.setIpAddress(ipAddress);
 

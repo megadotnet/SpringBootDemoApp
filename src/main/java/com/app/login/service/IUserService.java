@@ -57,7 +57,7 @@ public interface IUserService {
      */
     ResponseEntity requestPasswordReset(String mail);
 
-    User createUser(String login, String password, String firstName, String lastName, String email, String imageUrl, String langKey, Instant createdDate, String ipAddress);
+    User createUser(ManagedUserVM managedUserVM,Instant createdDate, String ipAddress);
 
     User createUser(UserDTO userDTO);
 
