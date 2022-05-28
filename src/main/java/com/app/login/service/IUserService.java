@@ -60,9 +60,9 @@ public interface IUserService {
      */
     ResponseEntity requestPasswordReset(String mail);
 
-    User createUser(ManagedUserVM managedUserVM, Instant createdDate, String ipAddress);
+    User createUser(@Valid ManagedUserVM managedUserVM, Instant createdDate, String ipAddress);
 
-    User createUser(UserDTO userDTO);
+    User createUser(@Valid UserDTO userDTO);
 
     void updateUser(String firstName, String lastName, String email, String langKey, String imageUrl);
 

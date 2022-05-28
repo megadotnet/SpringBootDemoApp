@@ -67,7 +67,6 @@ public class LoginApplicationIntegrationTests extends TestBase {
 				, testuser.getImageUrl()
 				, testuser.getLangKey()
 				, new HashSet<>());
-		//ManagedUserVM managedUserVM=(ManagedUserVM)new UserMapper().userToUserDTO(user);
 		userService.createUser(managedUserVM,Instant.now(), "127.0.0.1");
 
 		login();

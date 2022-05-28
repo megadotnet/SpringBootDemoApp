@@ -9,6 +9,7 @@ import com.app.login.repository.UserRepository;
 import com.app.login.service.impl.UserServiceImpl;
 import com.app.login.service.dto.UserDTO;
 import com.app.login.service.mapper.UserMapper;
+import com.app.login.web.rest.vm.ManagedUserVM;
 import com.github.javafaker.Faker;
 import com.google.common.collect.Lists;
 import org.junit.Before;
@@ -23,6 +24,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.*;
+import java.time.Instant;
 import java.util.*;
 
 import static org.junit.Assert.*;
@@ -49,6 +51,8 @@ public class UserServiceMockitoTest extends TestBase {
     @Mock
     private IMailService mailService;
 
+    private UserMapper userMapper=new UserMapper();
+
     private ValidationFacade validationFacade=new ValidationFacade(Validation.buildDefaultValidatorFactory().getValidator());
 
     @InjectMocks
@@ -74,7 +78,7 @@ public class UserServiceMockitoTest extends TestBase {
         when(authorityRepository.findAll()).thenReturn(authorityList);
         when(userRepository.findOneWithAuthoritiesByLogin(Mockito.anyString())).thenReturn(userOptional);
 
-        userServiceImpl =new UserServiceImpl(userRepository,passwordEncoder, authorityRepository,mailService,validationFacade);
+        userServiceImpl =new UserServiceImpl(userRepository,passwordEncoder, authorityRepository,mailService,validationFacade,userMapper);
 
         //ValidatorFactory
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -178,9 +182,16 @@ public class UserServiceMockitoTest extends TestBase {
     }
 
     @Test
-    public void Test_SaveUserAccount()
+    public void SaveUserAccountTest()
     {
         userServiceImpl.saveUserAccount(new UserDTO());
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void createUserInvalidmanagedUserVM()
+    {
+        ManagedUserVM managedUserVM=new ManagedUserVM();
+        userServiceImpl.createUser(managedUserVM, Instant.now(), "127.0.0.1");
     }
 
 

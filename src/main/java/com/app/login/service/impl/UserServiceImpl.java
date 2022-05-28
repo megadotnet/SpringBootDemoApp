@@ -60,17 +60,18 @@ public class UserServiceImpl implements IUserService {
      */
     private final IMailService mailService;
 
-    @Autowired
-    private UserMapper userMapper;
+
+    private final UserMapper userMapper;
 
 
     public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository,
-                           IMailService mailServiceImpl,ValidationFacade validationFacade) {
+                           IMailService mailServiceImpl,ValidationFacade validationFacade,UserMapper userMapper) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
         this.mailService=mailServiceImpl;
         this.validationFacade = validationFacade;
+        this.userMapper=userMapper;
     }
 
     /**
