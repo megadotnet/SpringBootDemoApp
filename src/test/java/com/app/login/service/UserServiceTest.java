@@ -25,7 +25,6 @@ import static org.mockito.BDDMockito.given;
  * @date 2018/4/22
  */
 @RunWith(SpringRunner.class)
-//@SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class UserServiceTest extends TestBase {
 
 	@MockBean
@@ -74,6 +73,17 @@ public class UserServiceTest extends TestBase {
 		//assume
 		User user = createUser();
 		UserDTO userDto=new UserDTO(user);
+		//act
+		Optional<UserDTO> updateUser = userServiceImpl.updateUser(userDto);
+		//assert
+		assertNotNull(updateUser);
+	}
+
+	@Test
+	public void updateinvalidUserTest()
+	{
+		//assume
+		UserDTO userDto=new UserDTO();
 		//act
 		Optional<UserDTO> updateUser = userServiceImpl.updateUser(userDto);
 		//assert

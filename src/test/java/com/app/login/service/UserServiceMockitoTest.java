@@ -1,6 +1,7 @@
 package com.app.login.service;
 
 import com.app.TestBase;
+import com.app.login.common.utils.ValidationFacade;
 import com.app.login.domain.Authority;
 import com.app.login.domain.User;
 import com.app.login.repository.AuthorityRepository;
@@ -21,10 +22,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
+import javax.validation.*;
 import java.util.*;
 
 import static org.junit.Assert.*;
@@ -51,6 +49,8 @@ public class UserServiceMockitoTest extends TestBase {
     @Mock
     private IMailService mailService;
 
+    private ValidationFacade validationFacade=new ValidationFacade(Validation.buildDefaultValidatorFactory().getValidator());
+
     @InjectMocks
     private UserServiceImpl userServiceImpl;
 
@@ -74,7 +74,7 @@ public class UserServiceMockitoTest extends TestBase {
         when(authorityRepository.findAll()).thenReturn(authorityList);
         when(userRepository.findOneWithAuthoritiesByLogin(Mockito.anyString())).thenReturn(userOptional);
 
-        userServiceImpl =new UserServiceImpl(userRepository,passwordEncoder, authorityRepository,mailService);
+        userServiceImpl =new UserServiceImpl(userRepository,passwordEncoder, authorityRepository,mailService,validationFacade);
 
         //ValidatorFactory
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -129,7 +129,7 @@ public class UserServiceMockitoTest extends TestBase {
         assertNotNull(user);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test(expected = ConstraintViolationException.class)
     public void createInvalidUserTest() {
         User user=userServiceImpl.createUser(new UserDTO());
         assertNotNull(user);

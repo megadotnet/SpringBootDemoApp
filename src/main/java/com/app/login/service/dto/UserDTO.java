@@ -8,10 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -23,6 +20,7 @@ public class UserDTO {
 
     private Long id;
 
+    @NotNull(message = "login name should not be null")
     @NotBlank
     @Pattern(regexp = Constants.LOGIN_REGEX)
     @Size(min = 1, max = 50)

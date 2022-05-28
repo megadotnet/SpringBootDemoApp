@@ -1,5 +1,6 @@
 package com.app.login.service.impl;
 
+import com.app.login.common.utils.ValidationFacade;
 import com.app.login.config.Constants;
 import com.app.login.domain.Authority;
 import com.app.login.domain.User;
@@ -53,6 +54,8 @@ public class UserServiceImpl implements IUserService {
 
     private final AuthorityRepository authorityRepository;
 
+    private final ValidationFacade validationFacade;
+
     /**
      * mailService
      */
@@ -60,11 +63,12 @@ public class UserServiceImpl implements IUserService {
 
 
     public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository,
-                           IMailService mailServiceImpl) {
+                           IMailService mailServiceImpl,ValidationFacade validationFacade) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
         this.mailService=mailServiceImpl;
+        this.validationFacade = validationFacade;
     }
 
     /**
@@ -238,6 +242,7 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public User createUser(@Valid UserDTO userDTO) {
+        validationFacade.validate(userDTO);
         User user = new User();
         user.setLogin(userDTO.getLogin());
         user.setFirstName(userDTO.getFirstName());
@@ -305,6 +310,7 @@ public class UserServiceImpl implements IUserService {
      */
     @Override
     public Optional<UserDTO> updateUser(UserDTO userDTO) {
+        validationFacade.validate(userDTO);
         //https://www.jianshu.com/p/9936ba98da5a
         //https://github.com/spring-projects/spring-data-examples/tree/master/jpa/query-by-example/src/test/java/example/springdata/jpa/querybyexample
         User userquery=new User();
