@@ -53,6 +53,15 @@ public class UserServiceTest extends TestBase {
 
 
 	@Test
+	public void createInvalidUserTest() {
+		UserDTO userDTO=new UserDTO();
+		assertNotNull(userDTO);
+		User user= userServiceImpl.createUser(userDTO);
+		assertNull(user);
+	}
+
+
+	@Test
 	public void createUserTest() {
 		User user=createUser();
 		assertNotNull(user);

@@ -129,6 +129,12 @@ public class UserServiceMockitoTest extends TestBase {
         assertNotNull(user);
     }
 
+    @Test(expected = NullPointerException.class)
+    public void createInvalidUserTest() {
+        User user=userServiceImpl.createUser(new UserDTO());
+        assertNotNull(user);
+    }
+
     @Test
     public void changePassword()
     {

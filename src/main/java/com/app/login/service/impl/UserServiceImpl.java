@@ -25,7 +25,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
@@ -40,6 +42,7 @@ import java.util.stream.Collectors;
  * @date  2018-01-01
  */
 @Service
+@Validated
 @Slf4j
 @Transactional(rollbackFor = Exception.class)
 public class UserServiceImpl implements IUserService {
@@ -234,7 +237,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public User createUser(UserDTO userDTO) {
+    public User createUser(@Valid UserDTO userDTO) {
         User user = new User();
         user.setLogin(userDTO.getLogin());
         user.setFirstName(userDTO.getFirstName());
