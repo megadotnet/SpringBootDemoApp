@@ -177,6 +177,12 @@ public class UserServiceMockitoTest extends TestBase {
         assertEquals(userfromDb.getLogin(),createUser().getLogin());
     }
 
+    @Test
+    public void Test_SaveUserAccount()
+    {
+        userServiceImpl.saveUserAccount(new UserDTO());
+    }
+
 
     private UserDTO createUserDto()
     {

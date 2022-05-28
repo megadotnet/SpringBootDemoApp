@@ -28,9 +28,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.annotation.Validated;
 
-import javax.validation.Valid;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
@@ -102,7 +100,6 @@ public class UserServiceImpl implements IUserService {
                         .map(user -> new ResponseEntity<>("email address already in use", textPlainHeaders, HttpStatus.BAD_REQUEST))
                         .orElseGet(() -> {
                             User user = createUser(managedUserVM, Instant.now(), ipAddress);
-
                             mailService.sendActivationEmail(user);
                             return new ResponseEntity<>(HttpStatus.CREATED);
                         }));
@@ -226,7 +223,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public User createUser(@Valid UserDTO userDTO) {
+    public User createUser(UserDTO userDTO) {
         validationFacade.validate(userDTO);
         User user = new User();
         user.setLogin(userDTO.getLogin());

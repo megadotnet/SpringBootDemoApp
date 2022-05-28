@@ -9,8 +9,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.validation.Valid;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +22,7 @@ import java.util.Optional;
  * @author Megadotnet
  * @date 2018-03-27
  */
+@Validated
 public interface IUserService {
 
     /**
@@ -38,7 +41,7 @@ public interface IUserService {
      * @param userDTO userDTO
      * @return
      */
-    ResponseEntity saveUserAccount(UserDTO userDTO);
+    ResponseEntity saveUserAccount(@Valid UserDTO userDTO);
 
     /**
      *  activateRegistration
@@ -57,7 +60,7 @@ public interface IUserService {
      */
     ResponseEntity requestPasswordReset(String mail);
 
-    User createUser(ManagedUserVM managedUserVM,Instant createdDate, String ipAddress);
+    User createUser(ManagedUserVM managedUserVM, Instant createdDate, String ipAddress);
 
     User createUser(UserDTO userDTO);
 

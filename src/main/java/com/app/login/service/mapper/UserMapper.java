@@ -5,6 +5,7 @@ import com.app.login.domain.User;
 import com.app.login.service.dto.UserDTO;
 
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -42,9 +43,13 @@ public class UserMapper {
             user.setImageUrl(userDTO.getImageUrl());
             user.setActivated(userDTO.isActivated());
             user.setLangKey(userDTO.getLangKey());
-            Set<Authority> authorities = this.authoritiesFromStrings(userDTO.getAuthorities());
-            if (authorities != null) {
-                user.setAuthorities(authorities);
+
+            if (!CollectionUtils.isEmpty(userDTO.getAuthorities()))
+            {
+                Set<Authority> authorities = this.authoritiesFromStrings(userDTO.getAuthorities());
+                if (authorities != null) {
+                    user.setAuthorities(authorities);
+                }
             }
             return user;
         }
