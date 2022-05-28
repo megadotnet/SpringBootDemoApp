@@ -1,13 +1,14 @@
-package com.app;
+package com.app.login.service;
 
+import com.app.TestBase;
 import com.app.login.domain.Authority;
 import com.app.login.domain.User;
 import com.app.login.repository.AuthorityRepository;
 import com.app.login.repository.UserRepository;
-import com.app.login.service.IMailService;
 import com.app.login.service.impl.UserServiceImpl;
 import com.app.login.service.dto.UserDTO;
 import com.app.login.service.mapper.UserMapper;
+import com.github.javafaker.Faker;
 import com.google.common.collect.Lists;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,7 +34,7 @@ import static org.mockito.Mockito.when;
 
 /**
  * UserServiceMockitoTest
- * @author  Administrator
+ * @author  megadotnet
  * @date  2018/3/26 0026.
  */
 public class UserServiceMockitoTest extends TestBase {
@@ -108,8 +109,9 @@ public class UserServiceMockitoTest extends TestBase {
     @Test
     public void emailRegexValidatorTest()  {
         //assume
+        Faker faker =new Faker();
         User user=createUser();
-        user.setEmail("NNNAS");
+        user.setEmail(faker.address().firstName());
         user.setLogin("  ");
         UserDTO userDTO=new UserMapper().userToUserDTO(user);
 

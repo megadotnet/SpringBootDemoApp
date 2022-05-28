@@ -45,7 +45,7 @@ spring:
     favicon:
       enabled: false
 mailservice:
-  mailfromdisplay: ljylun@163.com
+  mailfromdisplay: xxxxxx@163.com
 static:
   assets:
     location: src/main/resources/static

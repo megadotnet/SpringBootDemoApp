@@ -1,5 +1,6 @@
-package com.app;
+package com.app.login.service;
 
+import com.app.TestBase;
 import com.app.login.domain.User;
 import com.app.login.service.impl.UserServiceImpl;
 import com.app.login.service.dto.UserDTO;

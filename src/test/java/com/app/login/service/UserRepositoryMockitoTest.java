@@ -1,4 +1,4 @@
-package com.app;
+package com.app.login.service;
 
 import com.app.login.domain.User;
 import com.app.login.repository.UserRepository;
@@ -18,7 +18,8 @@ import static org.mockito.Mockito.when;
 
 
 /**
- * Created by Administrator on 2018/3/1 0001.
+ * Created by Administrator
+ * 2018/3/1 0001.
  */
 
 public class UserRepositoryMockitoTest {

@@ -27,7 +27,7 @@ public class TestBase {
         user.setLastName("Liu");
         user.setPassword("batman");
         user.setCreatedDate(Instant.now());
-        user.setEmail("xxxxxx@163.com");
+        user.setEmail("xxxxxx@google.com");
         user.setIpAddress("127.0.0.1");
         user.setLogin("Peter");
         user.setActivated(true);
