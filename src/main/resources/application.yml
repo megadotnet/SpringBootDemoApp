@@ -53,9 +53,9 @@ management:
   endpoints:
     web:
       exposure:
-        include: "*"
+        include: health
     shutdown:
-      enabled: true
+      enabled: false
   health:
     mail:
       enabled: false
@@ -64,7 +64,7 @@ logging:
     org:
       springframework:
         web: DEBUG
-  path: logs/
-  file: api.log
+  path: megasitelogs/
+  file: megasiteapi.log
 swagger:
   package: com.app.login.web.rest

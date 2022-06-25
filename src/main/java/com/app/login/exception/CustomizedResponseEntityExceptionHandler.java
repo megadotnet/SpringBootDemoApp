@@ -27,7 +27,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
     public final ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
                 request.getDescription(false));
-        return new ResponseEntity(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     ValidationErrorResponse onConstraintValidationException(
             ConstraintViolationException e) {
