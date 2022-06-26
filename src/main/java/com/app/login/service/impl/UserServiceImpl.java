@@ -31,10 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -113,6 +110,7 @@ public class UserServiceImpl implements IUserService {
      */
     @Override
     public ResponseEntity saveUserAccount(UserDTO userDTO) {
+        Objects.requireNonNull(userDTO);
         final String userLogin = SecurityUtils.getCurrentUserLogin();
         Optional<User> existingUser = userRepository.findOneByEmail(userDTO.getEmail());
         if (existingUser.isPresent() && (!existingUser.get()
@@ -225,6 +223,7 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public User createUser(UserDTO userDTO) {
+        Objects.requireNonNull(userDTO);
         validationFacade.validate(userDTO);
         User user = new User();
         user.setLogin(userDTO.getLogin());
@@ -293,6 +292,7 @@ public class UserServiceImpl implements IUserService {
      */
     @Override
     public Optional<UserDTO> updateUser(UserDTO userDTO) {
+        Objects.requireNonNull(userDTO);
         validationFacade.validate(userDTO);
         //https://www.jianshu.com/p/9936ba98da5a
         //https://github.com/spring-projects/spring-data-examples/tree/master/jpa/query-by-example/src/test/java/example/springdata/jpa/querybyexample
