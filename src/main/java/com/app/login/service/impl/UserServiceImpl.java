@@ -18,7 +18,6 @@ import com.app.login.web.rest.vm.KeyAndPasswordVM;
 import com.app.login.web.rest.vm.ManagedUserVM;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -312,7 +311,7 @@ public class UserServiceImpl implements IUserService {
               managedAuthorities.clear();
 
               userDTO.getAuthorities()
-                  .stream()
+                  .stream().parallel()
                       .map(e -> {
                           Authority authorityquery = new Authority();
                           authorityquery.setName(e);
@@ -427,6 +426,7 @@ public class UserServiceImpl implements IUserService {
     public List<String> getAuthorities() {
         return authorityRepository.findAll()
             .stream()
+                .parallel()
             .map(Authority::getName)
             .collect(Collectors.toList());
     }
