@@ -30,7 +30,7 @@ public class Swagger2Config {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("megadotnet 使用Swagger2 构建RESTful API")
+                .title("megadotnet use Swagger to build RESTful API")
                 .description("megadotnet  https://github.com/megadotnet/")
                 .termsOfServiceUrl("https://github.com/megadotnet/")
                 .contact("megadotnet")
