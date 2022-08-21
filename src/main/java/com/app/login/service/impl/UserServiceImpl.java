@@ -11,6 +11,7 @@ import com.app.login.security.SecurityUtils;
 import com.app.login.service.IMailService;
 import com.app.login.service.IUserService;
 import com.app.login.service.dto.UserDTO;
+import com.app.login.service.events.EmailNoticeEvent;
 import com.app.login.service.mapper.UserMapper;
 import com.app.login.service.util.RandomUtil;
 import com.app.login.web.rest.util.HeaderUtil;
@@ -18,6 +19,8 @@ import com.app.login.web.rest.vm.KeyAndPasswordVM;
 import com.app.login.web.rest.vm.ManagedUserVM;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -59,6 +62,9 @@ public class UserServiceImpl implements IUserService {
 
     private final UserMapper userMapper;
 
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
+
 
     public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository,
                            IMailService mailServiceImpl,ValidationFacade validationFacade,UserMapper userMapper) {
@@ -97,7 +103,8 @@ public class UserServiceImpl implements IUserService {
                         .map(user -> new ResponseEntity<>("email address already in use", textPlainHeaders, HttpStatus.BAD_REQUEST))
                         .orElseGet(() -> {
                             User user = createUser(managedUserVM, Instant.now(), ipAddress);
-                            mailService.sendActivationEmail(user);
+                            applicationEventPublisher.publishEvent(new EmailNoticeEvent(user));
+
                             return new ResponseEntity<>(HttpStatus.CREATED);
                         }));
     }
