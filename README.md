@@ -20,7 +20,7 @@ Application is secured with JWT and Spring security.
    5) Multi-language support
    6) RESTful API
 
-## Srping Actuator
+## Spring Actuator
    Spring Boot includes an Actuator module,which introduces production-ready non-functional requirements 
 to your application. The Spring Boot Actuator module provides monitoring, metrics, and auditing right out 
 of box. 
