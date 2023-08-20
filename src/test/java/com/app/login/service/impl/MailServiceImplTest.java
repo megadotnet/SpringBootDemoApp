@@ -30,6 +30,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
+/**
+ * MailServiceImplTest
+ */
 @ContextConfiguration(classes = {MailServiceImpl.class})
 @ExtendWith(SpringExtension.class)
 class MailServiceImplTest {
