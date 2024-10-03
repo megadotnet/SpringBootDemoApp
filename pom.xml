@@ -9,7 +9,7 @@
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <commons.io.version>2.7</commons.io.version>
+        <commons.io.version>2.14.0</commons.io.version>
         <commons-lang.version>3.5</commons-lang.version>
         <jjwt.version>0.6.0</jjwt.version>
         <junit.version>4.13.1</junit.version>
