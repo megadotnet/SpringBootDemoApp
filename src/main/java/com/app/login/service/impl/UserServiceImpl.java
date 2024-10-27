@@ -186,7 +186,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public ResponseEntity requestPasswordReset(String mail) {
         return userRepository.findOneByEmail(mail)
-            .filter(User::getActivated)
+            .filter(User::isActivated)
             .map(user -> {
                 user.setResetKey(RandomUtil.generateResetKey());
                 user.setResetDate(Instant.now());
