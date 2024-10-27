@@ -22,6 +22,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
+/**
+ * DomainUserDetailsServiceImplAIGenTest
+ * @author 通义千问
+ */
 @ExtendWith(MockitoExtension.class)
 public class DomainUserDetailsServiceImplAIGenTest {
 
@@ -109,9 +113,9 @@ public class DomainUserDetailsServiceImplAIGenTest {
 
     @Test
     public void testLoadUserByUsername_NullLogin() {
-
         // Act & Assert
         assertThrows(UsernameNotFoundException.class, () -> userDetailsService.loadUserByUsername(null));
+        verify(userRepository, never()).findOneWithAuthoritiesByLogin(anyString());
     }
 
     @Test
