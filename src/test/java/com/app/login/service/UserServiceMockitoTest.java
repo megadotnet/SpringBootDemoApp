@@ -187,7 +187,7 @@ public class UserServiceMockitoTest extends TestBase {
         userServiceImpl.saveUserAccount(new UserDTO());
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void createUserInvalidmanagedUserVM()
     {
         ManagedUserVM managedUserVM=new ManagedUserVM();

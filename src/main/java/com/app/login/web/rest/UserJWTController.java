@@ -46,7 +46,7 @@ public class UserJWTController {
     }
 
     /**
-     *
+     * authorize
      * @param loginVM login view model
      * @param response response
      * @return

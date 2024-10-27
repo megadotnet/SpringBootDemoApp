@@ -29,7 +29,7 @@ public class TestBase {
         user.setCreatedDate(Instant.now());
         user.setEmail("xxxxxx@google.com");
         user.setIpAddress("127.0.0.1");
-        user.setLogin("Peter");
+        user.setLogin("peter");
         user.setActivated(true);
         user.setImageUrl("asfa.png");
         user.setLangKey("en-us");

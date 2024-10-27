@@ -42,7 +42,7 @@ public class DomainUserDetailsServiceImpl implements UserDetailsService {
     @Transactional(rollbackFor = Exception.class)
     public UserDetails loadUserByUsername(final String login) {
         if (login==null){
-            throw  new UsernameNotFoundException("User login is null");
+            throw new UsernameNotFoundException("User login is null");
         }
         log.debug("Authenticating {}", login);
         String lowercaseLogin = login.toLowerCase(Locale.ENGLISH);
