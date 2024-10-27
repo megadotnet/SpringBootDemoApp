@@ -51,16 +51,14 @@ public class DomainUserDetailsServiceImplAIGenTest {
 
     @Test
     public void testLoadUserByUsername_Success() {
-        // Mock the repository to return the test user
+        // Arrange
         when(userRepository.findOneWithAuthoritiesByLogin(anyString())).thenReturn(Optional.of(testUser));
 
-        // Call the method under test
+        // Act
         UserDetails userDetails = userDetailsService.loadUserByUsername("testuser");
 
-        // Verify the interactions with the mock
+        // Assert
         verify(userRepository, times(1)).findOneWithAuthoritiesByLogin("testuser");
-
-        // Assert the returned user details
         assertNotNull(userDetails);
         assertEquals("testuser", userDetails.getUsername());
         assertEquals("encodedPassword", userDetails.getPassword());
@@ -74,7 +72,7 @@ public class DomainUserDetailsServiceImplAIGenTest {
 
     @Test
     public void testLoadUserByUsername_UserNotActivated() {
-        // Create a test user that is not activated
+        // Arrange
         User inactiveUser = new User();
         inactiveUser.setId(1L);
         inactiveUser.setLogin("inactiveuser");
@@ -82,25 +80,86 @@ public class DomainUserDetailsServiceImplAIGenTest {
         inactiveUser.setActivated(false);
         inactiveUser.setEmail("inactiveuser@example.com");
 
-        // Mock the repository to return the inactive user
         when(userRepository.findOneWithAuthoritiesByLogin(anyString())).thenReturn(Optional.of(inactiveUser));
 
-        // Call the method under test and expect an exception
+        // Act & Assert
         assertThrows(UserNotActivatedException.class, () -> userDetailsService.loadUserByUsername("inactiveuser"));
-
-        // Verify the interactions with the mock
         verify(userRepository, times(1)).findOneWithAuthoritiesByLogin("inactiveuser");
     }
 
     @Test
     public void testLoadUserByUsername_UserNotFound() {
-        // Mock the repository to return an empty optional
+        // Arrange
         when(userRepository.findOneWithAuthoritiesByLogin(anyString())).thenReturn(Optional.empty());
 
-        // Call the method under test and expect an exception
+        // Act & Assert
         assertThrows(UsernameNotFoundException.class, () -> userDetailsService.loadUserByUsername("nonexistentuser"));
-
-        // Verify the interactions with the mock
         verify(userRepository, times(1)).findOneWithAuthoritiesByLogin("nonexistentuser");
+    }
+
+    @Test
+    public void testLoadUserByUsername_EmptyLogin() {
+        // Arrange
+        when(userRepository.findOneWithAuthoritiesByLogin(anyString())).thenReturn(Optional.empty());
+
+        // Act & Assert
+        assertThrows(UsernameNotFoundException.class, () -> userDetailsService.loadUserByUsername(""));
+        verify(userRepository, times(1)).findOneWithAuthoritiesByLogin("");
+    }
+
+    @Test
+    public void testLoadUserByUsername_NullLogin() {
+
+        // Act & Assert
+        assertThrows(UsernameNotFoundException.class, () -> userDetailsService.loadUserByUsername(null));
+    }
+
+    @Test
+    public void testLoadUserByUsername_NoAuthorities() {
+        // Arrange
+        User userWithoutAuthorities = new User();
+        userWithoutAuthorities.setId(1L);
+        userWithoutAuthorities.setLogin("userwithoutauthorities");
+        userWithoutAuthorities.setPassword("encodedPassword");
+        userWithoutAuthorities.setActivated(true);
+        userWithoutAuthorities.setEmail("userwithoutauthorities@example.com");
+        userWithoutAuthorities.setAuthorities(Collections.emptySet());
+
+        when(userRepository.findOneWithAuthoritiesByLogin(anyString())).thenReturn(Optional.of(userWithoutAuthorities));
+
+        // Act
+        UserDetails userDetails = userDetailsService.loadUserByUsername("userwithoutauthorities");
+
+        // Assert
+        verify(userRepository, times(1)).findOneWithAuthoritiesByLogin("userwithoutauthorities");
+        assertNotNull(userDetails);
+        assertEquals("userwithoutauthorities", userDetails.getUsername());
+        assertEquals("encodedPassword", userDetails.getPassword());
+        assertTrue(userDetails.isAccountNonExpired());
+        assertTrue(userDetails.isAccountNonLocked());
+        assertTrue(userDetails.isCredentialsNonExpired());
+        assertTrue(userDetails.isEnabled());
+        assertTrue(userDetails.getAuthorities().isEmpty());
+    }
+
+    @Test
+    public void testLoadUserByUsername_CaseInsensitiveLogin() {
+        // Arrange
+        when(userRepository.findOneWithAuthoritiesByLogin(anyString())).thenReturn(Optional.of(testUser));
+
+        // Act
+        UserDetails userDetails = userDetailsService.loadUserByUsername("TESTUSER");
+
+        // Assert
+        verify(userRepository, times(1)).findOneWithAuthoritiesByLogin("testuser");
+        assertNotNull(userDetails);
+        assertEquals("testuser", userDetails.getUsername());
+        assertEquals("encodedPassword", userDetails.getPassword());
+        assertTrue(userDetails.isAccountNonExpired());
+        assertTrue(userDetails.isAccountNonLocked());
+        assertTrue(userDetails.isCredentialsNonExpired());
+        assertTrue(userDetails.isEnabled());
+        assertEquals(1, userDetails.getAuthorities().size());
+        assertTrue(userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_USER")));
     }
 }
