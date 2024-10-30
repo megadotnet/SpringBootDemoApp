@@ -25,6 +25,9 @@ spring:
     username: XXXX@163.com
   application:
     name: AuthApp
+  sql:
+    init:
+      mode: always
   datasource:
     password:
     driverClassName: org.h2.Driver
@@ -33,6 +36,7 @@ spring:
   messages:
     basename: i18n/messages
   jpa:
+    defer-datasource-initialization: true
     hibernate:
       ddl-auto: update
     properties:
