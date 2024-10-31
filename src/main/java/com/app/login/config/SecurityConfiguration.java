@@ -36,29 +36,31 @@ import com.app.login.security.jwt.TokenProvider;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
-@DependsOn("userDetailsService")
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
     private final TokenProvider tokenProvider;
     private final CorsFilter corsFilter;
-
     @Autowired
-    public SecurityConfiguration(UserDetailsService userDetailsService, TokenProvider tokenProvider, CorsFilter corsFilter) {
+    private final AuthenticationManagerBuilder auth;
+
+    public SecurityConfiguration(AuthenticationManagerBuilder auth,
+                                 UserDetailsService userDetailsService,
+                                 TokenProvider tokenProvider,
+                                 CorsFilter corsFilter) {
+        this.auth = auth;
         this.userDetailsService = userDetailsService;
         this.tokenProvider = tokenProvider;
         this.corsFilter = corsFilter;
+
+        // 在构造器中配置 AuthenticationManagerBuilder
+        try {
+            auth.userDetailsService(userDetailsService);
+        } catch (Exception e) {
+            throw new BeanInitializationException("Security configuration failed", e);
+        }
     }
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
     @Override
     public void configure(WebSecurity web) throws Exception {

@@ -25,7 +25,8 @@ public class Swagger2Config {
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.app.login"))
                 .paths(PathSelectors.any())
-                .build();
+                .build()
+                .pathMapping("/");
     }
 
     private ApiInfo apiInfo() {

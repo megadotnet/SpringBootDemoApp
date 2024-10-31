@@ -48,6 +48,8 @@ spring:
   mvc:
     favicon:
       enabled: false
+    pathmatch:
+      matching-strategy: ant_path_matcher
 mailservice:
   mailfromdisplay: xxxxxx@163.com
 static:
