@@ -72,5 +72,5 @@ logging:
         web: info
   path: megasitelogs/
   file: megasiteapi.log
-swagger:
-  package: com.app.login.web.rest
+springdoc:
+  packagesToScan: com.app.login.web.rest

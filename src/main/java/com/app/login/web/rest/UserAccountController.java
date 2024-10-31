@@ -5,9 +5,11 @@ import com.app.login.service.dto.UserDTO;
 import com.app.login.web.rest.util.ResourceNotFoundException;
 import com.app.login.web.rest.vm.KeyAndPasswordVM;
 import com.app.login.web.rest.vm.ManagedUserVM;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpHeaders;
@@ -28,7 +30,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api")
 @Slf4j
-@Api(value = "UserAccount",description = "User Account API")
+@Tag(name = "UserAccount",description = "User Account API")
 public class UserAccountController {
 
     /**
@@ -55,7 +57,11 @@ public class UserAccountController {
      *         registered or 400 (Bad Request) if the login or email is already
      *         in use
      */
-    @ApiOperation(value = "registerAccount",notes = "register Account")
+
+    @Operation(summary = "registerAccount", responses = {
+            @ApiResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ManagedUserVM.class))),
+            @ApiResponse(responseCode = "404", description = "User not found")
+    })
     @PostMapping(path = "/register", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
     public ResponseEntity registerAccount(@Valid @RequestBody ManagedUserVM managedUserVM, HttpServletRequest request) {
 
@@ -78,9 +84,12 @@ public class UserAccountController {
      *         body, or status 500 (Internal Server Error) if the user couldn't
      *         be activated
      */
-    @ApiOperation(value = "activateAccount",notes = "activate Account")
+
+    @Operation(summary = "activateAccount", responses = {
+            @ApiResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = String.class))),
+            @ApiResponse(responseCode = "404", description = "User not found")
+    })
     @GetMapping("/activate")
-    @ApiParam(value ="key" )
     public ResponseEntity<String> activateAccount(@RequestParam(value = "key") String key) {
         return userServiceImpl.activateRegistration(key)
             .map(user -> new ResponseEntity<String>(HttpStatus.OK))
@@ -95,7 +104,10 @@ public class UserAccountController {
      *            the HTTP request
      * @return the login if the user is authenticated
      */
-    @ApiOperation(value = "isAuthenticated",notes = "is Authenticated")
+
+    @Operation(summary = "isAuthenticated", responses = {@ApiResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = String.class))),
+            @ApiResponse(responseCode = "404", description = "User not found")
+    })
     @GetMapping("/authenticate")
     public String isAuthenticated(HttpServletRequest request) {
         log.debug("REST request to check if the current user is authenticated");
@@ -109,7 +121,9 @@ public class UserAccountController {
      *         body, or ResourceNotFoundException if the user couldn't
      *         be returned
      */
-    @ApiOperation(value = "getAccount",notes = "get Account")
+    @Operation(summary = "getAccount", responses = {@ApiResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = String.class))),
+            @ApiResponse(responseCode = "404", description = "User not found")
+    })
     @GetMapping("/account")
     public ResponseEntity<UserDTO> getAccount() {
         return Optional.ofNullable(userServiceImpl.getUserWithAuthorities())
@@ -126,7 +140,10 @@ public class UserAccountController {
      *         Request) or 500 (Internal Server Error) if the user couldn't be
      *         updated
      */
-    @ApiOperation(value = "saveAccount",notes = "save Account")
+
+    @Operation(summary = "saveAccount", responses = {@ApiResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserDTO.class))),
+            @ApiResponse(responseCode = "404", description = "User not found")
+    })
     @PostMapping("/account")
     public ResponseEntity saveAccount(@Valid @RequestBody UserDTO userDTO) {
         return  userServiceImpl.saveUserAccount(userDTO);
@@ -141,7 +158,10 @@ public class UserAccountController {
      * @return the ResponseEntity with status 200 (OK), or status 400 (Bad
      *         Request) if the new password is not strong enough
      */
-    @ApiOperation(value = "changePassword",notes = "change Password")
+
+    @Operation(summary = "changePassword", responses = {@ApiResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = String.class))),
+            @ApiResponse(responseCode = "404", description = "User not found")
+    })
     @PostMapping(path = "/account/change_password", produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity changePassword(@RequestBody String password) {
         return userServiceImpl.changePassword(password);
@@ -156,7 +176,10 @@ public class UserAccountController {
      * @return the ResponseEntity with status 200 (OK) if the email was sent, or
      *         status 400 (Bad Request) if the email address is not registered
      */
-    @ApiOperation(value = "requestPasswordReset",notes = "request PasswordReset")
+
+    @Operation(summary = "requestPasswordReset", responses = {@ApiResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = String.class))),
+            @ApiResponse(responseCode = "404", description = "User not found")
+    })
     @PostMapping(path = "/account/reset_password/init", produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity requestPasswordReset(@RequestBody String mail) {
         return userServiceImpl.requestPasswordReset(mail);
@@ -172,7 +195,10 @@ public class UserAccountController {
      *         reset, or status 400 (Bad Request) or 500 (Internal Server Error)
      *         if the password could not be reset
      */
-    @ApiOperation(value = "finishPasswordReset",notes = "finish PasswordReset")
+
+    @Operation(summary = "finishPasswordReset", responses = {@ApiResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = String.class))),
+            @ApiResponse(responseCode = "404", description = "User not found")
+    })
     @PostMapping(path = "/account/reset_password/finish", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> finishPasswordReset(@Valid @RequestBody KeyAndPasswordVM keyAndPassword) {
         return userServiceImpl.completePasswordReset(keyAndPassword)

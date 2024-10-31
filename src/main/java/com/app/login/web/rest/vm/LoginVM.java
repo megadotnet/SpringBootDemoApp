@@ -1,8 +1,8 @@
 package com.app.login.web.rest.vm;
 
 import com.app.login.config.Constants;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -11,10 +11,10 @@ import javax.validation.constraints.Size;
 /**
  * View Model object for storing a user's credentials.
  */
-@ApiModel
+@Schema
 public class LoginVM {
 
-    @ApiModelProperty(value = "User Name")
+    @Schema(name = "username")
     @Pattern(regexp = Constants.LOGIN_REGEX)
     @NotNull
     @Size(min = 1, max = 50)
