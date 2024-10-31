@@ -11,7 +11,7 @@ import com.app.login.service.dto.UserDTO;
 import com.app.login.service.mapper.UserMapper;
 import com.app.login.web.rest.vm.ManagedUserVM;
 import com.github.javafaker.Faker;
-import com.google.common.collect.Lists;
+import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
