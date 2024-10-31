@@ -69,7 +69,7 @@ logging:
   level:
     org:
       springframework:
-        web: DEBUG
+        web: info
   path: megasitelogs/
   file: megasiteapi.log
 swagger:
