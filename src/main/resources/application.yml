@@ -33,6 +33,10 @@ spring:
     driverClassName: org.h2.Driver
     url: jdbc:h2:mem:app_db;DB_CLOSE_ON_EXIT=FALSE
     username: sa
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
   messages:
     basename: i18n/messages
   jpa:

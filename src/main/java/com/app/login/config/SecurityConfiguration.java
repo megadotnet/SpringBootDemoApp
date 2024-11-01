@@ -1,26 +1,23 @@
 package com.app.login.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.filter.CorsFilter;
-
 import com.app.login.security.jwt.JWTConfigurer;
 import com.app.login.security.jwt.TokenProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+
 
 /**
  * Updated SecurityConfiguration for Spring Boot 2.7+
@@ -29,7 +26,7 @@ import com.app.login.security.jwt.TokenProvider;
  */
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
+@EnableMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfiguration {
 
     private final UserDetailsService userDetailsService;
@@ -48,18 +45,6 @@ public class SecurityConfiguration {
         this.authenticationConfiguration = authenticationConfiguration;
     }
 
-
-
-    @Bean
-    public AuthenticationManager authenticationManager() throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
-    }
-
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService);
-    }
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         // Configure JWT security filter
@@ -67,37 +52,27 @@ public class SecurityConfiguration {
 
         // Configure security settings
         http
-                .csrf()
-                .disable()
-                .exceptionHandling()
-                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
-                .and()
-                .headers()
-                .frameOptions()
-                .disable()
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authorizeRequests()
-                // Public endpoints
-                .antMatchers("/api/register").permitAll()
-                .antMatchers("/api/activate").permitAll()
-                .antMatchers("/api/authenticate").permitAll()
-                .antMatchers("/api/account/reset_password/init").permitAll()
-                .antMatchers("/api/account/reset_password/finish").permitAll()
-                // Static resources
-                .antMatchers("/app/**/*.{js,html}").permitAll()
-                .antMatchers("/bower_components/**").permitAll()
-                .antMatchers("/i18n/**").permitAll()
-                .antMatchers("/content/**").permitAll()
-                .antMatchers("/test/**").permitAll()
-                .antMatchers("/h2-console/**").permitAll()
-                // API endpoints
-                .antMatchers("/api/**").authenticated()
-                // Options
-                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                .and()
+                .csrf(csrf -> csrf.disable())
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint((request, response, ex) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED)))
+                .headers(headers -> headers
+                        .frameOptions(frameOptions -> frameOptions.disable()))
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/api/register").permitAll()
+                        .requestMatchers("/api/activate").permitAll()
+                        .requestMatchers("/api/authenticate").permitAll()
+                        .requestMatchers("/api/account/reset_password/init").permitAll()
+                        .requestMatchers("/api/account/reset_password/finish").permitAll()
+                        .requestMatchers("/app/**/*.{js,html}").permitAll()
+                        .requestMatchers("/bower_components/**").permitAll()
+                        .requestMatchers("/i18n/**").permitAll()
+                        .requestMatchers("/content/**").permitAll()
+                        .requestMatchers("/test/**").permitAll()
+                        .requestMatchers("/h2-console/**").permitAll()
+                        .requestMatchers("/api/**").authenticated()
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll())
                 .apply(new JWTConfigurer(tokenProvider));
 
         return http.build();
@@ -106,5 +81,10 @@ public class SecurityConfiguration {
     @Bean
     public SecurityEvaluationContextExtension securityEvaluationContextExtension() {
         return new SecurityEvaluationContextExtension();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 }

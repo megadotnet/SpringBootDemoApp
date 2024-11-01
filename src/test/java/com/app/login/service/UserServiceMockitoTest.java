@@ -11,6 +11,7 @@ import com.app.login.service.dto.UserDTO;
 import com.app.login.service.mapper.UserMapper;
 import com.app.login.web.rest.vm.ManagedUserVM;
 import com.github.javafaker.Faker;
+import jakarta.validation.ValidatorFactory;
 import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,7 +24,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.validation.*;
+import jakarta.validation.*;
 import java.time.Instant;
 import java.util.*;
 

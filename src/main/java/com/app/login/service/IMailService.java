@@ -3,7 +3,7 @@ package com.app.login.service;
 import com.app.login.domain.User;
 import org.springframework.scheduling.annotation.Async;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import java.net.UnknownHostException;
 
 /**
