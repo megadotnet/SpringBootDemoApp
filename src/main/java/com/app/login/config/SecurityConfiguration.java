@@ -72,7 +72,10 @@ public class SecurityConfiguration {
                         .requestMatchers("/test/**").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers("/api/**").authenticated()
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll())
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers("/v3/api-docs/**").permitAll() // Swagger API 文档
+                        .requestMatchers("/swagger-ui.html").permitAll() // Swagger UI 页面
+                        .requestMatchers("/swagger-ui/**").permitAll()) // Swagger UI 相关资源
                 .apply(new JWTConfigurer(tokenProvider));
 
         return http.build();

@@ -74,7 +74,9 @@ logging:
     org:
       springframework:
         web: info
-  path: megasitelogs/
-  file: megasiteapi.log
+  path: megadotnetsitelogs/
+  file: megadotnetsiteapi.log
 springdoc:
+  api-docs-path: /v3/api-docs
   packagesToScan: com.app.login.web.rest
+  swagger-ui: /swagger-ui.html
