@@ -20,7 +20,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 
 
 /**
- * Updated SecurityConfiguration for Spring Boot 2.7+
+ * Updated SecurityConfiguration for Spring Boot 3
  * @author Megadotnet
  * @date 2024-03-07
  */
@@ -65,7 +65,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/authenticate").permitAll()
                         .requestMatchers("/api/account/reset_password/init").permitAll()
                         .requestMatchers("/api/account/reset_password/finish").permitAll()
-                        .requestMatchers("/app/**/*.{js,html}").permitAll()
+                        .requestMatchers("/app/**").permitAll()
                         .requestMatchers("/bower_components/**").permitAll()
                         .requestMatchers("/i18n/**").permitAll()
                         .requestMatchers("/content/**").permitAll()
@@ -75,7 +75,9 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/v3/api-docs/**").permitAll() // Swagger API 文档
                         .requestMatchers("/swagger-ui.html").permitAll() // Swagger UI 页面
-                        .requestMatchers("/swagger-ui/**").permitAll()) // Swagger UI 相关资源
+                        .requestMatchers("/swagger-ui/**").permitAll() // Swagger UI 相关资源
+                        .requestMatchers("/static/**").permitAll() // 静态文件
+                        .requestMatchers("/**").permitAll())
                 .apply(new JWTConfigurer(tokenProvider));
 
         return http.build();

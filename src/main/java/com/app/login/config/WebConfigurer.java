@@ -15,6 +15,8 @@ import jakarta.servlet.DispatcherType;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRegistration;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.EnumSet;
@@ -43,6 +45,7 @@ public class WebConfigurer implements ServletContextInitializer {
         EnumSet<DispatcherType> disps = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.ASYNC);
         log.info("Web application fully configured");
     }
+
 
     /**
      *  Resolve path prefix to static resources.
