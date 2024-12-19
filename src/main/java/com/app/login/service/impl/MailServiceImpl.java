@@ -4,8 +4,8 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Locale;
 
-import javax.annotation.PostConstruct;
-import javax.mail.internet.MimeMessage;
+import jakarta.annotation.PostConstruct;
+import jakarta.mail.internet.MimeMessage;
 
 import com.app.login.service.IMailService;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +20,8 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 
 import com.app.login.domain.User;
-import org.thymeleaf.spring5.SpringTemplateEngine;
+import org.thymeleaf.spring6.SpringTemplateEngine;
+
 
 /**
  * Service for sending emails.

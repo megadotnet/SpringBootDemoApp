@@ -1,124 +1,86 @@
 package com.app.login.config;
 
-import javax.annotation.PostConstruct;
-
-import org.springframework.beans.factory.BeanInitializationException;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
-import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.filter.CorsFilter;
-
 import com.app.login.security.jwt.JWTConfigurer;
 import com.app.login.security.jwt.TokenProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+
 
 /**
- * SecurityConfiguration
+ * Updated SecurityConfiguration for Spring Boot 3
  * @author Megadotnet
- * @date 2018-03-07
+ * @date 2024-03-07
  */
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-
-    private final AuthenticationManagerBuilder authenticationManagerBuilder;
+@EnableMethodSecurity(prePostEnabled = true, securedEnabled = true)
+public class SecurityConfiguration {
 
     private final UserDetailsService userDetailsService;
-
     private final TokenProvider tokenProvider;
-
     private final CorsFilter corsFilter;
+    private final AuthenticationConfiguration authenticationConfiguration;
 
-    public SecurityConfiguration(AuthenticationManagerBuilder authenticationManagerBuilder, UserDetailsService userDetailsService, TokenProvider tokenProvider, CorsFilter corsFilter) {
-
-        this.authenticationManagerBuilder = authenticationManagerBuilder;
+    public SecurityConfiguration(
+            UserDetailsService userDetailsService,
+            TokenProvider tokenProvider,
+            CorsFilter corsFilter,
+            AuthenticationConfiguration authenticationConfiguration) {
         this.userDetailsService = userDetailsService;
         this.tokenProvider = tokenProvider;
         this.corsFilter = corsFilter;
-    }
-
-    @PostConstruct
-    public void init() {
-        try {
-            authenticationManagerBuilder.userDetailsService(userDetailsService)
-                .passwordEncoder(passwordEncoder());
-        } catch (Exception e) {
-            throw new BeanInitializationException("Security configuration failed", e);
-        }
+        this.authenticationConfiguration = authenticationConfiguration;
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        // Configure JWT security filter
+        http.addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class);
 
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring()
-            .antMatchers(HttpMethod.OPTIONS, "/**")
-            .antMatchers("/app/**/*.{js,html}")
-            .antMatchers("/bower_components/**")
-            .antMatchers("/i18n/**")
-            .antMatchers("/content/**")
-            .antMatchers("/test/**")
-            .antMatchers("/h2-console/**");
-    }
+        // Configure security settings
+        http
+                .csrf(csrf -> csrf.disable())
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint((request, response, ex) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED)))
+                .headers(headers -> headers
+                        .frameOptions(frameOptions -> frameOptions.disable()))
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/api/register").permitAll()
+                        .requestMatchers("/api/activate").permitAll()
+                        .requestMatchers("/api/authenticate").permitAll()
+                        .requestMatchers("/api/account/reset_password/init").permitAll()
+                        .requestMatchers("/api/account/reset_password/finish").permitAll()
+                        .requestMatchers("/app/**").permitAll()
+                        .requestMatchers("/bower_components/**").permitAll()
+                        .requestMatchers("/i18n/**").permitAll()
+                        .requestMatchers("/content/**").permitAll()
+                        .requestMatchers("/test/**").permitAll()
+                        .requestMatchers("/h2-console/**").permitAll()
+                        .requestMatchers("/api/**").authenticated()
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers("/v3/api-docs/**").permitAll() // Swagger API 文档
+                        .requestMatchers("/swagger-ui.html").permitAll() // Swagger UI 页面
+                        .requestMatchers("/swagger-ui/**").permitAll() // Swagger UI 相关资源
+                        .requestMatchers("/static/**").permitAll() // 静态文件
+                        .requestMatchers("/**").permitAll())
+                .apply(new JWTConfigurer(tokenProvider));
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
-            .exceptionHandling()
-            .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
-            .and()
-            .csrf()
-            .disable()
-            .headers()
-            .frameOptions()
-            .disable()
-            .and()
-            .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
-            .authorizeRequests()
-            .antMatchers("/api/register")
-            .permitAll()
-            .antMatchers("/api/activate")
-            .permitAll()
-            .antMatchers("/api/authenticate")
-            .permitAll()
-            .antMatchers("/api/account/reset_password/init")
-            .permitAll()
-            .antMatchers("/api/account/reset_password/finish")
-            .permitAll()
-            .antMatchers("/api/**")
-            .authenticated()
-               //.antMatchers("/v2/api-docs").authenticated()
-                //.and()
-                //.httpBasic();
-            .and()
-            .apply(securityConfigurerAdapter());
-
-    }
-
-
-    private JWTConfigurer securityConfigurerAdapter() {
-        return new JWTConfigurer(tokenProvider);
+        return http.build();
     }
 
     @Bean
@@ -127,7 +89,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public AuthenticationManager customAuthenticationManager() throws Exception {
-        return authenticationManager();
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 }

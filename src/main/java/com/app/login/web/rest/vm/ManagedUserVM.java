@@ -1,7 +1,7 @@
 package com.app.login.web.rest.vm;
 
 import com.app.login.service.dto.UserDTO;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.Size;
 
 import java.time.Instant;
 import java.util.Set;

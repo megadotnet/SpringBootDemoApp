@@ -1,7 +1,7 @@
 package com.app.login.web.rest.vm;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 /**
  * View Model object for storing the user's key and password.

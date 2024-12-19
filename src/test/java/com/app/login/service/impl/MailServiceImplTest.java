@@ -11,9 +11,10 @@ import java.net.UnknownHostException;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.HashSet;
-import javax.mail.Session;
-import javax.mail.internet.MimeMessage;
 
+
+import jakarta.mail.Session;
+import jakarta.mail.internet.MimeMessage;
 import org.junit.jupiter.api.Disabled;
 
 import org.junit.jupiter.api.Test;
@@ -28,7 +29,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.thymeleaf.spring5.SpringTemplateEngine;
+import org.thymeleaf.spring6.SpringTemplateEngine;
+
 
 /**
  * MailServiceImplTest

@@ -3,19 +3,17 @@ package com.app.login.service.dto;
 import com.app.login.config.Constants;
 import com.app.login.domain.Authority;
 import com.app.login.domain.User;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Builder;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 
-import javax.validation.constraints.*;
+import jakarta.validation.constraints.*;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
  * A DTO representing a user, with his authorities.
  */
-@ApiModel
+@Schema
 public class UserDTO {
 
     private Long id;
@@ -26,7 +24,7 @@ public class UserDTO {
     @Size(min = 1, max = 50)
     private String login;
 
-    @ApiModelProperty(value = "First Name")
+    @Schema(name = "firstName")
     @Size(max = 50)
     private String firstName;
 

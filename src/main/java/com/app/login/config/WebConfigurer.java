@@ -11,10 +11,12 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-import javax.servlet.DispatcherType;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRegistration;
+import jakarta.servlet.DispatcherType;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRegistration;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.EnumSet;
@@ -41,9 +43,9 @@ public class WebConfigurer implements ServletContextInitializer {
             log.info("Web application configuration, using profiles: {}", (Object[]) env.getActiveProfiles());
         }
         EnumSet<DispatcherType> disps = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.ASYNC);
-        initH2Console(servletContext);
         log.info("Web application fully configured");
     }
+
 
     /**
      *  Resolve path prefix to static resources.
@@ -76,14 +78,5 @@ public class WebConfigurer implements ServletContextInitializer {
         return new CorsFilter(source);
     }
 
-    /**
-     * Initializes H2 console.
-     */
-    private void initH2Console(ServletContext servletContext) {
-        log.debug("Initialize H2 console");
-        ServletRegistration.Dynamic h2ConsoleServlet = servletContext.addServlet("H2Console", new org.h2.server.web.WebServlet());
-        h2ConsoleServlet.addMapping("/h2-console/*");
-        h2ConsoleServlet.setInitParameter("-properties", "src/main/resources/");
-        h2ConsoleServlet.setLoadOnStartup(1);
-    }
+
 }

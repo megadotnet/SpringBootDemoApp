@@ -7,8 +7,12 @@ import com.app.login.web.rest.vm.LoginVM;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,8 +25,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import java.util.Collections;
 
 /**
@@ -33,7 +37,7 @@ import java.util.Collections;
 @RestController
 @RequestMapping("/api")
 @Slf4j
-@Api(value = "UserJWTController",description = "UserJWTController API")
+@Tag(name = "UserJWTController",description = "UserJWTController API")
 public class UserJWTController {
 
     private final TokenProvider tokenProvider;
@@ -51,7 +55,9 @@ public class UserJWTController {
      * @param response response
      * @return
      */
-    @ApiOperation(value = "authorize",notes = "authorize")
+    @Operation(summary = "authorize", responses = {@ApiResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = LoginVM.class))),
+            @ApiResponse(responseCode = "404", description = "User not found")
+    })
     @PostMapping("/authenticate")
     public ResponseEntity authorize(@Valid @RequestBody LoginVM loginVM, HttpServletResponse response) {
 
