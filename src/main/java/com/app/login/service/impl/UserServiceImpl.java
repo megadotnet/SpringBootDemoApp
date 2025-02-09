@@ -81,7 +81,6 @@ public class UserServiceImpl implements IUserService {
      * @param managedUserVM managedUserVM
      * @param textPlainHeaders textPlainHeaders
      * @param ipAddress ipAddress
-     * @param mailService mailService
      * @return
      */
     @Override
@@ -227,6 +226,16 @@ public class UserServiceImpl implements IUserService {
         return newUser;
     }
 
+    /**
+     * Creates a new user based on the provided user DTO.
+     *
+     * @param userDTO The data transfer object containing the user information, must not be null.
+     * @return The created User entity.
+     *
+     * This method first checks if the provided userDTO is null, throwing a NullPointerException if it is.
+     * It then validates the userDTO using the validation facade. After validation, it creates a new User object,
+     * sets its properties based on the userDTO, and handles default values and many-to-many relationships.
+     */
     @Override
     public User createUser(UserDTO userDTO) {
         Objects.requireNonNull(userDTO);
