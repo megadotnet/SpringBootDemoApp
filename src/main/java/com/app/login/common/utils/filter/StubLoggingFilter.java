@@ -40,28 +40,70 @@ public class StubLoggingFilter extends OncePerRequestFilter {
             MediaType.MULTIPART_FORM_DATA
     );
 
+    /**
+     * 执行过滤器的主要逻辑
+     *
+     * 此方法根据请求是否为异步分发来决定执行过滤的策略如果请求是异步分发的，则直接将请求和响应委托给过滤链的下一个过滤器；
+     * 否则，将请求和响应包装后再传递给自定义的过滤逻辑这种方法允许在处理请求和响应之前或之后执行自定义逻辑
+     *
+     * @param request 用于处理客户端请求的HttpServletRequest对象
+     * @param response 用于向客户端发送响应的HttpServletResponse对象
+     * @param filterChain 代表过滤器链的对象，用于将请求和响应传递给链中的下一个过滤器
+     * @throws ServletException 如果过滤过程中抛出Servlet异常
+     * @throws IOException 如果过滤过程中发生I/O错误
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         if (isAsyncDispatch(request)) {
+            // 如果请求是异步分发的，直接将请求和响应传递给过滤链的下一个过滤器
             filterChain.doFilter(request, response);
         } else {
+            // 如果请求不是异步分发的，对请求和响应进行包装，然后调用自定义的过滤逻辑
             doFilterWrapped(wrapRequest(request), wrapResponse(response), filterChain);
         }
     }
 
+    /**
+     * 执行过滤处理的包装方法
+     * 该方法主要用于在请求处理前后添加额外的逻辑，例如缓存请求和响应内容
+     *
+     * @param request  包装后的请求对象，用于访问请求内容
+     * @param response 包装后的响应对象，用于访问和修改响应内容
+     * @param filterChain 过滤链对象，用于将请求传递给下一个过滤器或最终的目标资源
+     *
+     * @throws ServletException 如果过滤过程中发生Servlet相关的错误
+     * @throws IOException 如果过滤过程中发生I/O错误
+     */
     protected void doFilterWrapped(ContentCachingRequestWrapper request, ContentCachingResponseWrapper response, FilterChain filterChain) throws ServletException, IOException {
         try {
+            // 在请求处理前执行的逻辑，例如缓存请求内容
             beforeRequest(request, response);
+
+            // 将请求传递给过滤链中的下一个元素，继续处理请求
             filterChain.doFilter(request, response);
         }
         finally {
+            // 在请求处理后执行的逻辑，例如使用缓存的请求和响应内容进行额外处理
             afterRequest(request, response);
+
+            // 将缓存的响应内容复制到实际的响应对象中，确保响应内容被正确返回
             response.copyBodyToResponse();
         }
     }
 
+    /**
+     * 在处理请求前执行的操作
+     *
+     * 该方法主要用于在发送请求之前，记录请求的头部信息和来源IP
+     * 这有助于跟踪和调试API请求，确保在开发和生产环境中保持详细的日志记录
+     *
+     * @param request 包装后的请求对象，允许我们访问请求内容和头部信息
+     * @param response 包装后的响应对象，虽然在此方法中未使用，但提供给未来可能需要访问响应信息的情况
+     */
     protected void beforeRequest(ContentCachingRequestWrapper request, ContentCachingResponseWrapper response) {
+        // 检查日志级别是否允许记录信息级别的日志
         if (log.isInfoEnabled()) {
+            // 记录请求头部信息和来源IP，格式为“IP地址|>”
             logRequestHeader(request, request.getRemoteAddr() + "|>");
         }
     }
