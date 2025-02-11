@@ -75,7 +75,10 @@ public class MailServiceImpl implements IMailService {
     public void sendEmail(String to, String subject, String content, boolean isMultipart, boolean isHtml) {
         log.debug("Send email[multipart '{}' and html '{}'] to '{}' with subject '{}' and content={}", isMultipart, isHtml, to, subject, content);
 
-        // Prepare message using a Spring helper
+        if (subject == null || to == null) {
+            return;
+        }
+
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         try {
             MimeMessageHelper message = new MimeMessageHelper(mimeMessage, isMultipart, CharEncoding.UTF_8);
@@ -83,16 +86,19 @@ public class MailServiceImpl implements IMailService {
             message.setFrom(mailFromDisplay);
             message.setSubject(subject);
             message.setText(content, isHtml);
+
             javaMailSender.send(mimeMessage);
             log.debug("Sent email to User '{}'", to);
         } catch (Exception e) {
             if (log.isDebugEnabled()) {
-                log.warn("Email could not be sent to user '{}'", to, e);
+                log.warn("Failed to send email to user '{}': {}", to, e.getMessage());
             } else {
-                log.warn("Email could not be sent to user '{}': {}", to, e.getMessage());
+                log.warn("Email sending failed for user '{}': {}", to, e);
             }
         }
     }
+
+
 
     @Override
     @Async
