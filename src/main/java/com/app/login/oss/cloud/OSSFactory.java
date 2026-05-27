@@ -45,7 +45,7 @@ public class OSSFactory {
         }
 
         try {
-            return clazz.newInstance();
+            return clazz.getDeclaredConstructor().newInstance();
         } catch (Exception e) {
             throw new RRException("获取参数失败");
         }
@@ -59,7 +59,7 @@ public class OSSFactory {
         ClassLoader classLoader = getClass().getClassLoader();
         File file = new File(classLoader.getResource("oss-config.json").getFile());
 
-        return new Scanner(file).useDelimiter("\\Z").next();
+        return new Scanner(file, java.nio.charset.StandardCharsets.UTF_8.name()).useDelimiter("\\Z").next();
 
 
     }

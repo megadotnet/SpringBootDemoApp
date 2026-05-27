@@ -42,7 +42,6 @@ public class WebConfigurer implements ServletContextInitializer {
         if (env.getActiveProfiles().length != 0) {
             log.info("Web application configuration, using profiles: {}", (Object[]) env.getActiveProfiles());
         }
-        EnumSet<DispatcherType> disps = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.ASYNC);
         log.info("Web application fully configured");
     }
 
@@ -70,8 +69,9 @@ public class WebConfigurer implements ServletContextInitializer {
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
-        if (config.getAllowedOrigins() != null && !config.getAllowedOrigins()
-            .isEmpty()) {
+        java.util.List<String> allowedOrigins = config.getAllowedOrigins();
+
+        if (allowedOrigins != null && !allowedOrigins.isEmpty()) {
             log.debug("Registering CORS filter");
             source.registerCorsConfiguration("/api/**", config);
         }
