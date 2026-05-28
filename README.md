@@ -1,107 +1,119 @@
-# Spring-Boot Demo  [![Build Status](https://travis-ci.org/megadotnet/SpringBootDemoApp.png?branch=master)](https://travis-ci.org/megadotnet/SpringBootDemoApp/)
-A Sample application developed with :
-  1. Spring Boot 2 REST API
-  2. Spring Security
-  3. Spring Data JPA 
-  4. Spring Boot Actuator 
-  5. Angular JS
-  6. Alibaba Druid
-  7. Lombok
-  8. joda-time
-  
-Application is secured with JWT and Spring security.
+# AuthApp - Spring Boot Login Application
 
+[![English](https://img.shields.io/badge/Language-English-blue.svg)](README.md)
+[![简体中文](https://img.shields.io/badge/Language-%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87-red.svg)](README-ZhCn.md)
 
-## Feature includes:
-   1) Standard login and logout
-   2) Registration and email verification
-   3) Remember me functionality
-   4) Forgot password
-   5) Multi-language support
-   6) RESTful API
+## Project Introduction
 
-## Spring Actuator
-   Spring Boot includes an Actuator module,which introduces production-ready non-functional requirements 
-to your application. The Spring Boot Actuator module provides monitoring, metrics, and auditing right out 
-of box. 
+AuthApp is a comprehensive sample application demonstrating a secure REST API and frontend integration. It provides standard authentication features including login, logout, user registration with email verification, "remember me" functionality, password reset, and multi-language support. The application is secured using JWT (JSON Web Tokens) and Spring Security.
 
-    /actuator/metrics
-This endpoint shows the metrics  information   of the current application, where you can determine the how 
-much memory it’s using, how much memory is free, the uptime of your application, the size of the heap is 
-being used, the number of threads used, and so on. 
+## Technology Stack
 
-    /actuator/health
-   
-Displays your application’s health status.
+The project utilizes a modern technology stack separated into frontend, backend, infrastructure, and toolchain components.
 
-## Swagger
+### 1. Backend (Language & Runtime)
+* **Java 21 (Eclipse Temurin JDK 21 LTS):** The core programming language and runtime environment.
+* **Spring Boot (3.3.5):** The foundational framework for rapid application development.
+* **Spring Security:** Provides authentication and authorization capabilities.
+* **Spring Data JPA:** Simplifies data access layer implementation.
+* **Spring Boot Actuator:** Offers production-ready features like monitoring and metrics (`/actuator/health`, `/actuator/metrics`).
+* **Undertow:** The default embedded web server replacing Tomcat.
+* **jjwt (0.6.0):** Used for JSON Web Token generation and validation for stateless authentication.
+* **springdoc-openapi (2.0.4):** Generates OpenAPI documentation and provides Swagger UI (`/swagger-ui.html`).
+* **Alibaba Druid (1.1.9):** High-performance database connection pool with built-in monitoring (`/druid/index.html`).
+* **Lombok (1.18.34):** Reduces boilerplate code (getters, setters, etc.) during development.
+* **Joda-Time (2.9.9):** Used for advanced date and time manipulation.
+* **JavaMailSender:** Handles sending emails for account verification and password resets.
 
-   Swagger is the world’s largest framework of API developer tools for the OpenAPI Specification(OAS), enabling development across the entire API lifecycle, from design and documentation, to test and deployment.
+### 2. Frontend Framework
+* **AngularJS (1.5.8):** The core frontend JavaScript framework for building the single-page application (SPA).
+* **Bootstrap (3.3.7):** The CSS framework for responsive design and UI components.
+* **jQuery (1.9.1 - 3.x):** Required dependency for Bootstrap JavaScript plugins.
+* **Angular UI Router:** Manages routing and states within the AngularJS application.
+* **angular-translate:** Provides internationalization (i18n) and localization support.
+* **Thymeleaf:** Used minimally for serving the initial view or server-side templates if required.
 
-   Link
+### 3. Infrastructure & Database Systems
+* **H2 Database (In-Memory):** The default database for local development and testing. The console is accessible at `/h2-console`.
+* **MySQL Connector/J (8.0.33):** The database driver for connecting to a production MySQL database.
+* **Qiniu SDK (7.2.x):** Integrated for cloud storage or CDN capabilities.
+* **Docker:** Used for containerization and deployment.
 
-     http://127.0.0.1:7080/swagger-ui.html
-     
-## Druid     
-Druid is one of the best database connection pools written in JAVA. The Web console url goes to:
-    
-     http://127.0.0.1:7080/druid/index.html
+### 4. Build Tools & Toolchain
+* **Maven (3.8+):** The project management and comprehension tool used for building the application.
+* **spotify/dockerfile-maven-plugin (1.3.6):** Automates the building of Docker images during the Maven build lifecycle.
+* **SpotBugs Maven Plugin (4.8.2.0):** Static code analysis tool to find potential bugs in Java code, integrated with FindSecBugs for security analysis.
 
-## H2 Web Console
-By default the console can be accessed at URI ```http://127.0.0.1:7080/h2-console``` which can be changed by spring.h2.console.path property.
-     
-## Testing
-  JWT http request 
-``` POST http://127.0.0.1:7080/api/authenticate HTTP/1.1
-  User-Agent: Fiddler
-  Host: 127.0.0.1:7080
-  Content-Length: 65
-  content-type: application/json
-  
-  {"username": "admin", "password": "admin", "rememberMe": "false"}
+## Environment Requirements
+
+To avoid environment conflicts, ensure the following minimum requirements are met:
+* **JDK:** Version 21 (Eclipse Temurin JDK 21 LTS is highly recommended).
+* **Maven:** Version 3.8.1 or higher (Note: Maven Wrapper `mvnw` is not included, so Maven must be installed explicitly on your system).
+* **Docker:** Required only if you intend to build and run the application as a container.
+
+## Local Deployment & Startup Steps
+
+These steps are compatible with Windows, macOS, and Linux environments.
+
+### 1. Clone the repository
+```bash
+git clone <repository_url>
+cd <repository_directory>
 ```
-  http response
-## Run
-For local debugging:
-``` 
-mvn spring-boot:run -Dspring.profiles.active=local
-``` 
-For production, it is need config connection string with mysql database first.
-``` 
-mvn spring-boot:run -Dspring.profiles.active=prod
-``` 
 
-## Docker
-### Setup
-You can specify the base image, entry point, cmd, maintainer and files you want to add to your
-image directly in the pom, without needing a separate `Dockerfile`.
-If you need `VOLUME` command(or any other not supported dockerfile command), then you will need
-to create a `Dockerfile` and use the `dockerDirectory` element.
+### 2. Build the project
+Build the application using Maven. You can skip tests during the build if needed.
+```bash
+mvn clean package -DskipTests
+```
 
-By default the plugin will try to connect to docker on localhost:2375. Set the DOCKER_HOST 
-environment variable to connect elsewhere.
+### 3. Run the application
+Run the application using the Spring Boot Maven plugin. The default application port is `7081`.
 
-    DOCKER_HOST=tcp://<host>:2375
+**Local Debugging (uses in-memory H2 database):**
+```bash
+mvn spring-boot:run -Dspring-boot.run.profiles=local
+```
+*(Alternatively, you can run the built jar: `java -jar target/springboot-login-application-1.0.0.jar`)*
 
-Other docker-standard environment variables are honored too such as TLS and certificates.
-###Build docker image and run
-``` 
-  mvn clean package dockerfile:build
+**Production Mode:**
+For production, you need to configure the connection string for the MySQL database in the configuration files first.
+```bash
+mvn spring-boot:run -Dspring-boot.run.profiles=prod
 ```
-  if you want to skip unit test:
-``` 
-  mvn clean package dockerfile:build -DskipTests
-  
+
+### 4. Docker Deployment (Optional)
+Build the Docker image:
+```bash
+mvn clean package dockerfile:build -DskipTests
 ```
-or you can build with cli:
-``` 
-  docker build --build-arg JAR_FILE=*.jar -t megadotnet/springboot-login-application .   
+Run the Docker container:
+```bash
+docker run -p 7081:7081 -e "SPRING_PROFILES_ACTIVE=local" -m='2g' --name springboot-login-app -d megadotnet/springboot-login-application
 ```
-Run with H2 database
-``` 
-docker run -p 7080:7080 -e "SPRING_PROFILES_ACTIVE=local" -m='2g' --name springboot-login-application -d megadotnet/springboot-login-application
+
+## Project Structure
+
+```text
+├── src
+│   ├── main
+│   │   ├── java/com/app/login     # Backend Java source code (Controllers, Services, Repositories, Security, etc.)
+│   │   └── resources              # Configuration files (application.yml, i18n properties, mails templates)
+│   │       └── static             # Frontend static resources (AngularJS app, HTML, CSS, JS, Bower components)
+│   └── test                       # Unit and integration tests
+├── pom.xml                        # Maven project object model, managing dependencies and plugins
+└── Dockerfile                     # Docker configuration for containerizing the application
 ```
-remote debugging
-``` 
-docker run -e "JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=y" -p 8000:8000 -p 7080:7080 -d megadotnet/springboot-login-application
-```
+
+## Development Conventions
+
+* **Code Style:** The project uses standard Java coding conventions. Lombok is heavily utilized; ensure your IDE has the Lombok plugin installed and annotation processing enabled.
+* **REST API:** All APIs should be designed following RESTful principles and documented using Swagger/OpenAPI.
+* **Security:** All endpoints (except public ones like login/register) must be secured. User inputs should be validated using Spring Boot Validation.
+* **Testing:** Write unit tests for all business logic. Run `mvn clean test` before any commit to ensure all tests pass.
+
+## Troubleshooting
+
+1. **Port Already in Use:** If the application fails to start because port 7081 is in use, either stop the conflicting process or change the port in `src/main/resources/application.yml` (`server.port: 7081`).
+2. **Lombok Compilation Errors:** If you see "cannot find symbol" errors for getters/setters in your IDE, verify that the Lombok plugin is installed and "Enable annotation processing" is checked in your IDE settings.
+3. **Database Connection Issues:** When running with the `prod` profile, ensure your MySQL instance is running and the credentials in your configuration file are correct.
