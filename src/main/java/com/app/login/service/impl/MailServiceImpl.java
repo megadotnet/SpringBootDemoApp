@@ -56,7 +56,7 @@ public class MailServiceImpl implements IMailService {
 
     private String baseUrlValue;
 
-    public MailServiceImpl(JavaMailSender javaMailSender, MessageSource messageSource, SpringTemplateEngine templateEngine) {
+    public MailServiceImpl(JavaMailSender javaMailSender, @org.springframework.beans.factory.annotation.Qualifier("messageSource") MessageSource messageSource, SpringTemplateEngine templateEngine) {
 
         this.javaMailSender = javaMailSender;
         this.messageSource = messageSource;
