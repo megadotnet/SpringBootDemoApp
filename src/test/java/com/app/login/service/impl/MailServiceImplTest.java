@@ -44,8 +44,11 @@ class MailServiceImplTest {
     @Autowired
     private MailServiceImpl mailServiceImpl;
 
-    @MockBean
+    @MockBean(name = "messageSource")
     private MessageSource messageSource;
+
+    @MockBean(name = "org.springframework.context.MessageSource#0")
+    private MessageSource messageSource2;
 
     @MockBean
     private SpringTemplateEngine springTemplateEngine;

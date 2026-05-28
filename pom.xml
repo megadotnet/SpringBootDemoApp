@@ -7,8 +7,7 @@
     <packaging>jar</packaging>
     <description>spring-boot demo application</description>
     <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.release>21</maven.compiler.release>
         <commons.io.version>2.14.0</commons.io.version>
         <commons-lang.version>3.14.0</commons-lang.version>
         <jjwt.version>0.6.0</jjwt.version>
@@ -30,8 +29,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <source>21</source>
-                    <target>21</target>
+                    <release>21</release>
                 </configuration>
             </plugin>
             <plugin>
